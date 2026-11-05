@@ -1,0 +1,618 @@
+<title>Word Card Manifest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: three-pane workbench — filters | word list | card editor; stacks to one column on phones. */
+:root {
+  --bg: #f4f5fb;
+  --surface: #ffffff;
+  --sunk: #eceef8;
+  --line: #d9dcec;
+  --fg: #1c2140;
+  --muted: #5d6385;
+  --accent: #4a5fc1;      /* SpeechLP indigo */
+  --accent-soft: #e3e7fb;
+  --teal: #0f766e;        /* initial sounds */
+  --teal-soft: #d5f2ee;
+  --amber: #b45309;       /* medial */
+  --amber-soft: #fdecd3;
+  --rose: #be3455;        /* final */
+  --rose-soft: #fbe0e6;
+  --violet: #7c3aed;      /* blends */
+  --violet-soft: #ede4fe;
+  --warn: #b42318;
+  --ok: #157f3d;
+  --f-display: "Funnel Display", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-ipa: "Noto Sans Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12142a; --surface: #1b1e3a; --sunk: #232748; --line: #343a63; --fg: #e7e9fb; --muted: #a2a7cc;
+  --accent: #8d9cf2; --accent-soft: #2c3363; --teal: #4fd1c1; --teal-soft: #173f42; --amber: #f2b45a; --amber-soft: #43331b;
+  --rose: #f58aa3; --rose-soft: #48222f; --violet: #b99bfb; --violet-soft: #33285a; --warn: #ff8a7a; --ok: #6ad48f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12142a; --surface: #1b1e3a; --sunk: #232748; --line: #343a63; --fg: #e7e9fb; --muted: #a2a7cc;
+  --accent: #8d9cf2; --accent-soft: #2c3363; --teal: #4fd1c1; --teal-soft: #173f42; --amber: #f2b45a; --amber-soft: #43331b;
+  --rose: #f58aa3; --rose-soft: #48222f; --violet: #b99bfb; --violet-soft: #33285a; --warn: #ff8a7a; --ok: #6ad48f; color-scheme: dark }
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--f-body); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ipa { font-family: var(--f-ipa); }
+
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr; }
+header.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line); background: var(--surface); }
+.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.brand h1 { margin: 0; font: 700 1.35rem/1.1 var(--f-display); letter-spacing: -0.01em; }
+.brand .ver { font: 0.78rem var(--f-ipa); color: var(--muted); }
+.stats { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stats b { color: var(--fg); font-weight: 700; }
+.stats .edited b { color: var(--accent); }
+.top .actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.sync { font-size: 0.8rem; color: var(--muted); }
+.sync.err { color: var(--warn); }
+
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 700; font-size: 0.88rem; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn.danger { color: var(--warn); }
+.btn.small { padding: 3px 8px; font-size: 0.8rem; }
+.btn[disabled] { opacity: .5; cursor: default; }
+
+.work { display: grid; grid-template-columns: 250px minmax(0, 1fr) minmax(0, 470px); min-height: 0; }
+.pane { min-height: 0; overflow: auto; }
+.filters { border-right: 1px solid var(--line); padding: 14px 14px 30px max(14px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 16px; background: var(--surface); }
+.fgroup { display: flex; flex-direction: column; gap: 6px; }
+.fgroup > label, .fgroup > .lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+.filters input[type=search], .filters select, .ed input, .ed select, .ed textarea { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 7px; padding: 6px 8px; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 2px 9px; font-size: 0.8rem; cursor: pointer; display: inline-flex; gap: 5px; align-items: center; }
+.chip .n { color: var(--muted); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--fg); }
+.row2 { display: flex; gap: 6px; align-items: center; }
+.row2 input { width: 70px !important; }
+
+/* distribution bars */
+.dist { display: flex; align-items: flex-end; gap: 2px; height: 46px; }
+.dist button { flex: 1; height: 100%; border: 0; padding: 0; background: var(--sunk); border-radius: 3px 3px 0 0; position: relative; cursor: pointer; min-width: 0; }
+.dist button span { position: absolute; inset: auto 0 0; background: var(--accent); opacity: .55; border-radius: 3px 3px 0 0; }
+.dist button[aria-pressed="true"] span { opacity: 1; }
+.dist-axis { display: flex; gap: 2px; font: 0.66rem var(--f-ipa); color: var(--muted); }
+.dist-axis span { flex: 1; text-align: center; min-width: 0; }
+
+/* list */
+.list { padding: 0 0 30px; }
+.listhead { position: sticky; top: 0; z-index: 2; background: var(--bg); display: flex; gap: 10px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.listhead .count { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.listhead select { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 4px 6px; font-size: 0.85rem; }
+table.words { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+table.words th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--line); }
+table.words td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.words tr { cursor: pointer; }
+table.words tbody tr:hover { background: var(--sunk); }
+table.words tr.sel { background: var(--accent-soft); }
+table.words tr.deleted td { opacity: .5; text-decoration: line-through; }
+td.w { font-weight: 700; white-space: nowrap; }
+td.num { font-variant-numeric: tabular-nums; text-align: right; }
+.mark { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 6px; vertical-align: middle; }
+.mark.edit { background: var(--accent); }
+.mark.new { background: var(--ok); }
+.mark.warn { background: var(--warn); }
+.diff { font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; }
+.diff.Easy { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.diff.Medium { color: var(--amber); background: var(--amber-soft); }
+.diff.Hard { color: var(--rose); background: var(--rose-soft); }
+.snd { display: inline-block; font: 0.78rem var(--f-ipa); padding: 0 5px; border-radius: 4px; margin: 1px 2px 1px 0; }
+.p-initial { background: var(--teal-soft); color: var(--teal); }
+.p-medial { background: var(--amber-soft); color: var(--amber); }
+.p-final { background: var(--rose-soft); color: var(--rose); }
+.p-initialBlend, .p-finalBlend { background: var(--violet-soft); color: var(--violet); }
+.more { padding: 14px 16px; }
+.hide-sm { }
+
+/* editor */
+.editor { border-left: 1px solid var(--line); background: var(--surface); padding: 16px max(16px, env(safe-area-inset-right, 0px)) 40px 18px; }
+.empty { color: var(--muted); padding: 30px 10px; }
+.card { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px; align-items: center; margin-bottom: 14px; }
+.thumb { width: 112px; height: 112px; border-radius: 14px; background: var(--sunk); display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); }
+.thumb img { width: 100%; height: 100%; object-fit: contain; }
+.thumb .ph { font: 700 2.8rem var(--f-display); color: var(--accent); text-transform: lowercase; }
+.bigword { font: 700 2.1rem/1.05 var(--f-display); letter-spacing: 0.01em; word-break: break-word; }
+.bigword .g { border-radius: 5px; padding: 0 1px; }
+.bigipa { font: 1.05rem var(--f-ipa); color: var(--muted); margin-top: 4px; }
+.cardmeta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+.legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.72rem; color: var(--muted); margin: -4px 0 12px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+
+.ed { display: flex; flex-direction: column; gap: 14px; }
+.ed h3 { margin: 6px 0 0; font: 700 0.78rem var(--f-body); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.field > label { font-size: 0.76rem; color: var(--muted); font-weight: 700; }
+.field.changed > label::after { content: " • changed"; color: var(--accent); }
+.field.changed input, .field.changed select, .field.changed textarea, .chips.changed { box-shadow: inset 3px 0 0 var(--accent); }
+.field .orig { font-size: 0.72rem; color: var(--muted); }
+.sounds { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.sounds th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: left; padding: 2px 3px; }
+.sounds td { padding: 3px; }
+.sounds input, .sounds select { padding: 4px 5px !important; }
+.sounds td.rng { white-space: nowrap; }
+.sounds td.rng input { width: 46px; display: inline-block; }
+.warns { color: var(--warn); font-size: 0.82rem; display: flex; flex-direction: column; gap: 2px; }
+.edbar { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 6px; }
+details.json summary { cursor: pointer; font-size: 0.82rem; color: var(--muted); }
+details.json pre { font: 0.75rem/1.4 var(--f-ipa); background: var(--sunk); padding: 10px; border-radius: 8px; overflow: auto; max-height: 300px; }
+.toast { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 0.88rem; z-index: 20; }
+.modal { position: fixed; inset: 0; background: color-mix(in srgb, var(--fg) 40%, transparent); display: grid; place-items: center; z-index: 30; padding: 16px; }
+.modal .box { background: var(--surface); border-radius: 12px; padding: 18px; width: min(520px, 100%); display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow: auto; }
+.modal h2 { margin: 0; font: 700 1.2rem var(--f-display); }
+.modal textarea { width: 100%; height: 160px; font: 0.72rem var(--f-ipa); border: 1px solid var(--line); background: var(--bg); border-radius: 7px; }
+.modal p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.back { display: none; }
+
+@media (max-width: 1100px) {
+  .work { grid-template-columns: 220px minmax(0, 1fr); }
+  .editor { position: fixed; inset: 0 0 0 auto; width: min(480px, 100%); z-index: 15; box-shadow: -10px 0 30px color-mix(in srgb, var(--fg) 20%, transparent); padding-top: calc(16px + env(safe-area-inset-top, 0px)); }
+  .editor.closed { display: none; }
+  .back { display: inline-block; margin-bottom: 10px; }
+}
+@media (max-width: 720px) {
+  .app { height: auto; display: block; }
+  .work { display: block; }
+  .pane { overflow: visible; }
+  .filters { border-right: 0; border-bottom: 1px solid var(--line); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+  .filters.collapsed .fgroup:not(:first-child) { display: none; }
+  .hide-sm { display: none; }
+  .listhead { top: env(safe-area-inset-top, 0px); }
+  .editor { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+}
+@media (min-width: 721px) { #toggleFilters { display: none; } }
+@media (prefers-reduced-motion: no-preference) { .btn, .chip { transition: border-color .15s, background .15s; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand"><h1>Word Card Manifest</h1><span class="ver" id="ver"></span></div>
+    <div class="stats" id="stats"></div>
+    <div class="actions">
+      <span class="sync" id="sync">Loading…</span>
+      <button class="btn" id="newWord">New word</button>
+      <button class="btn primary" id="exportBtn">Export manifest</button>
+    </div>
+  </header>
+  <div class="work">
+    <aside class="pane filters" id="filters">
+      <div class="fgroup">
+        <label for="q">Search</label>
+        <input type="search" id="q" placeholder="word, IPA or id">
+        <button class="btn small" id="toggleFilters">Show filters</button>
+      </div>
+      <div class="fgroup"><span class="lbl">Status</span><div class="chips" id="fStatus"></div></div>
+      <div class="fgroup"><span class="lbl">Difficulty</span><div class="chips" id="fDiff"></div></div>
+      <div class="fgroup"><span class="lbl">Age</span><div class="dist" id="fAge"></div><div class="dist-axis" id="fAgeAxis"></div></div>
+      <div class="fgroup"><span class="lbl">Syllables</span><div class="chips" id="fSyl"></div></div>
+      <div class="fgroup">
+        <label for="fSound">Target sound</label>
+        <div class="row2"><select id="fSound"></select><select id="fPos"></select></div>
+      </div>
+      <div class="fgroup"><span class="lbl">Phonological process</span><div class="chips" id="fProc"></div></div>
+      <div class="fgroup"><span class="lbl">Word type</span><div class="chips" id="fType"></div></div>
+      <div class="fgroup"><label for="fStruct">Structure</label><select id="fStruct"></select></div>
+      <button class="btn small" id="clearFilters">Clear filters</button>
+    </aside>
+    <main class="pane list" id="listPane">
+      <div class="listhead">
+        <span class="count" id="count"></span>
+        <label class="count" for="sort">Sort</label>
+        <select id="sort">
+          <option value="orig">Manifest order</option>
+          <option value="word">A–Z</option>
+          <option value="age">Age</option>
+          <option value="difficulty">Difficulty</option>
+          <option value="syllables">Syllables</option>
+        </select>
+      </div>
+      <table class="words">
+        <thead><tr><th>Word</th><th>IPA</th><th class="num">Age</th><th>Level</th><th class="hide-sm">Target sounds</th><th class="hide-sm">Shape</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="more" id="more"></div>
+    </main>
+    <aside class="pane editor closed" id="editor"></aside>
+  </div>
+</div>
+<div id="modalRoot"></div>
+
+<script type="application/json" id="manifest-data">__MANIFEST__</script>
+<script>
+(() => {
+"use strict";
+const RAW = JSON.parse(document.getElementById("manifest-data").textContent);
+const BASE = RAW.words.map(w => Object.freeze(w));
+const BASE_BY_ID = new Map(BASE.map((w, i) => [w.id, { w, i }]));
+const BASE_URL = RAW.baseUrl;
+const LS_KEY = "wcm-edits-" + RAW.version;
+const POSITIONS = ["initial", "medial", "final", "initialBlend", "finalBlend"];
+const DIFFS = ["Easy", "Medium", "Hard"];
+const FIELD_ORDER = ["word","phonemes","age","syllables","difficulty","structure","wordType","phonologicalProcesses","initialBlend","finalBlend","imgPath","gifPath","targetSounds","id","media","display"];
+
+// edits: id -> { data: word|null, deleted: bool, isNew: bool, updatedAt }
+let edits = new Map();
+let db = null;
+let selectedId = null;
+let limit = 200;
+const F = { q: "", status: "all", diff: new Set(), age: new Set(), syl: new Set(), sound: "", pos: "", proc: new Set(), type: new Set(), struct: "" };
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+function current() {
+  const out = [];
+  BASE.forEach((w, i) => {
+    const e = edits.get(w.id);
+    out.push({ w: e && e.data ? e.data : w, i, id: w.id, edited: !!e && !e.deleted && !eq(e.data, w), deleted: !!(e && e.deleted), isNew: false });
+  });
+  let n = BASE.length;
+  for (const [id, e] of edits) if (e.isNew) out.push({ w: e.data, i: n++, id, edited: false, deleted: !!e.deleted, isNew: true });
+  return out;
+}
+
+function warnings(w) {
+  const out = [];
+  if (!w.word) out.push("Word is empty");
+  if (!w.phonemes) out.push("Phonemes are empty");
+  (w.targetSounds || []).forEach((t, k) => {
+    const [a, b] = t.graphemeRange || [];
+    if (!t.ipa) out.push(`Sound ${k + 1}: IPA is empty`);
+    if (!(Number.isInteger(a) && Number.isInteger(b) && a >= 0 && b > a && b <= (w.word || "").length)) out.push(`Sound ${k + 1}: letter range ${a}–${b} doesn't fit “${w.word}”`);
+    if (t.ipa && w.phonemes && !w.phonemes.includes(t.ipa)) out.push(`Sound ${k + 1}: /${t.ipa}/ not found in /${w.phonemes}/`);
+  });
+  if (!(w.media && w.media.images && w.media.images.length)) out.push("No card image");
+  return out;
+}
+
+// ---------- persistence ----------
+function setSync(text, err) { const s = $("sync"); s.textContent = text; s.classList.toggle("err", !!err); }
+function loadLocal() {
+  try { const raw = localStorage.getItem(LS_KEY); if (raw) edits = new Map(Object.entries(JSON.parse(raw))); } catch (_) {}
+}
+function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(Object.fromEntries(edits))); } catch (_) {} }
+
+const timers = new Map(), chains = new Map();
+function persist(id) {
+  saveLocal();
+  if (!db) { setSync("Saved in this browser"); return; }
+  clearTimeout(timers.get(id));
+  setSync("Saving…");
+  timers.set(id, setTimeout(() => {
+    const prev = chains.get(id) || Promise.resolve();
+    const next = prev.then(() => {
+      const e = edits.get(id);
+      const ref = db.collection("edits").doc(id);
+      return e ? ref.set({ data: e.data, deleted: !!e.deleted, isNew: !!e.isNew, updatedAt: new Date().toISOString() }) : ref.delete();
+    }).then(() => setSync("All changes saved"), err => setSync("Save failed: " + (err && err.message || err) + ". Kept in this browser.", true));
+    chains.set(id, next);
+  }, 500));
+}
+
+function setEdit(id, data, opts = {}) {
+  const base = BASE_BY_ID.get(id);
+  const prev = edits.get(id);
+  const isNew = opts.isNew ?? (prev ? prev.isNew : !base);
+  const deleted = opts.deleted ?? (prev ? prev.deleted : false);
+  if (base && !deleted && eq(data, base.w)) edits.delete(id);
+  else edits.set(id, { data, deleted, isNew, updatedAt: new Date().toISOString() });
+  persist(id);
+}
+
+async function connectDb() {
+  try {
+    if (!window.claude || !window.claude.use) { setSync("Saved in this browser"); return; }
+    db = await window.claude.use("db");
+    if (!db) { setSync("Saved in this browser"); return; }
+    const timeout = setTimeout(() => setSync("Shared storage is slow to answer; edits stay in this browser for now", true), 10000);
+    db.collection("edits").onSnapshot(snap => {
+      clearTimeout(timeout);
+      const next = new Map();
+      snap.docs.forEach(d => { const v = d.data(); if (v && v.data) next.set(d.id, { data: clone(v.data), deleted: !!v.deleted, isNew: !!v.isNew, updatedAt: v.updatedAt }); });
+      // keep local edits whose writes are still pending
+      for (const [id] of timers) if (edits.has(id) && !next.has(id) && chains.get(id)) next.set(id, edits.get(id));
+      edits = next; saveLocal();
+      setSync(snap.metadata && snap.metadata.hasPendingWrites ? "Saving…" : "All changes saved");
+      renderAll(true);
+    }, err => { clearTimeout(timeout); setSync("Shared storage unavailable (" + (err.code || "error") + "); edits stay in this browser", true); db = null; });
+  } catch (err) { setSync("Saved in this browser"); }
+}
+
+// ---------- filters ----------
+function counts(list, fn) { const m = new Map(); list.forEach(r => [].concat(fn(r.w)).forEach(k => m.set(k, (m.get(k) || 0) + 1))); return m; }
+function chipRow(el, entries, set, key) {
+  el.innerHTML = entries.map(([k, n]) => `<button class="chip" data-k="${esc(k)}" aria-pressed="${set.has(String(k))}">${esc(k)} <span class="n">${n}</span></button>`).join("");
+  el.onclick = e => { const b = e.target.closest(".chip"); if (!b) return; const k = b.dataset.k; set.has(k) ? set.delete(k) : set.add(k); limit = 200; renderAll(); };
+}
+function renderFilters(all) {
+  const live = all.filter(r => !r.deleted);
+  const st = [["all", all.length], ["edited", all.filter(r => r.edited).length], ["new", all.filter(r => r.isNew).length], ["deleted", all.filter(r => r.deleted).length], ["issues", live.filter(r => warnings(r.w).length).length]];
+  $("fStatus").innerHTML = st.map(([k, n]) => `<button class="chip" data-k="${k}" aria-pressed="${F.status === k}">${k} <span class="n">${n}</span></button>`).join("");
+  $("fStatus").onclick = e => { const b = e.target.closest(".chip"); if (!b) return; F.status = b.dataset.k; limit = 200; renderAll(); };
+  const dc = counts(live, w => w.difficulty);
+  chipRow($("fDiff"), DIFFS.map(d => [d, dc.get(d) || 0]), F.diff);
+  const sc = counts(live, w => w.syllables);
+  chipRow($("fSyl"), [...sc].sort((a, b) => a[0] - b[0]), F.syl);
+  const pc = counts(live, w => w.phonologicalProcesses || []);
+  chipRow($("fProc"), [...pc].sort((a, b) => b[1] - a[1]), F.proc);
+  const tc = counts(live, w => w.wordType || []);
+  chipRow($("fType"), [...tc].sort((a, b) => b[1] - a[1]), F.type);
+  // age histogram
+  const ac = counts(live, w => w.age); const ages = [...ac.keys()].sort((a, b) => a - b); const max = Math.max(...ac.values(), 1);
+  $("fAge").innerHTML = ages.map(a => `<button title="Age ${a}: ${ac.get(a)} words" aria-label="Age ${a}, ${ac.get(a)} words" data-k="${a}" aria-pressed="${F.age.has(String(a))}"><span style="height:${Math.max(4, ac.get(a) / max * 100)}%"></span></button>`).join("");
+  $("fAgeAxis").innerHTML = ages.map(a => `<span>${a}</span>`).join("");
+  $("fAge").onclick = e => { const b = e.target.closest("button"); if (!b) return; const k = b.dataset.k; F.age.has(k) ? F.age.delete(k) : F.age.add(k); limit = 200; renderAll(); };
+  // sounds
+  const snd = counts(live, w => (w.targetSounds || []).map(t => t.ipa));
+  const opts = [...snd].sort((a, b) => b[1] - a[1]);
+  $("fSound").innerHTML = `<option value="">Any sound</option>` + opts.map(([k, n]) => `<option value="${esc(k)}"${F.sound === k ? " selected" : ""}>/${esc(k)}/ · ${n}</option>`).join("");
+  $("fPos").innerHTML = `<option value="">Any position</option>` + POSITIONS.map(p => `<option${F.pos === p ? " selected" : ""}>${p}</option>`).join("");
+  const stc = counts(live, w => w.structure);
+  $("fStruct").innerHTML = `<option value="">Any structure</option>` + [...stc].sort((a, b) => b[1] - a[1]).map(([k, n]) => `<option value="${esc(k)}"${F.struct === k ? " selected" : ""}>${esc(k)} · ${n}</option>`).join("");
+}
+function matches(r) {
+  const w = r.w;
+  if (F.status === "edited" && !r.edited) return false;
+  if (F.status === "new" && !r.isNew) return false;
+  if (F.status === "deleted" && !r.deleted) return false;
+  if (F.status === "issues" && (r.deleted || !warnings(w).length)) return false;
+  if (F.status === "all" && r.deleted && !F.q) { /* still show deleted, struck through */ }
+  if (F.q) { const q = F.q.toLowerCase(); if (!((w.word || "").toLowerCase().includes(q) || (w.phonemes || "").includes(F.q) || r.id.toLowerCase().includes(q))) return false; }
+  if (F.diff.size && !F.diff.has(w.difficulty)) return false;
+  if (F.age.size && !F.age.has(String(w.age))) return false;
+  if (F.syl.size && !F.syl.has(String(w.syllables))) return false;
+  if (F.struct && w.structure !== F.struct) return false;
+  if (F.proc.size && ![...F.proc].every(p => (w.phonologicalProcesses || []).includes(p))) return false;
+  if (F.type.size && ![...F.type].every(p => (w.wordType || []).includes(p))) return false;
+  if (F.sound || F.pos) { if (!(w.targetSounds || []).some(t => (!F.sound || t.ipa === F.sound) && (!F.pos || t.position === F.pos))) return false; }
+  return true;
+}
+
+// ---------- list ----------
+function renderList(all) {
+  let rows = all.filter(matches);
+  const s = $("sort").value;
+  const dIdx = d => DIFFS.indexOf(d);
+  if (s === "word") rows.sort((a, b) => (a.w.word || "").localeCompare(b.w.word || ""));
+  if (s === "age") rows.sort((a, b) => a.w.age - b.w.age || a.i - b.i);
+  if (s === "difficulty") rows.sort((a, b) => dIdx(a.w.difficulty) - dIdx(b.w.difficulty) || a.i - b.i);
+  if (s === "syllables") rows.sort((a, b) => a.w.syllables - b.w.syllables || a.i - b.i);
+  $("count").textContent = `${rows.length.toLocaleString()} of ${all.length.toLocaleString()} words`;
+  const shown = rows.slice(0, limit);
+  $("rows").innerHTML = shown.map(r => {
+    const w = r.w, wn = warnings(w).length;
+    const marks = (r.isNew ? '<span class="mark new" title="New word"></span>' : r.edited ? '<span class="mark edit" title="Edited"></span>' : "") + (wn && !r.deleted ? `<span class="mark warn" title="${wn} issue(s)"></span>` : "");
+    return `<tr data-id="${esc(r.id)}" class="${r.id === selectedId ? "sel" : ""} ${r.deleted ? "deleted" : ""}">
+      <td class="w">${esc(w.word)}${marks}</td>
+      <td class="ipa">/${esc(w.phonemes)}/</td>
+      <td class="num">${esc(w.age)}</td>
+      <td><span class="diff ${esc(w.difficulty)}">${esc(w.difficulty)}</span></td>
+      <td class="hide-sm">${(w.targetSounds || []).map(t => `<span class="snd p-${esc(t.position)}" title="${esc(t.position)}">${esc(t.ipa)}</span>`).join("")}</td>
+      <td class="hide-sm ipa" style="font-size:.8rem">${esc(w.structure)}</td></tr>`;
+  }).join("");
+  $("more").innerHTML = rows.length > limit ? `<button class="btn" id="moreBtn">Show ${Math.min(200, rows.length - limit)} more</button>` : "";
+  if ($("moreBtn")) $("moreBtn").onclick = () => { limit += 200; renderList(current()); };
+}
+$("rows").onclick = e => { const tr = e.target.closest("tr[data-id]"); if (tr) select(tr.dataset.id); };
+
+function renderStats(all) {
+  const live = all.filter(r => !r.deleted);
+  const e = all.filter(r => r.edited).length, n = all.filter(r => r.isNew && !r.deleted).length, d = all.filter(r => r.deleted && !r.isNew).length;
+  $("stats").innerHTML = `<span><b>${live.length.toLocaleString()}</b> words</span><span class="edited"><b>${e}</b> edited</span><span><b>${n}</b> new</span><span><b>${d}</b> removed</span>`;
+}
+
+// ---------- editor ----------
+function getWord(id) { const e = edits.get(id); if (e && e.data) return e.data; const b = BASE_BY_ID.get(id); return b ? b.w : null; }
+function select(id) { selectedId = id; renderEditor(); document.querySelectorAll("#rows tr").forEach(tr => tr.classList.toggle("sel", tr.dataset.id === id)); }
+
+function highlightWord(w) {
+  const word = w.word || ""; const marks = new Array(word.length).fill(null);
+  (w.targetSounds || []).filter(t => !t.position.endsWith("Blend")).concat((w.targetSounds || []).filter(t => t.position.endsWith("Blend")))
+    .forEach(t => { const [a, b] = t.graphemeRange || []; for (let k = a; k < b && k < word.length; k++) if (k >= 0 && !marks[k]) marks[k] = t.position; });
+  let html = "", k = 0;
+  while (k < word.length) { const p = marks[k]; let j = k; while (j < word.length && marks[j] === p) j++; const seg = esc(word.slice(k, j)); html += p ? `<span class="g p-${p}">${seg}</span>` : seg; k = j; }
+  return html || "&nbsp;";
+}
+
+function vocab(field) { const s = new Set(); current().forEach(r => (r.w[field] || []).forEach(v => s.add(v))); return [...s].sort(); }
+
+function renderEditor() {
+  const ed = $("editor");
+  const w = selectedId && getWord(selectedId);
+  if (!w) { ed.classList.add("closed"); ed.innerHTML = `<div class="empty">Select a word to see its card and edit its fields.</div>`; return; }
+  ed.classList.remove("closed");
+  const base = BASE_BY_ID.get(selectedId); const orig = base ? base.w : null;
+  const e = edits.get(selectedId) || {};
+  const ch = f => orig && !eq(w[f], orig[f]) ? " changed" : "";
+  const og = f => orig && !eq(w[f], orig[f]) ? `<span class="orig">was: ${esc(Array.isArray(orig[f]) ? orig[f].join(", ") : orig[f] ?? "—")}</span>` : "";
+  const img = w.media && w.media.images && w.media.images[0];
+  const aud = w.media && w.media.audio && w.media.audio[0];
+  const wn = warnings(w);
+  const types = [...new Set(vocab("wordType").concat(w.wordType || []))];
+  const procs = [...new Set(vocab("phonologicalProcesses").concat(w.phonologicalProcesses || []))];
+  const structs = [...new Set(["CV","CVC","CVCC","CCV","CCVC","CCVCC","CCCV","CCCVC","CVCV","VC","VCV","Other", w.structure])];
+  const textF = (f, label, extra = "") => `<div class="field${ch(f)}"><label for="e_${f}">${label}</label><input id="e_${f}" data-f="${f}" value="${esc(w[f] ?? "")}" ${extra}>${og(f)}</div>`;
+  ed.innerHTML = `
+    <button class="btn small back" id="closeEd">← Back to list</button>
+    <div class="card">
+      <div class="thumb">${img ? `<img alt="Card image for ${esc(w.word)}" src="${esc(BASE_URL + "/" + img)}">` : ""}<span class="ph"${img ? " hidden" : ""}>${esc((w.word || "?")[0])}</span></div>
+      <div style="min-width:0">
+        <div class="bigword">${highlightWord(w)}</div>
+        <div class="bigipa ipa">/${esc(w.phonemes)}/</div>
+        <div class="cardmeta"><span class="diff ${esc(w.difficulty)}">${esc(w.difficulty)}</span><span class="snd" style="background:var(--sunk)">age ${esc(w.age)}</span><span class="snd" style="background:var(--sunk)">${esc(w.syllables)} syl</span>
+        ${aud ? `<button class="btn small" id="play">▶ Audio</button>` : ""}
+        ${e.isNew ? '<span class="snd" style="color:var(--ok)">new</span>' : ""}${e.deleted ? '<span class="snd" style="color:var(--warn)">marked for removal</span>' : ""}</div>
+      </div>
+    </div>
+    <div class="legend"><span><i class="p-initial" style="background:var(--teal)"></i>initial</span><span><i style="background:var(--amber)"></i>medial</span><span><i style="background:var(--rose)"></i>final</span><span><i style="background:var(--violet)"></i>blend</span></div>
+    ${wn.length ? `<div class="warns">${wn.map(x => `<span>⚠ ${esc(x)}</span>`).join("")}</div>` : ""}
+    <div class="ed" id="edForm">
+      <div class="grid2">
+        ${textF("word", "Word")}
+        ${textF("phonemes", "Phonemes (IPA)", 'class="ipa"')}
+        <div class="field${ch("age")}"><label for="e_age">Age</label><input id="e_age" type="number" min="1" max="18" data-f="age" data-num="1" value="${esc(w.age)}">${og("age")}</div>
+        <div class="field${ch("syllables")}"><label for="e_syllables">Syllables</label><input id="e_syllables" type="number" min="1" max="8" data-f="syllables" data-num="1" value="${esc(w.syllables)}">${og("syllables")}</div>
+        <div class="field${ch("difficulty")}"><label for="e_difficulty">Difficulty</label><select id="e_difficulty" data-f="difficulty">${DIFFS.map(d => `<option${d === w.difficulty ? " selected" : ""}>${d}</option>`).join("")}</select>${og("difficulty")}</div>
+        <div class="field${ch("structure")}"><label for="e_structure">Structure</label><select id="e_structure" data-f="structure">${structs.map(d => `<option${d === w.structure ? " selected" : ""}>${esc(d)}</option>`).join("")}</select>${og("structure")}</div>
+        ${textF("initialBlend", "Initial blend")}
+        ${textF("finalBlend", "Final blend")}
+        ${w.display !== undefined || true ? textF("display", "Display text (optional)", 'placeholder="same as word"') : ""}
+        <div class="field"><label for="e_id">ID</label><input id="e_id" value="${esc(selectedId)}" readonly></div>
+      </div>
+      <h3>Word type</h3>
+      <div class="chips${ch("wordType")}" id="e_wordType">${types.map(t => `<button class="chip" data-v="${esc(t)}" aria-pressed="${(w.wordType || []).includes(t)}">${esc(t)}</button>`).join("")}</div>
+      <h3>Phonological processes</h3>
+      <div class="chips${ch("phonologicalProcesses")}" id="e_procs">${procs.map(t => `<button class="chip" data-v="${esc(t)}" aria-pressed="${(w.phonologicalProcesses || []).includes(t)}">${esc(t)}</button>`).join("")}</div>
+      <h3>Target sounds${ch("targetSounds") ? ' <span style="color:var(--accent)">• changed</span>' : ""}</h3>
+      <div style="overflow-x:auto"><table class="sounds"><thead><tr><th>IPA</th><th>Position</th><th>Letters</th><th>Grapheme</th><th></th></tr></thead><tbody>
+        ${(w.targetSounds || []).map((t, k) => `<tr data-k="${k}">
+          <td><input id="ts_ipa_${k}" class="ipa" data-t="ipa" value="${esc(t.ipa)}" style="width:62px" aria-label="IPA"></td>
+          <td><select id="ts_pos_${k}" data-t="position" aria-label="Position">${POSITIONS.map(p => `<option${p === t.position ? " selected" : ""}>${p}</option>`).join("")}</select></td>
+          <td class="rng"><input id="ts_a_${k}" type="number" min="0" data-t="r0" value="${esc((t.graphemeRange || [])[0])}" aria-label="Start letter">–<input id="ts_b_${k}" type="number" min="1" data-t="r1" value="${esc((t.graphemeRange || [])[1])}" aria-label="End letter"> <span class="ipa" style="color:var(--muted)">“${esc((w.word || "").slice(...(t.graphemeRange || [0, 0])))}”</span></td>
+          <td><input id="ts_g_${k}" data-t="grapheme" value="${esc(t.grapheme)}" style="width:52px" aria-label="Grapheme"></td>
+          <td><button class="btn small danger" data-del="${k}" aria-label="Remove sound">✕</button></td></tr>`).join("")}
+      </tbody></table></div>
+      <div><button class="btn small" id="addSound">Add target sound</button></div>
+      <h3>Media</h3>
+      <div class="grid2">
+        <div class="field${ch("media")}" style="grid-column:1/-1"><label for="e_img">Image paths (one per line)</label><textarea id="e_img" rows="2" class="ipa">${esc((w.media && w.media.images || []).join("\n"))}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label for="e_aud">Audio paths (one per line)</label><textarea id="e_aud" rows="2" class="ipa">${esc((w.media && w.media.audio || []).join("\n"))}</textarea></div>
+        ${textF("imgPath", "Legacy imgPath")}
+        <div class="field${ch("gifPath")}"><label for="e_gifPath">gifPath</label><input id="e_gifPath" data-f="gifPath" data-null="1" value="${esc(w.gifPath ?? "")}" placeholder="none">${og("gifPath")}</div>
+      </div>
+      <div class="edbar">
+        ${orig && edits.has(selectedId) ? `<button class="btn" id="revert">Revert to original</button>` : ""}
+        ${e.deleted ? `<button class="btn" id="restore">Restore word</button>` : `<button class="btn danger" id="remove">${e.isNew ? "Discard new word" : "Remove from manifest"}</button>`}
+      </div>
+      <details class="json"><summary>JSON for this word</summary><pre>${esc(JSON.stringify(w, null, 2))}</pre></details>
+    </div>`;
+  const im = ed.querySelector(".thumb img");
+  if (im) im.onerror = () => { im.hidden = true; ed.querySelector(".thumb .ph").hidden = false; };
+  bindEditor(w);
+}
+
+function update(mut, rerenderEditor = true) {
+  const w = clone(getWord(selectedId)); mut(w);
+  // keep key order stable
+  const ordered = {}; FIELD_ORDER.forEach(k => { if (k in w) ordered[k] = w[k]; }); Object.keys(w).forEach(k => { if (!(k in ordered)) ordered[k] = w[k]; });
+  setEdit(selectedId, ordered);
+  renderAll(rerenderEditor);
+}
+
+function bindEditor(w) {
+  const ed = $("editor");
+  $("closeEd").onclick = () => { ed.classList.add("closed"); selectedId = null; renderList(current()); };
+  ed.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("change", () => update(x => {
+    const f = inp.dataset.f; let v = inp.value;
+    if (inp.dataset.num) v = v === "" ? null : Number(v);
+    if (inp.dataset.null && v === "") v = null;
+    if (f === "display" && v === "") { delete x.display; return; }
+    x[f] = v;
+  })));
+  const chipToggle = (el, field) => el.onclick = ev => { const b = ev.target.closest(".chip"); if (!b) return; const v = b.dataset.v; update(x => { const a = x[field] || []; x[field] = a.includes(v) ? a.filter(y => y !== v) : a.concat(v); }); };
+  chipToggle($("e_wordType"), "wordType"); chipToggle($("e_procs"), "phonologicalProcesses");
+  ed.querySelectorAll(".sounds tr[data-k]").forEach(tr => {
+    const k = +tr.dataset.k;
+    tr.querySelectorAll("[data-t]").forEach(inp => inp.addEventListener("change", () => update(x => {
+      const t = x.targetSounds[k]; const f = inp.dataset.t;
+      if (f === "r0" || f === "r1") { t.graphemeRange = t.graphemeRange || [0, 1]; t.graphemeRange[f === "r0" ? 0 : 1] = Number(inp.value); }
+      else t[f] = inp.value;
+    })));
+  });
+  ed.querySelectorAll("[data-del]").forEach(b => b.onclick = () => update(x => x.targetSounds.splice(+b.dataset.del, 1)));
+  $("addSound").onclick = () => update(x => { x.targetSounds = x.targetSounds || []; x.targetSounds.push({ grapheme: "", ipa: "", position: "initial", graphemeRange: [0, 1] }); });
+  const lines = s => s.split("\n").map(y => y.trim()).filter(Boolean);
+  $("e_img").addEventListener("change", ev => update(x => { x.media = x.media || { images: [], audio: [], gif: [] }; x.media.images = lines(ev.target.value); }));
+  $("e_aud").addEventListener("change", ev => update(x => { x.media = x.media || { images: [], audio: [], gif: [] }; x.media.audio = lines(ev.target.value); }));
+  if ($("revert")) $("revert").onclick = () => { edits.delete(selectedId); persist(selectedId); toast("Reverted “" + w.word + "”"); renderAll(true); };
+  if ($("remove")) $("remove").onclick = () => {
+    const e = edits.get(selectedId);
+    if (e && e.isNew) { edits.delete(selectedId); persist(selectedId); toast("Discarded new word"); selectedId = null; renderAll(true); return; }
+    setEdit(selectedId, clone(getWord(selectedId)), { deleted: true }); toast("“" + w.word + "” will be left out of the export"); renderAll(true);
+  };
+  if ($("restore")) $("restore").onclick = () => { setEdit(selectedId, clone(getWord(selectedId)), { deleted: false }); toast("Restored"); renderAll(true); };
+  if ($("play")) $("play").onclick = () => { const a = new Audio(BASE_URL + "/" + w.media.audio[0]); a.play().catch(() => toast("Audio can't load here; the card's audio host is blocked in this view")); };
+}
+
+// ---------- new word ----------
+$("newWord").onclick = () => modal(`<h2>New word</h2>
+  <div class="field"><label for="nw_word">Word</label><input id="nw_word" placeholder="e.g. kite" style="border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:var(--bg)"></div>
+  <p id="nw_msg">The id is made from the word. You can fill in sounds and media next.</p>
+  <div class="edbar"><button class="btn primary" id="nw_ok">Create</button><button class="btn" data-close>Cancel</button></div>`, box => {
+  const inp = box.querySelector("#nw_word"); inp.focus();
+  const go = () => {
+    const word = inp.value.trim(); const id = word.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+    if (!id) { box.querySelector("#nw_msg").textContent = "Type a word first."; return; }
+    if (BASE_BY_ID.has(id) || edits.has(id)) { box.querySelector("#nw_msg").textContent = `“${id}” already exists in the manifest.`; return; }
+    const w = { word, phonemes: "", age: 3, syllables: 1, difficulty: "Easy", structure: "CVC", wordType: ["Early Learning", "Everyday Life"], phonologicalProcesses: [], initialBlend: "", finalBlend: "", imgPath: "word_card_" + id, gifPath: null, targetSounds: [], id, media: { images: [`cards/${id}/img_${id}_1.png`], audio: [`cards/${id}/audio_${id}_1.wav`], gif: [] } };
+    edits.set(id, { data: w, deleted: false, isNew: true, updatedAt: new Date().toISOString() }); persist(id);
+    closeModal(); selectedId = id; renderAll(true); toast("Added “" + word + "”");
+  };
+  box.querySelector("#nw_ok").onclick = go; inp.onkeydown = e => { if (e.key === "Enter") go(); };
+});
+
+// ---------- export ----------
+function buildManifest(bump) {
+  const words = current().filter(r => !r.deleted).map(r => r.w);
+  return { version: bump ? Math.floor(Date.now() / 1000) : RAW.version, baseUrl: RAW.baseUrl, words };
+}
+$("exportBtn").onclick = async () => {
+  const all = current();
+  const e = all.filter(r => r.edited).length, n = all.filter(r => r.isNew && !r.deleted).length, d = all.filter(r => r.deleted && !r.isNew).length;
+  let dl = null; try { dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null; } catch (_) {}
+  modal(`<h2>Export manifest</h2>
+    <p>${e} edited, ${n} new and ${d} removed words, out of ${all.filter(r => !r.deleted).length.toLocaleString()} total.</p>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="bump" checked> Set version to now (the app sees a new manifest)</label>
+    <div class="edbar">${dl ? '<button class="btn primary" id="saveFile">Save JSON file</button>' : '<button class="btn primary" id="saveFileLocal">Download JSON</button>'}<button class="btn" id="copyJson">Copy JSON</button><button class="btn" id="copyChanges">Copy changes only</button><button class="btn" data-close>Close</button></div>
+    <p id="exMsg">Edits are also saved with this page, so you can ask Claude to write them into the repo.</p>`, box => {
+    const json = () => JSON.stringify(buildManifest(box.querySelector("#bump").checked), null, 2);
+    const fname = () => `manifest-v${buildManifest(box.querySelector("#bump").checked).version}.json`;
+    const msg = t => box.querySelector("#exMsg").textContent = t;
+    if (box.querySelector("#saveFile")) box.querySelector("#saveFile").onclick = () => dl.save({ filename: fname(), data: json() }).then(() => msg("Saved " + fname()), err => msg(err && err.code === "declined" ? "Save cancelled." : "Couldn't save the file: " + (err && err.message || err)));
+    if (box.querySelector("#saveFileLocal")) box.querySelector("#saveFileLocal").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([json()], { type: "application/json" })); a.download = fname(); a.click(); msg("Downloading " + fname() + ". If nothing happens, use Copy JSON."); };
+    const copy = (text, label) => navigator.clipboard.writeText(text).then(() => msg(label + " copied to the clipboard."), () => { box.querySelector("textarea")?.remove(); const ta = document.createElement("textarea"); ta.value = text; box.appendChild(ta); ta.select(); msg("Copying is blocked here. The text is selected below; press Ctrl/Cmd+C."); });
+    box.querySelector("#copyJson").onclick = () => copy(json(), "Full manifest");
+    box.querySelector("#copyChanges").onclick = () => copy(JSON.stringify(Object.fromEntries([...edits].map(([id, v]) => [id, v.deleted ? { deleted: true } : v.data])), null, 2), "Changes");
+  });
+};
+
+// ---------- ui helpers ----------
+let toastT;
+function toast(t) { let el = document.querySelector(".toast"); if (!el) { el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); document.body.appendChild(el); } el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 2600); }
+function modal(html, init) { $("modalRoot").innerHTML = `<div class="modal" role="dialog" aria-modal="true"><div class="box">${html}</div></div>`; const m = $("modalRoot").firstChild; m.onclick = e => { if (e.target === m || e.target.closest("[data-close]")) closeModal(); }; init && init(m.querySelector(".box")); }
+function closeModal() { $("modalRoot").innerHTML = ""; }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+function renderAll(withEditor) {
+  const all = current();
+  renderStats(all); renderFilters(all); renderList(all);
+  if (withEditor) renderEditor();
+}
+
+$("q").addEventListener("input", e => { F.q = e.target.value.trim(); limit = 200; renderList(current()); });
+$("sort").onchange = () => renderList(current());
+$("fSound").onchange = e => { F.sound = e.target.value; limit = 200; renderAll(); };
+$("fPos").onchange = e => { F.pos = e.target.value; limit = 200; renderAll(); };
+$("fStruct").onchange = e => { F.struct = e.target.value; limit = 200; renderAll(); };
+$("clearFilters").onclick = () => { Object.assign(F, { q: "", status: "all", sound: "", pos: "", struct: "" }); ["diff", "age", "syl", "proc", "type"].forEach(k => F[k].clear()); $("q").value = ""; renderAll(); };
+$("toggleFilters").onclick = () => { const f = $("filters"); f.classList.toggle("collapsed"); $("toggleFilters").textContent = f.classList.contains("collapsed") ? "Show filters" : "Hide filters"; };
+if (matchMedia("(max-width: 720px)").matches) $("filters").classList.add("collapsed");
+
+$("ver").textContent = "v" + RAW.version;
+loadLocal();
+selectedId = matchMedia("(min-width: 1101px)").matches ? BASE[0].id : null;
+renderAll(true);
+connectDb();
+})();
+</script>
