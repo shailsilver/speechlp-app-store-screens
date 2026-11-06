@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SpeechLP ESSA Evidence Packet</title>
+<style>
+  @page { size: Letter; margin: 0; }
+  :root {
+    --indigo: #4A5FC1;
+    --indigo-dk: #2C3E8C;
+    --violet: #6C5CE7;
+    --coral: #E8554E;
+    --amber: #E8973E;
+    --teal: #0F9488;
+    --ink: #1d1d2b;
+    --muted: #5b5b6e;
+    --panel: #f3f3f8;
+    --todo-bg: #fff6d6;
+    --todo-bd: #e0b400;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', 'DejaVu Sans', sans-serif; color: var(--ink); background: #fff; font-size: 10.6pt; line-height: 1.5; }
+  .page { width: 8.5in; height: 11in; position: relative; overflow: hidden; page-break-after: always; break-after: page; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .inner { position: absolute; left: 0.85in; right: 0.85in; top: 1.55in; bottom: 0.75in; }
+  h1, h2, h3, .display { font-family: 'Inter Display', 'Inter', sans-serif; }
+  h2 { font-size: 15pt; margin: 0 0 8pt; }
+  h3 { font-size: 12pt; color: var(--indigo); margin: 14pt 0 5pt; }
+  p { margin: 0 0 8pt; text-align: justify; }
+  ul { margin: 0 0 6pt 16pt; }
+  li { margin-bottom: 3pt; }
+  .cite { white-space: nowrap; }
+  .todo { background: var(--todo-bg); border: 1.5px dashed var(--todo-bd); border-radius: 6px; padding: 7pt 10pt; font-size: 9.4pt; color: #6b5400; margin: 6pt 0 10pt; }
+  .todo b { color: #4d3c00; }
+  span.todo-inline { background: var(--todo-bg); border-bottom: 1.5px dashed var(--todo-bd); padding: 0 3px; color: #6b5400; }
+
+  /* running header (wave) */
+  .wave { position: absolute; top: 0; left: 0; width: 100%; height: 1.35in; }
+  .wave-title { position: absolute; top: 0.32in; right: 0.4in; color: #fff; font-weight: 700; font-size: 10.5pt; }
+  .footer { position: absolute; left: 0.85in; right: 0.85in; bottom: 0.35in; display: flex; justify-content: space-between; align-items: flex-end; font-size: 8pt; color: var(--muted); }
+  .footer .pg { font-size: 10pt; color: var(--ink); }
+
+  /* logo */
+  .logo { display: inline-flex; align-items: center; gap: 10px; }
+  .logo .mark { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(150deg, var(--violet), var(--indigo-dk)); position: relative; box-shadow: 0 3px 8px rgba(44,62,140,.35); }
+  .logo .mark::before { content: ''; position: absolute; left: 9px; top: 10px; width: 28px; height: 20px; background: #fff; border-radius: 10px; }
+  .logo .mark::after { content: ''; position: absolute; left: 13px; top: 27px; border: 6px solid transparent; border-top: 8px solid #fff; border-left: 4px solid #fff; }
+  .logo .dots { position: absolute; left: 15px; top: 17px; display: flex; gap: 3px; z-index: 2; }
+  .logo .dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--coral); display: block; }
+  .logo .word { font-family: 'Inter Display', sans-serif; font-weight: 800; font-size: 26pt; letter-spacing: -0.5px; color: var(--ink); }
+  .logo .word span { color: var(--violet); }
+  .logo.lg .mark { width: 74px; height: 74px; border-radius: 18px; }
+  .logo.lg .mark::before { left: 14px; top: 16px; width: 46px; height: 32px; border-radius: 16px; }
+  .logo.lg .mark::after { left: 22px; top: 44px; border-width: 9px; border-top-width: 12px; border-left-width: 6px; }
+  .logo.lg .dots { left: 24px; top: 28px; gap: 5px; }
+  .logo.lg .dots i { width: 6px; height: 6px; }
+  .logo.lg .word { font-size: 40pt; }
+  .logo.sm .mark { width: 30px; height: 30px; border-radius: 8px; }
+  .logo.sm .mark::before { left: 6px; top: 6px; width: 18px; height: 13px; border-radius: 7px; }
+  .logo.sm .mark::after { left: 8px; top: 17px; border-width: 4px; border-top-width: 5px; border-left-width: 3px; }
+  .logo.sm .dots { left: 9px; top: 11px; gap: 2px; }
+  .logo.sm .dots i { width: 3px; height: 3px; }
+  .logo.sm .word { font-size: 15pt; }
+
+  /* seal */
+  .seal { width: 1.9in; height: 1.9in; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #8a96e8, var(--indigo) 55%, var(--indigo-dk)); border: 5px solid #fff; box-shadow: 0 0 0 3px #c9a46a, 0 8px 20px rgba(0,0,0,.25); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .seal .s1 { font-size: 8pt; font-weight: 700; letter-spacing: 1px; }
+  .seal .s2 { font-family: 'Inter Display'; font-size: 20pt; font-weight: 800; line-height: 1; margin: 3px 0; }
+  .seal .s3 { font-size: 13pt; font-weight: 300; letter-spacing: 1px; }
+  .seal .s4 { font-size: 6.5pt; margin-top: 5px; opacity: .85; }
+
+  /* cover */
+  .cover-title { position: absolute; left: 0.95in; top: 3.85in; }
+  .cover-title h1 { font-size: 46pt; font-weight: 800; line-height: 1.05; letter-spacing: -1px; }
+  .cover-title .sub { font-size: 17pt; margin-top: 14pt; color: var(--ink); }
+  .cover-title .tag { font-size: 11pt; margin-top: 8pt; color: var(--muted); }
+
+  /* section band */
+  .band { position: absolute; top: 0; left: 0; right: 0; height: 1.45in; background: var(--indigo); display: flex; align-items: center; justify-content: space-between; padding: 0 0.6in 0 0.85in; }
+  .band::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.42in; background: var(--coral); }
+  .band h1 { color: #fff; font-size: 25pt; line-height: 1.12; font-weight: 800; }
+  .band .logo .word { color: #fff; }
+  .band .logo .word span { color: #ffd3cf; }
+
+  .tier-box { margin-top: 14pt; }
+  .tier-head { background: var(--coral); color: #fff; text-align: center; font-weight: 700; padding: 8pt; }
+  .tier-row { display: flex; gap: 12pt; align-items: flex-start; padding: 8pt 14pt; background: var(--panel); }
+  .tier-row .ic { flex: 0 0 20px; height: 20px; border-radius: 50%; color: #fff; font-size: 11pt; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .ic.ok { background: var(--indigo); }
+  .ic.pend { background: #fff; border: 2px dashed var(--todo-bd); color: var(--todo-bd); }
+  .tier-row.last { background: #fff; }
+
+  /* feature rows */
+  .feat { display: flex; gap: 22pt; align-items: center; padding: 9pt 0; }
+  .feat.alt { background: var(--panel); margin: 0 -0.85in; padding: 14pt 0.85in; }
+  .feat img { width: 1.12in; border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .feat .imgs { display: flex; gap: 8pt; flex: 0 0 auto; }
+  .feat .imgs img { width: 1.02in; }
+  .feat h3 { margin-top: 0; letter-spacing: 1.5px; text-align: left; }
+  .feat p { margin: 0; }
+
+  /* voices */
+  .voice { display: flex; align-items: center; gap: 14pt; margin: 10pt 0; }
+  .voice.r { flex-direction: row-reverse; }
+  .avatar { flex: 0 0 0.95in; height: 0.95in; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Inter Display'; font-size: 26pt; font-weight: 800; color: #fff; }
+  .bubble { flex: 1; background: var(--panel); border-radius: 28px; padding: 12pt 18pt; }
+  .bubble .q { color: var(--muted); font-style: italic; }
+
+  /* figures */
+  .fig { display: flex; gap: 18pt; align-items: center; margin: 10pt 0 12pt; }
+  .fig img { border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+  .fig .cap { font-style: italic; color: var(--muted); font-size: 10pt; }
+
+  /* logic model */
+  .lm-title { text-align: center; font-size: 16pt; font-weight: 700; letter-spacing: 3px; margin: 8pt 0 12pt; }
+  .lm-head { color: #fff; text-align: center; font-weight: 700; font-size: 10pt; padding: 8pt; letter-spacing: .5px; }
+  .lm-head.red { background: var(--coral); }
+  .lm-head.blue { background: var(--indigo); }
+  .lm-head.green { background: var(--teal); }
+  .lm-body { background: var(--panel); padding: 9pt 12pt; font-size: 9.3pt; margin: 4pt 0 6pt; }
+  .lm-body p { text-align: left; margin-bottom: 4pt; }
+  .lm-cols { display: flex; gap: 8pt; }
+  .lm-cols > div { flex: 1; display: flex; flex-direction: column; }
+  .lm-cols .lm-body { flex: 1; }
+
+  /* references */
+  .refs p { text-align: left; padding-left: 0.35in; text-indent: -0.35in; font-size: 8.7pt; line-height: 1.35; margin-bottom: 3.5pt; }
+
+  /* chart placeholder */
+  .chart-ph { flex: 0 0 2.6in; height: 2.1in; border: 1.5px dashed var(--todo-bd); background: var(--todo-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; color: #6b5400; font-size: 9pt; padding: 10pt; }
+
+  table.study { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 4pt 0 10pt; }
+  table.study th, table.study td { text-align: left; vertical-align: top; padding: 5pt 8pt; border-bottom: 1px solid #dcdce6; }
+  table.study th { width: 1.55in; color: var(--indigo-dk); }
+</style>
+</head>
+<body>
+
+<!-- ============ 1. COVER ============ -->
+<section class="page">
+  <svg style="position:absolute;inset:0" width="100%" height="100%" viewBox="0 0 850 1100" preserveAspectRatio="none">
+    <path d="M400 0 C 650 40, 820 180, 850 350 L 850 0 Z" fill="#4A5FC1"/>
+    <path d="M470 0 C 690 50, 820 170, 850 300 L 850 280 C 815 160, 680 45, 500 0 Z" fill="#E8554E"/>
+    <path d="M0 860 C 40 1000, 160 1080, 280 1100 L 0 1100 Z" fill="#4A5FC1"/>
+    <path d="M0 830 C 50 980, 170 1070, 320 1100 L 280 1100 C 160 1080, 40 1000, 0 880 Z" fill="#E8554E"/>
+  </svg>
+  <div style="position:absolute;left:0.95in;top:1.25in"><div class="logo lg"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+  <div class="cover-title">
+    <h1>SpeechLP&reg;</h1>
+    <div class="sub">Research Foundation &amp; Logic Model</div>
+    <div class="tag">ESSA Tier 4 &ldquo;Demonstrates a Rationale&rdquo; Evidence Packet</div>
+  </div>
+  <div style="position:absolute;left:1.25in;top:7.7in"><div class="seal"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div><div class="s4">Logic model &amp; research base</div></div></div>
+  <div style="position:absolute;right:0.95in;top:8.55in;text-align:right;font-size:11pt;line-height:1.7">
+    <b>Prepared by:</b><br>
+    SpeechLP<br>
+    <span class="todo-inline">[Author name(s), credentials]</span><br>
+    <b style="color:var(--coral)">NOVEMBER 2026</b>
+  </div>
+</section>
+
+<!-- ============ 2. THIRD-PARTY REVIEW PAGE ============ -->
+<section class="page" style="border:12px solid #1d1d2b">
+  <div style="position:absolute;inset:0.55in 0.75in;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <div class="seal" style="margin-top:0.15in"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div><div class="s4">Logic model &amp; research base</div></div>
+    <div style="font-size:21pt;font-weight:800;letter-spacing:4px;margin-top:0.35in">DEMONSTRATES A RATIONALE</div>
+    <div style="font-size:12pt;letter-spacing:2px;margin-top:6pt">ESSA Tier 4 Evidence Statement for SpeechLP</div>
+    <div style="margin:0.35in 0"><div class="logo lg"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+    <p style="font-size:12.5pt;line-height:1.75;letter-spacing:.4px;text-align:justify">
+      This packet documents how SpeechLP&rsquo;s design is grounded in published research on speech sound
+      development and intervention, describes the program&rsquo;s features and intended outcomes in a logic
+      model, and outlines a planned study of its effects. Together these components address the
+      Every Student Succeeds Act (ESSA) criteria for Tier 4, &ldquo;<b><u>Demonstrates a Rationale</u></b>.&rdquo;
+    </p>
+    <div class="todo" style="text-align:left;margin-top:0.25in;font-size:10pt">
+      <b>TO COMPLETE &mdash; Independent review.</b> The OgStar packet includes a certificate signed by an
+      independent research organization (LXD Research). SpeechLP does not have one yet, so this page
+      is a self-attestation. Once a third-party reviewer (e.g., LXD Research, Digital Promise, ISTE, or a
+      university partner) has evaluated this packet, replace this box with their recognition statement,
+      reviewer name/title, signature, and review date. Do not add a reviewer seal or signature until
+      the review is actually issued.
+    </div>
+    <div style="display:flex;gap:0.6in;margin-top:auto;margin-bottom:0.2in;font-size:10.5pt">
+      <div style="width:2.4in;border-top:1.5px solid var(--ink);padding-top:5pt"><b>Reviewer name, credentials</b><br>Organization</div>
+      <div style="width:1.8in;border-top:1.5px solid var(--ink);padding-top:5pt"><b>DATE</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. UNDERSTANDING ESSA ============ -->
+<section class="page">
+  <div class="band"><h1>Understanding<br>ESSA Evidence</h1><div class="logo"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+  <div class="inner" style="top:1.85in">
+    <p style="font-weight:700;font-size:11.5pt;line-height:1.55">Educators search for high-quality, evidence-based interventions to strengthen grant applications,
+    to support comprehensive and targeted schools, and to implement new programming. Evidence requirements
+    under the Every Student Succeeds Act (ESSA) are designed to help states, districts, and schools identify
+    programs, practices, products, and policies that work across various populations.</p>
+    <p>Educational programs document their evidence of design, effectiveness, and impact in order to be eligible
+    for federal funding. ESSA defines four levels of evidence: strong (Tier 1), moderate (Tier 2), and
+    promising (Tier 3) evidence of effectiveness, or a program that demonstrates a rationale to be effective
+    (Tier 4). The U.S. Department of Education&rsquo;s non-regulatory guidance describes Tier 4 as an activity
+    with a well-specified logic model informed by research or evaluation, accompanied by ongoing efforts to
+    examine its effects (U.S. Department of Education, 2016).</p>
+
+    <div class="tier-box">
+      <div class="tier-head">This packet addresses the requirements for Tier 4:</div>
+      <div class="tier-row"><div class="ic ok">&#10003;</div><div>Documentation of how the product&rsquo;s design relates to intended outcomes, with corresponding published academic research</div></div>
+      <div class="tier-row"><div class="ic ok">&#10003;</div><div>A logic model describing the product&rsquo;s resources, activities, outputs, and outcomes</div></div>
+      <div class="tier-row"><div class="ic ok">&#10003;</div><div>A study of the product&rsquo;s effects is planned (see &ldquo;Planned Evaluation&rdquo;)</div></div>
+      <div class="tier-row last"><div class="ic pend">&#9733;</div><div>A third-party research organization reviews the documentation for ESSA validation <span class="todo-inline">[pending]</span></div></div>
+    </div>
+
+    <div style="display:flex;gap:22pt;align-items:center;margin-top:20pt">
+      <div class="seal" style="flex:0 0 1.75in;height:1.75in"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div></div>
+      <div>
+        <p>When speech-language tools are built on what is known about how children acquire and practice
+        speech sounds, families, teachers, and SLPs can extend high-quality practice well beyond the therapy
+        room. This packet maps each SpeechLP feature to that research and lays out how its effects will be measured.</p>
+        <div class="todo" style="margin:0"><b>TO COMPLETE:</b> Replace with a quote from the independent reviewer once the review is issued.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div>Copyright &copy; 2026 SpeechLP<br>All rights reserved.</div><div class="pg">1</div><div class="logo sm"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+</section>
+
+<!-- ============ 4. PRODUCT OVERVIEW ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner" style="top:1.5in">
+    <h2>SpeechLP Supports Speech Sound Development</h2>
+    <div class="feat" style="padding-top:4pt">
+      <div class="imgs"><img src="img/img_6578.jpg" alt="Learning path map"></div>
+      <p>SpeechLP is a mobile app that helps children practice clear speech sounds between, or in addition to,
+      sessions with a speech-language pathologist. A brief 24-word screener identifies which sounds are tricky
+      for a child across word positions. The app then builds a guided learning path of short SLP-led video lessons
+      and playful practice games drawn from a library of more than 1,000 target words, and reports progress to
+      parents, teachers, and SLPs.</p>
+    </div>
+    <div class="feat alt">
+      <div style="flex:1">
+        <h3>Screen, Then Practice What Matters</h3>
+        <p>Children begin with a 24-word screener that samples speech sounds across initial, medial, and final
+        word positions. Results determine which sounds and positions the child practices, so time is spent on
+        the sounds that need attention rather than on sounds already mastered.</p>
+      </div>
+      <div class="imgs"><img src="img/img_6583.jpg" alt="Learning path progress"></div>
+    </div>
+    <div class="feat">
+      <div class="imgs"><img src="img/img_6579.jpg" alt="SLP video lesson"></div>
+      <div style="flex:1">
+        <h3>Taught by Licensed SLPs, Practiced Through Play</h3>
+        <p>Each step of the learning path opens with a short video lesson from a certified speech-language
+        pathologist (for example, Mari Gottlieb, M.A., CCC-SLP) who models how to produce the target sound.
+        Children then practice in games such as <i>Beary Hungry</i>, <i>Baby Talk</i>, <i>Chicken Little</i>,
+        <i>Pilot Penguin</i>, and <i>Sentence</i>, moving from single words to full sentences.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><div>Copyright &copy; 2026 SpeechLP<br>All rights reserved.</div><div class="pg">2</div><div class="logo sm"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+</section>
+
+<!-- ============ 5. USER VOICES ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner" style="top:1.5in">
+    <h2>User Voices</h2>
+    <p>From speech-language pathologists to classroom teachers and parents, the people who support children&rsquo;s
+    communication are the best judges of whether a practice tool fits their day. This section shares their
+    experiences with SpeechLP.</p>
+    <div class="todo"><b>TO COMPLETE &mdash; Real testimonials only.</b> Replace each placeholder below with a genuine
+    quote, collected with written permission to publish. Use first name and role (e.g., &ldquo;Jessica, SLP, Ohio&rdquo;).
+    Aim for a mix: a school SLP, a classroom teacher, a special education director, and a parent.</div>
+
+    <div class="voice"><div class="avatar" style="background:var(--violet)">S</div>
+      <div class="bubble"><div class="q">[Quote from a school-based SLP about using SpeechLP for home practice or to support caseload.]</div><b>Name</b><br>Speech-Language Pathologist, State</div></div>
+    <div class="voice r"><div class="avatar" style="background:var(--amber)">T</div>
+      <div class="bubble"><div class="q">[Quote from a classroom or special education teacher about independent practice in class.]</div><b>Name</b><br>Teacher, State</div></div>
+    <div class="voice"><div class="avatar" style="background:var(--teal)">D</div>
+      <div class="bubble"><div class="q">[Quote from a special education or related-services director about implementation or reporting.]</div><b>Name</b><br>Director of Special Education, District</div></div>
+    <div class="voice r"><div class="avatar" style="background:var(--coral)">P</div>
+      <div class="bubble"><div class="q">[Quote from a parent about their child&rsquo;s motivation, confidence, or progress.]</div><b>Name</b><br>SpeechLP parent</div></div>
+  </div>
+  <div class="footer"><div>Copyright &copy; 2026 SpeechLP<br>All rights reserved.</div><div class="pg">3</div><div class="logo sm"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+</section>
+
+<!-- ============ 6. RESEARCH SUMMARY p1 ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none" style="height:1.0in"><path d="M0 0 H850 V60 C 650 40, 450 100, 0 70 Z" fill="#4A5FC1"/><path d="M0 70 C 450 100, 650 40, 850 60 V68 C 650 50, 450 110, 0 78 Z" fill="#E8554E"/></svg>
+  <div class="inner" style="top:1.15in">
+    <div style="text-align:center;margin-bottom:12pt"><div class="logo lg"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+    <h2 style="text-align:center;font-size:14pt">SpeechLP&reg; Foundational Research Summary</h2>
+    <h2 style="margin-top:12pt">Introduction</h2>
+    <p>Speech sound disorders are among the most common communication difficulties of childhood. In a large
+    population-based sample, Shriberg, Tomblin, and McSweeny (1999) found that about 3.8% of 6-year-olds had
+    a speech delay, and speech sound disorders make up a large share of school SLP caseloads (ASHA, n.d.).
+    Children with speech sound disorders are at increased risk for later difficulties with reading and spelling,
+    particularly when difficulties persist or co-occur with language impairment (Anthony et al., 2011), and residual
+    speech errors in school-aged children have been linked to social, emotional, and academic impacts
+    (Hitchcock et al., 2015).</p>
+    <p>Effective speech intervention depends heavily on practice. Children need many accurate productions of
+    a target sound, distributed over time, to make lasting gains (Maas et al., 2008; Williams, 2012). Yet the
+    amount of practice a child receives in typical school-based service&mdash;often short, small-group sessions
+    once or twice a week&mdash;is limited (Sugden et al., 2018).</p>
+    <p>SpeechLP is a mobile app that extends speech sound practice beyond the therapy session. It combines a brief
+    screener, SLP-led video lessons, a large library of target words, and game-based practice that moves from
+    words to sentences, with progress reports for parents, teachers, and SLPs. SpeechLP is designed to supplement,
+    not replace, assessment and intervention by a licensed speech-language pathologist.</p>
+
+    <h2 style="margin-top:12pt">Research on SpeechLP&rsquo;s Key Differentiating Features</h2>
+    <h3>1. Targeted Screening Across Sounds and Word Positions</h3>
+    <p>Children acquire English consonants in a broadly predictable developmental sequence, and accuracy for a given
+    sound often differs depending on its position in a word (Smit et al., 1990; Crowe &amp; McLeod, 2020). Identifying
+    which sounds and positions are in error is the starting point for selecting intervention targets
+    (McLeod &amp; Baker, 2017).</p>
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 1</div></div>
+</section>
+
+<!-- ============ 7. RESEARCH SUMMARY p2 ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner">
+    <p>SpeechLP&rsquo;s 24-word screener samples speech sounds across initial, medial, and final positions. Results
+    personalize the learning path so each child practices the specific sounds and positions that are difficult for
+    them. Screener results are shared in a report that parents can bring to their child&rsquo;s SLP or teacher, supporting
+    earlier conversations about whether a full evaluation is warranted. The screener is not a diagnostic
+    assessment and does not replace an evaluation by a licensed SLP.</p>
+    <div class="todo"><b>TO COMPLETE:</b> Add a screenshot of the screener and screener report (none were available in the app-store screenshot set), and briefly describe how the 24 words were selected (e.g., reviewed by which SLPs, aligned to which developmental norms).</div>
+
+    <h3>2. Expert Modeling Through SLP-Led Video Lessons</h3>
+    <p>Learning a new speech movement benefits from clear instruction and a model to imitate. Motor learning
+    research applied to speech emphasizes pre-practice&mdash;explaining and demonstrating how a sound is made&mdash;before
+    a child begins repeated practice (Maas et al., 2008). Video modeling is also a well-established, effective
+    instructional technique for children (Bellini &amp; Akullian, 2007).</p>
+    <p>Each step of the SpeechLP learning path opens with a brief video from a certified speech-language pathologist
+    who explains and demonstrates the target sound. Because lessons are recorded, every child receives a consistent,
+    expert model, and families without easy access to an SLP still see correct placement and production.</p>
+    <div class="fig">
+      <img src="img/img_6579.jpg" style="width:1.6in" alt="SLP video lesson">
+      <div class="cap">Each lesson begins with a certified SLP modeling the target sound on video, followed by a
+      character guide who leads the child into practice.</div>
+    </div>
+
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 2</div></div>
+</section>
+
+<!-- ============ 8. RESEARCH SUMMARY p3 ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner">
+    <h3 style="margin-top:0">3. High-Dose Practice From a Library of 1,000+ Words</h3>
+    <p>The number of practice trials matters. Children with speech sound disorders who produce more targets per session
+    tend to make greater gains (Edeal &amp; Gildersleeve-Neumann, 2011), and systematic reviews identify treatment intensity
+    as a key ingredient of effective speech intervention (Kaipa &amp; Peterson, 2016). Motor learning principles further suggest
+    that practicing a sound across many different words supports generalization (Maas et al., 2008).</p>
+    <p>SpeechLP draws from a library of more than 1,000 words, organized by sound and word position, so children can
+    produce many different exemplars of their target sound rather than repeating the same small set. Practice
+    progresses in complexity&mdash;from single words in games like <i>Pilot Penguin</i> to full sentences in the
+    <i>Sentence</i> game&mdash;mirroring the traditional hierarchy that moves from words toward connected speech
+    (McLeod &amp; Baker, 2017).</p>
+    <div class="fig">
+      <img src="img/img_6584.jpg" style="width:1.25in" alt="Pilot Penguin game">
+      <img src="img/img_6585.jpg" style="width:1.25in" alt="Sentence game">
+      <div class="cap">Children choose their target sounds, then practice them in words (<i>Pilot Penguin</i>) and in
+      sentences (<i>Sentence</i>), building toward use in everyday speech.</div>
+    </div>
+
+    <h3>4. Motivating, Purposeful Game-Based Practice</h3>
+    <p>Repetitive drill can be hard for young children to sustain. A review of empirical studies found that gamification
+    generally produces positive effects on engagement and motivation, with outcomes depending on the design and context
+    (Hamari et al., 2014). Studies of tablet-based speech practice games for children have reported high engagement and
+    production gains comparable to traditional paper-based practice (Hair et al., 2021), and computer-based approaches are a
+    growing part of speech sound intervention (Furlong et al., 2017).</p>
+    <p>In SpeechLP, every game is built around speaking. In <i>Beary Hungry</i> the child feeds the bear by saying the
+    word; in <i>Baby Talk</i> and <i>Chicken Little</i> the child must &ldquo;say it right to make it pass.&rdquo;
+    Children can choose which sounds to play with, progress along a visual map with numbered levels and rewards, and
+    celebrate success with animated characters. These elements are designed to increase the number of productions a
+    child is willing to attempt in a session.</p>
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 3</div></div>
+</section>
+
+<!-- ============ RESEARCH SUMMARY p4 (games + reporting) ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner">
+    <div class="fig">
+      <img src="img/img_6580.jpg" style="width:1.15in" alt="Beary Hungry">
+      <img src="img/img_6581.jpg" style="width:1.15in" alt="Baby Talk">
+      <img src="img/img_6582.jpg" style="width:1.15in" alt="Chicken Little">
+      <div class="cap">Every game requires the child to produce their target sounds to advance.</div>
+    </div>
+    <div class="todo"><b>TO VERIFY:</b> Describe exactly how the app judges a production (automatic speech recognition, adult/parent judgment, or self-rating). If automatic, add a sentence on accuracy and cite McKechnie et al. (2018), already in the reference list.</div>
+    <h3>5. Connecting Home, School, and the SLP Through Progress Reporting</h3>
+    <p>Parents and caregivers can play a meaningful role in speech intervention. A review of parent involvement in
+    intervention for speech sound disorders found that parents are frequently involved in delivering home practice and
+    that such involvement can support outcomes (Sugden et al., 2016). In related areas of communication, parent-implemented
+    interventions have shown positive effects on children&rsquo;s language skills (Roberts &amp; Kaiser, 2011).</p>
+    <p>SpeechLP produces reports designed to be read by parents, teachers, and SLPs. Reports summarize screener results and
+    the child&rsquo;s practice and progress over time, giving the SLP information about home practice that would otherwise be
+    unknown, and giving families clear, concrete next steps. Because the app is guided by SLP lessons, parents and teachers
+    do not need clinical training to support practice.</p>
+    <div class="todo"><b>TO COMPLETE:</b> Add a screenshot of a progress report and list what it includes (e.g., sounds practiced, number of productions, accuracy by position, time spent).</div>
+
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 4</div></div>
+</section>
+
+<!-- ============ 9. RESEARCH SUMMARY p4 ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner">
+    <h2 style="margin-top:0">Planned Evaluation</h2>
+    <p>SpeechLP is committed to building evidence of its effectiveness beyond Tier 4. The planned study below is designed so
+    that results can support a future Tier 3 (promising) or Tier 2 (moderate) claim.</p>
+    <table class="study">
+      <tr><th>Research question</th><td>Do children who use SpeechLP in addition to their usual services show greater gains in speech sound accuracy than similar children receiving usual services alone?</td></tr>
+      <tr><th>Design</th><td>Quasi-experimental (matched comparison) or randomized waitlist-control design across partner schools.</td></tr>
+      <tr><th>Participants</th><td>Students in grades <span class="todo-inline">[K&ndash;3]</span> with speech sound targets on their IEP or identified through screening; target sample <span class="todo-inline">[n]</span>.</td></tr>
+      <tr><th>Duration &amp; dosage</th><td><span class="todo-inline">[e.g., 10&ndash;12 weeks; 3&ndash;5 sessions per week, 10&ndash;15 minutes each]</span></td></tr>
+      <tr><th>Outcome measures</th><td>Percent consonants correct or percent target sound accuracy on untrained probe words, pre/post; standardized articulation measure <span class="todo-inline">[name]</span>; app usage data; parent/teacher surveys.</td></tr>
+      <tr><th>Research partner</th><td><span class="todo-inline">[Independent evaluator or university partner, and timeline]</span></td></tr>
+    </table>
+    <p>Districts and schools interested in participating in a SpeechLP research study are invited to contact
+    <span class="todo-inline">[contact email]</span>.</p>
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 5</div></div>
+</section>
+
+<!-- ============ 10. RESEARCH SUMMARY p5 ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner">
+    <h3 style="margin-top:0">Initial Evidence of Effectiveness</h3>
+    <div style="display:flex;gap:16pt;align-items:flex-start">
+      <div class="todo" style="flex:1;margin-top:0"><b>TO COMPLETE &mdash; only if real data exist.</b> The OgStar packet reports results from
+      a small randomized trial. If SpeechLP has any real outcome data (pilot study, pre/post screener changes across users,
+      usage and completion rates, SLP-reported progress), summarize them here with sample size and how they were collected.
+      If none exist yet, delete this subsection; the Planned Evaluation above is sufficient for Tier 4.</div>
+      <div class="chart-ph">[Optional chart of real pilot results, e.g., pre/post target sound accuracy]</div>
+    </div>
+
+    <h3>Implementation and Instructional Support</h3>
+    <p>SpeechLP runs on iPhone and iPad, so children can practice at home, in the classroom, or in the therapy room.
+    Families can begin with the screener in minutes, and the guided learning path tells the child what to do next,
+    minimizing setup for adults.</p>
+    <div class="todo"><b>TO COMPLETE:</b> Describe school onboarding (training for SLPs and teachers, support channels and hours),
+    rostering/single sign-on, how an SLP assigns or monitors students, data privacy compliance (COPPA, FERPA, state student
+    privacy agreements), and device requirements.</div>
+    <p>When educators use data from digital practice to guide instruction, they can better target what each child needs next.
+    SpeechLP&rsquo;s reports are designed to give SLPs visibility into home practice so that session time can focus on new
+    skills, and so that families and teachers can reinforce the same targets.</p>
+
+    <h2 style="margin-top:10pt">Conclusion</h2>
+    <p>SpeechLP brings together several research-supported ingredients of speech sound intervention&mdash;targeted selection of
+    sounds and word positions, expert modeling, high-dose practice across many words, a progression from words to sentences,
+    motivating game-based practice, and family involvement&mdash;in a tool children can use between SLP sessions. Its logic model
+    and planned evaluation provide a clear rationale for its expected impact and a path to building stronger evidence
+    of effectiveness.</p>
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 6</div></div>
+</section>
+
+<!-- ============ 11. LOGIC MODEL p1 ============ -->
+<section class="page">
+  <svg style="position:absolute;left:0;top:0" width="2.2in" height="1.8in" viewBox="0 0 220 180"><path d="M0 0 H220 C 120 20, 30 80, 0 180 Z" fill="#4A5FC1"/><path d="M0 180 C 30 80, 120 20, 220 0 H190 C 110 18, 25 70, 0 150 Z" fill="#E8554E"/></svg>
+  <div class="inner" style="top:0.55in;bottom:0.7in">
+    <div style="text-align:center"><div class="logo"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+    <div class="lm-title">SpeechLP Logic Model</div>
+    <div class="lm-head red">PROBLEM STATEMENT</div>
+    <div class="lm-body"><p>Speech sound disorders are among the most common communication difficulties of childhood, and
+    untreated or persistent errors can affect a child&rsquo;s intelligibility, literacy, confidence, and participation in school.
+    Progress depends on frequent, accurate practice, but children typically see an SLP for limited time each week, SLP caseloads
+    are large, and many families lack access to services or do not know how to practice at home. Practice materials are often
+    repetitive and fail to hold children&rsquo;s attention. SpeechLP helps close this gap with an engaging, SLP-guided practice app
+    that identifies each child&rsquo;s tricky sounds and delivers personalized, high-dose practice at home or school, with progress
+    reports that keep parents, teachers, and SLPs connected.</p></div>
+    <div class="lm-cols">
+      <div><div class="lm-head blue">RESOURCES</div><div class="lm-body"><ul>
+        <li>24-word screener sampling sounds across initial, medial, and final positions</li>
+        <li>Short video lessons led by certified speech-language pathologists</li>
+        <li>Library of 1,000+ target words organized by sound and position</li>
+        <li>Speech practice games (e.g., Beary Hungry, Baby Talk, Chicken Little, Pilot Penguin, Sentence)</li>
+        <li>Guided learning path with levels and rewards</li>
+        <li>Progress reports for parents, teachers, and SLPs</li>
+        <li>iPhone/iPad app with microphone</li>
+      </ul></div></div>
+      <div><div class="lm-head blue">STRATEGIES AND ACTIVITIES</div><div class="lm-body"><ul>
+        <li>Child completes the screener; results personalize the learning path to target sounds and positions.</li>
+        <li>Child watches an SLP model how to produce the target sound before practicing.</li>
+        <li>Child produces many different target words in short, game-based sessions.</li>
+        <li>Practice progresses from words to sentences.</li>
+        <li>Child chooses sounds to play with and advances along a map, earning rewards.</li>
+        <li>Parents, teachers, and SLPs review reports and reinforce the same targets.</li>
+        <li>SLPs use reports on home practice to plan sessions.</li>
+      </ul></div></div>
+    </div>
+  </div>
+  <div class="footer"><div>Copyright &copy; 2026 SpeechLP<br>All rights reserved.</div><div class="pg">1</div><div></div></div>
+</section>
+
+<!-- ============ 12. LOGIC MODEL p2 ============ -->
+<section class="page">
+  <svg style="position:absolute;right:0;top:0" width="2.2in" height="1.8in" viewBox="0 0 220 180"><path d="M220 0 H0 C 100 20, 190 80, 220 180 Z" fill="#4A5FC1"/><path d="M220 180 C 190 80, 100 20, 0 0 H30 C 110 18, 195 70, 220 150 Z" fill="#E8554E"/></svg>
+  <div class="inner" style="top:0.55in;bottom:0.7in">
+    <div style="text-align:center;margin-bottom:10pt"><div class="logo"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div></div>
+    <div class="lm-head blue">OUTPUTS</div>
+    <div class="lm-body"><ul>
+      <li>Each child&rsquo;s tricky sounds and word positions are identified.</li>
+      <li>Children view expert SLP models of each target sound.</li>
+      <li>Children complete a high number of target productions per session across many different words.</li>
+      <li>Children practice targets in words and in sentences.</li>
+      <li>Children complete practice sessions regularly at home and/or school.</li>
+      <li>Parents, teachers, and SLPs receive regular progress reports.</li>
+    </ul></div>
+    <div class="lm-head green">SHORT-TERM AND INTERMEDIATE OUTCOMES</div>
+    <div class="lm-body">
+      <p>Improved accuracy of target sounds in words, across initial, medial, and final positions. Increased awareness of how
+      target sounds are produced. Greater willingness to practice and increased practice frequency. Earlier identification
+      and referral of children who may need an SLP evaluation.</p>
+      <p>As children progress through SpeechLP, they will show improved accuracy of target sounds in sentences and
+      conversation, generalization to untrained words, improved overall intelligibility, increased confidence when speaking,
+      stronger home&ndash;school&ndash;SLP collaboration, and more efficient use of SLP session time.</p>
+    </div>
+    <div class="lm-head green">LONG-TERM OUTCOMES AND IMPACTS</div>
+    <div class="lm-body"><ul>
+      <li>Age-appropriate speech sound production and intelligibility</li>
+      <li>Fewer residual speech errors persisting into later grades</li>
+      <li>Shorter time to dismissal from speech services</li>
+      <li>Reduced risk of related literacy difficulties</li>
+      <li>Greater confidence and participation in classroom and social communication</li>
+      <li>Increased family capacity to support communication development</li>
+    </ul></div>
+    <div class="lm-head green">ASSUMPTIONS</div>
+    <div class="lm-body"><ul>
+      <li>An adult (parent, teacher, or SLP) is available to support the child as needed.</li>
+      <li>Access to an iPhone or iPad with a working microphone and a reasonably quiet practice space.</li>
+      <li>Access to the internet.</li>
+      <li>Children with suspected speech sound disorders are also evaluated and served by a licensed SLP where available.</li>
+    </ul></div>
+  </div>
+  <div class="footer"><div>Copyright &copy; 2026 SpeechLP<br>All rights reserved.</div><div class="pg">2</div><div></div></div>
+</section>
+
+<!-- ============ 13. REFERENCES ============ -->
+<section class="page">
+  <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#4A5FC1"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#E8554E"/></svg>
+  <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
+  <div class="inner refs" style="top:1.4in;bottom:0.6in">
+    <h3 style="margin-top:0">References</h3>
+    <p>American Speech-Language-Hearing Association. (n.d.). <i>Speech sound disorders: Articulation and phonology</i> [Practice Portal]. https://www.asha.org/practice-portal/clinical-topics/articulation-and-phonology/</p>
+    <p>Anthony, J. L., Aghara, R. G., Dunkelberger, M. J., Anthony, T. I., Williams, J. M., &amp; Zhang, Z. (2011). What factors place children with speech sound disorders at risk for reading problems? <i>American Journal of Speech-Language Pathology, 20</i>(2), 146&ndash;160.</p>
+    <p>Bellini, S., &amp; Akullian, J. (2007). A meta-analysis of video modeling and video self-modeling interventions for children and adolescents with autism spectrum disorders. <i>Exceptional Children, 73</i>(3), 264&ndash;287.</p>
+    <p>Crowe, K., &amp; McLeod, S. (2020). Children&rsquo;s English consonant acquisition in the United States: A review. <i>American Journal of Speech-Language Pathology, 29</i>(4), 2155&ndash;2169.</p>
+    <p>Edeal, D. M., &amp; Gildersleeve-Neumann, C. E. (2011). The importance of production frequency in therapy for childhood apraxia of speech. <i>American Journal of Speech-Language Pathology, 20</i>(2), 95&ndash;110.</p>
+    <p>Furlong, L., Erickson, S., &amp; Morris, M. E. (2017). Computer-based speech therapy for childhood speech sound disorders. <i>Journal of Communication Disorders, 68</i>, 50&ndash;69.</p>
+    <p>Hair, A., Ballard, K. J., Markoulli, C., Monroe, P., McKechnie, J., Ahmed, B., &amp; Gutierrez-Osuna, R. (2021). A longitudinal evaluation of tablet-based child speech therapy with Apraxia World. <i>ACM Transactions on Accessible Computing, 14</i>(1), 1&ndash;26.</p>
+    <p>Hamari, J., Koivisto, J., &amp; Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. <i>Proceedings of the 47th Hawaii International Conference on System Sciences</i>, 3025&ndash;3034.</p>
+    <p>Hitchcock, E. R., Harel, D., &amp; Byun, T. M. (2015). Social, emotional, and academic impact of residual speech errors in school-aged children: A survey study. <i>Seminars in Speech and Language, 36</i>(4), 283&ndash;294.</p>
+    <p>Kaipa, R., &amp; Peterson, A. M. (2016). A systematic review of treatment intensity in speech disorders. <i>International Journal of Speech-Language Pathology, 18</i>(6), 507&ndash;520.</p>
+    <p>Maas, E., Robin, D. A., Austermann Hula, S. N., Freedman, S. E., Wulf, G., Ballard, K. J., &amp; Schmidt, R. A. (2008). Principles of motor learning in treatment of motor speech disorders. <i>American Journal of Speech-Language Pathology, 17</i>(3), 277&ndash;298.</p>
+    <p>McKechnie, J., Ahmed, B., Gutierrez-Osuna, R., Monroe, P., McCabe, P., &amp; Ballard, K. J. (2018). Automated speech analysis tools for children&rsquo;s speech production: A systematic literature review. <i>International Journal of Speech-Language Pathology, 20</i>(6), 583&ndash;598.</p>
+    <p>McLeod, S., &amp; Baker, E. (2017). <i>Children&rsquo;s speech: An evidence-based approach to assessment and intervention</i>. Pearson.</p>
+    <p>Roberts, M. Y., &amp; Kaiser, A. P. (2011). The effectiveness of parent-implemented language interventions: A meta-analysis. <i>American Journal of Speech-Language Pathology, 20</i>(3), 180&ndash;199.</p>
+    <p>Shriberg, L. D., Tomblin, J. B., &amp; McSweeny, J. L. (1999). Prevalence of speech delay in 6-year-old children and comorbidity with language impairment. <i>Journal of Speech, Language, and Hearing Research, 42</i>(6), 1461&ndash;1481.</p>
+    <p>Smit, A. B., Hand, L., Freilinger, J. J., Bernthal, J. E., &amp; Bird, A. (1990). The Iowa articulation norms project and its Nebraska replication. <i>Journal of Speech and Hearing Disorders, 55</i>(4), 779&ndash;798.</p>
+    <p>Sugden, E., Baker, E., Munro, N., &amp; Williams, A. L. (2016). Involvement of parents in intervention for childhood speech sound disorders: A review of the evidence. <i>International Journal of Language &amp; Communication Disorders, 51</i>(6), 597&ndash;625.</p>
+    <p>Sugden, E., Baker, E., Munro, N., Williams, A. L., &amp; Trivette, C. M. (2018). Service delivery and intervention intensity for phonology-based speech sound disorders. <i>International Journal of Language &amp; Communication Disorders, 53</i>(4), 718&ndash;734.</p>
+    <p>U.S. Department of Education. (2016). <i>Non-regulatory guidance: Using evidence to strengthen education investments</i>. Washington, DC.</p>
+    <p>Williams, A. L. (2012). Intensity in phonological intervention: Is there a prescribed amount? <i>International Journal of Speech-Language Pathology, 14</i>(5), 456&ndash;461.</p>
+  </div>
+  <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 7</div></div>
+</section>
+
+<!-- ============ 14. BACK COVER ============ -->
+<section class="page">
+  <svg style="position:absolute;inset:0" width="100%" height="100%" viewBox="0 0 850 1100" preserveAspectRatio="none">
+    <path d="M580 0 C 720 40, 820 120, 850 210 L 850 0 Z" fill="#4A5FC1"/>
+    <path d="M630 0 C 750 40, 830 110, 850 170 L 850 150 C 825 100, 740 35, 660 0 Z" fill="#E8554E"/>
+    <path d="M0 740 C 20 940, 200 1060, 460 1100 L 0 1100 Z" fill="#4A5FC1"/>
+    <path d="M0 700 C 30 920, 220 1050, 500 1100 L 460 1100 C 200 1060, 20 940, 0 760 Z" fill="#E8554E"/>
+  </svg>
+  <div style="position:absolute;right:0.95in;top:6.6in;text-align:right;width:4.6in">
+    <div class="logo lg"><div class="mark"><div class="dots"><i></i><i></i><i></i></div></div><div class="word">Speech<span>LP</span></div></div>
+    <p style="text-align:right;letter-spacing:.6px;margin-top:14pt"><b>SpeechLP</b> helps children practice clear speech with SLP-led
+    video lessons, a 1,000+ word library, and games they&rsquo;ll actually want to play.</p>
+    <p style="text-align:right;font-weight:700">For additional information about SpeechLP visit:<br>
+    <span class="todo-inline">[website URL]</span></p>
+    <p style="text-align:right;font-size:9.5pt;color:var(--muted);margin-top:16pt">Research partnership inquiries: <span class="todo-inline">[contact email]</span></p>
+  </div>
+</section>
+
+</body>
+</html>
