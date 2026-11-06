@@ -142,6 +142,7 @@
     <b>Prepared by:</b><br>
     Mari Gottlieb, M.A., CCC-SLP<br>
     Alissa Fox, M.S., CCC-SLP<br>
+    Shail Silver<br>
     <b style="color:var(--coral)">NOVEMBER 2026</b>
   </div>
 </section>
@@ -438,13 +439,13 @@
     celebrate success with animated characters. These elements are designed to increase the number of productions a
     child is willing to attempt in a session.</p>
     <div class="fig">
-      <img src="img/img_6580.jpg" style="width:0.92in" alt="Beary Hungry">
-      <img src="img/img_6581.jpg" style="width:0.92in" alt="Baby Talk">
-      <img src="img/img_6582.jpg" style="width:0.92in" alt="Chicken Little">
+      <img src="img/img_6580.jpg" style="width:0.84in" alt="Beary Hungry">
+      <img src="img/img_6581.jpg" style="width:0.84in" alt="Baby Talk">
+      <img src="img/img_6582.jpg" style="width:0.84in" alt="Chicken Little">
       <div class="cap">Every game requires the child to produce their target sounds to advance.</div>
     </div>
-    <p><b>Automated feedback on every word.</b> Each practice card shows a pictured target word and plays a spoken model
-    the child can listen to. Automated speech recognition then evaluates the child&rsquo;s production against the card&rsquo;s
+    <p><b>Automated feedback on every word.</b> Each practice card shows a pictured target word and automatically plays a
+    spoken model of it, which the child can replay as often as needed before speaking. Automated speech recognition then evaluates the child&rsquo;s production against the card&rsquo;s
     target sound, and a successful production advances the game (Silver et al., 2026). Automated feedback in structured
     speech practice is an active research area. In a single-case experiment, listener-rated /&#633;/ accuracy in practiced
     utterances was higher immediately after 30 minutes of AI-assisted Speech Motor Chaining practice than before it
@@ -500,8 +501,8 @@
   <div class="inner">
     <h2 style="margin-top:0">Initial Evidence: A Descriptive Retrospective Study</h2>
     <p>SpeechLP published a retrospective observational study of routine practice records from January 22 through October 7,
-    2026 (Silver et al., 2026). The authors, all affiliated with SpeechLP, included Mari Gottlieb, M.A., CCC-SLP, and Alissa Fox,
-    M.S., CCC-SLP, who provided clinical review. The study followed 101 returning child profiles (55 recorded as ages 2&ndash;5
+    2026 (Silver et al., 2026). The authors, all affiliated with SpeechLP, were led by Shail Silver, who
+    performed the analysis, with clinical review by Mari Gottlieb, M.A., CCC-SLP, and Alissa Fox, M.S., CCC-SLP. The study followed 101 returning child profiles (55 recorded as ages 2&ndash;5
     and 33 as ages 6&ndash;8) across two consecutive 30-day periods and compared accuracy on identical sound targets
     within each profile.</p>
     <div style="display:flex;gap:16pt;align-items:center;margin:0 0 4pt">
@@ -692,6 +693,7 @@
       <div><div class="lm-head blue">STRATEGIES AND ACTIVITIES</div><div class="lm-body"><ul>
         <li>Child completes the screener; results personalize the learning path to the child&rsquo;s target sounds.</li>
         <li>Child watches an SLP model how to produce the target sound before practicing.</li>
+        <li>Each practice card plays a spoken model of the word, which the child can replay before producing it.</li>
         <li>Child produces many different target words in short, game-based sessions.</li>
         <li>Child chooses sounds to play with and advances along a map, earning rewards.</li>
         <li>Parents, teachers, and SLPs review reports and reinforce the same targets.</li>
@@ -831,8 +833,9 @@
       on a study tablet, at home or in clinic, using a fixed word list that samples all 24 consonants across word positions,
       weighted toward the child&rsquo;s error sounds.</li>
       <li><b>Recording.</b> Because SpeechLP processes audio on the device and does not store it, the partner records each session
-      with a separate research-grade microphone under its ethics approval. The app logs each decision with a timestamp so that
-      recordings can be aligned with app decisions at the word level.</li>
+      with a separate research-grade microphone under its ethics approval. The study build logs each decision, and each play and replay
+      of the card&rsquo;s spoken model, with a timestamp, so that recordings can be aligned with app decisions at the word level and
+      each production can be classified as following a model (imitated) or not.</li>
       <li><b>Parent judgment.</b> A parent sitting with the child marks each production correct or incorrect at the time of practice,
       without seeing the app&rsquo;s decision first. <span class="todo-inline">[Confirm whether this is captured in-app or on a form.]</span></li>
       <li><b>Blinded SLP rating.</b> At least three certified SLPs independently rate every production from the recordings, blinded to
@@ -847,10 +850,9 @@
     <h3>A.5 Measures</h3>
     <table class="study">
       <tr><th>App decision</th><td>Accepted or not accepted for each production, with the sounds recognized and app version.</td></tr>
+      <tr><th>Model exposure</th><td>Whether the spoken model was played or replayed before each production, and how many times.</td></tr>
       <tr><th>Reference standard</th><td>Majority vote of the SLP raters on the binary rating; the five-level rating is summarized
       as the median across raters. Uncertainty in the reference is reported, not assumed away.</td></tr>
-      <tr><th>Parent judgment</th><td>Correct or incorrect, recorded in the moment.</td></tr>
-      <tr><th>Acoustic measures</th><td>Sound-specific measures for selected targets.</td></tr>
       <tr><th>Child characteristics</th><td>Age, PCC, stimulability, diagnosis and severity where available, and error type for each
       incorrect production as coded by raters.</td></tr>
     </table>
@@ -877,7 +879,7 @@
       metrics, giving a range of human performance against which the app is compared. Inter-rater reliability is reported as
       Fleiss&rsquo; kappa (binary) and an intraclass correlation (five-level).</li>
       <li><b>Moderators (RQ3).</b> Mixed-effects logistic regression of app&ndash;consensus agreement, with random intercepts for
-      child and word, and fixed effects for sound, word position, age band, PCC, and error type. Sound-level results with fewer
+      child and word, and fixed effects for sound, word position, age band, PCC, error type, and model exposure (imitated versus spontaneous production). Agreement is also reported separately for imitated and spontaneous productions. Sound-level results with fewer
       than <span class="todo-inline">[20]</span> productions are reported descriptively only.</li>
       <li><b>Parents (RQ4).</b> Parent judgments are compared with the SLP consensus and with the app using the primary metrics.</li>
       <li><b>Acoustics (RQ5).</b> Acoustic measures are compared between accepted and rejected productions, and with the
@@ -904,7 +906,7 @@
 
     <h3>A.8 Roles and independence</h3>
     <p>The partner leads study design, ethics approval, data collection, and analysis, and may publish regardless of results.
-    SpeechLP provides app licenses, a study build that logs decisions with timestamps, engineering time for data exports, and
+    SpeechLP provides app licenses, a study build that logs decisions and model replays with timestamps, engineering time for data exports, and
     recruitment through connected SLPs. SpeechLP reviews manuscripts within 30 days only to protect participant privacy and to
     correct factual errors about the product. SpeechLP&rsquo;s cofounders have a financial interest in the app, which will be
     disclosed in all outputs; SpeechLP clinicians may be co-authors where their contributions warrant it.</p>
