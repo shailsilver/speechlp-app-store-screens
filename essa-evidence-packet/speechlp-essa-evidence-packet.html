@@ -48,11 +48,10 @@
   .band .logo-img { height: 0.62in; }
 
   /* seal */
-  .seal { width: 1.9in; height: 1.9in; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #9fd0f2, #72B4E4 35%, var(--indigo) 75%, #4f4590); border: 5px solid #fff; box-shadow: 0 0 0 3px #E06C66, 0 8px 20px rgba(0,0,0,.25); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .seal .s1 { font-size: 8pt; font-weight: 700; letter-spacing: 1px; }
-  .seal .s2 { font-family: 'Inter Display'; font-size: 20pt; font-weight: 800; line-height: 1; margin: 3px 0; }
-  .seal .s3 { font-size: 13pt; font-weight: 300; letter-spacing: 1px; }
-  .seal .s4 { font-size: 6.5pt; margin-top: 5px; opacity: .85; }
+  .pending { width: 2.1in; border: 2px dashed #9a9ab0; border-radius: 10px; padding: 10pt 8pt; text-align: center; background: #fff; color: var(--ink); }
+  .pending .p1 { font-size: 13pt; font-weight: 800; letter-spacing: 1px; }
+  .pending .p2 { font-size: 9.5pt; margin-top: 2pt; }
+  .pending .p3 { font-size: 9pt; font-weight: 700; color: var(--coral); margin-top: 6pt; letter-spacing: .5px; text-transform: uppercase; }
 
   /* cover */
   .cover-title { position: absolute; left: 0.95in; top: 3.85in; }
@@ -96,7 +95,7 @@
   .fig img { border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
   .fig .cap { font-style: italic; color: var(--muted); font-size: 10pt; }
 
-  .exec p, .exec li { font-size: 9.7pt; line-height: 1.42; margin-bottom: 5pt; }
+  .exec p, .exec li { font-size: 9.6pt; line-height: 1.4; margin-bottom: 4pt; }
   .exec h3 { margin: 8pt 0 3pt; }
   .evid p, .evid li { font-size: 9.9pt; line-height: 1.45; }
   /* logic model */
@@ -138,7 +137,7 @@
     <div class="sub">Research Foundation &amp; Logic Model</div>
     <div class="tag">ESSA Tier 4 &ldquo;Demonstrates a Rationale&rdquo; Evidence Packet</div>
   </div>
-  <div style="position:absolute;left:1.25in;top:7.7in"><div class="seal"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div><div class="s4">Logic model &amp; research base</div></div></div>
+  <div style="position:absolute;left:1.0in;top:8.25in"><div class="pending"><div class="p1">ESSA TIER 4</div><div class="p2">Demonstrates a Rationale</div><div class="p3">Third-party review pending</div></div></div>
   <div style="position:absolute;right:0.95in;top:7.95in;text-align:right;font-size:10.5pt;line-height:1.35">
     <b>Prepared by:</b><br>
     <div style="margin-top:5pt">Mari Gottlieb, M.A., CCC-SLP<br><span style="font-size:9pt;color:var(--muted)">Cofounder and Co-CEO</span></div>
@@ -151,7 +150,7 @@
 <!-- ============ 2. THIRD-PARTY REVIEW PAGE ============ -->
 <section class="page" style="border:12px solid #1d1d2b">
   <div style="position:absolute;inset:0.55in 0.75in;display:flex;flex-direction:column;align-items:center;text-align:center">
-    <div class="seal" style="margin-top:0.15in"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div><div class="s4">Logic model &amp; research base</div></div>
+    <div class="pending" style="margin-top:0.3in"><div class="p1">ESSA TIER 4</div><div class="p2">Demonstrates a Rationale</div><div class="p3">Third-party review pending</div></div>
     <div style="font-size:21pt;font-weight:800;letter-spacing:4px;margin-top:0.35in">DEMONSTRATES A RATIONALE</div>
     <div style="font-size:12pt;letter-spacing:2px;margin-top:6pt">ESSA Tier 4 Evidence Statement for SpeechLP</div>
     <div style="margin:0.35in 0"><img class="logo-img lg" src="img/speechlp-logo.png" alt="SpeechLP"></div>
@@ -192,11 +191,12 @@
         recognition gives feedback on every word, and progress is reported to parents, teachers, and SLPs.</p>
         <h3>Who it serves</h3>
         <p style="text-align:left">Preschool and elementary-age children who are working on speech sounds, whether or not
-        they have a diagnosed speech sound disorder. Families and SLPs use it alongside therapy; it does not replace assessment or treatment by a licensed SLP. In the initial study, most children
-        were recorded as ages 2&ndash;8.</p>
+        they have a diagnosed speech sound disorder. Families and SLPs use it alongside therapy, not in place of an SLP. The initial study recorded
+        some children outside the 3&ndash;9 screener range (most were 2&ndash;8), because ages are entered by families and some use the practice games with younger or older children.</p>
         <h3>Why it should work</h3>
         <p style="text-align:left">Speech sound disorders are common, affecting an estimated 2.1%&ndash;23% of children aged
-        4&ndash;6, and are linked to later literacy difficulties. Treatment is effective, and research consistently points to
+        4&ndash;6. Children whose speech difficulties persist, or occur alongside language difficulties, are at greater risk for
+        later reading and spelling problems. Treatment is effective, and research consistently points to
         practice amount, frequency, and feedback as drivers of progress. Yet therapy time is limited and home practice is
         rarely measured. SpeechLP is designed to increase practice and make it visible (see the Research Summary and Logic Model).</p>
       </div>
@@ -208,7 +208,7 @@
         evidence of effectiveness. It is a starting point for the studies that follow (see Initial Evidence).</p>
         <h3>ESSA status</h3>
         <p style="text-align:left">This packet documents a research-based rationale and logic model and a completed initial
-        study, with prospective evaluation planned, meeting the criteria for <b>ESSA Tier 4, &ldquo;Demonstrates a
+        study, with prospective evaluation planned, addressing the requirements for <b>ESSA Tier 4, &ldquo;Demonstrates a
         Rationale.&rdquo;</b> Independent third-party review is pending.</p>
         <h3>Evidence goals</h3>
         <ol style="margin-left:16pt">
@@ -252,7 +252,7 @@
     </div>
 
     <div style="display:flex;gap:22pt;align-items:center;margin-top:20pt">
-      <div class="seal" style="flex:0 0 1.75in;height:1.75in"><div class="s1">RESEARCH-BASED</div><div class="s2">DESIGN</div><div class="s3">ESSA IV</div></div>
+      <div class="pending" style="flex:0 0 2.1in"><div class="p1">ESSA TIER 4</div><div class="p2">Demonstrates a Rationale</div><div class="p3">Third-party review pending</div></div>
       <div>
         <p>When speech-language tools are built on what is known about how children acquire and practice
         speech sounds, families, teachers, and SLPs can extend high-quality practice well beyond the therapy
@@ -742,7 +742,6 @@
       <li>Each child&rsquo;s tricky sounds are identified relative to age expectations.</li>
       <li>Children view expert SLP models of each target sound.</li>
       <li>Children complete a high number of target productions per session across many different words.</li>
-      <li>Children practice targets across many different words.</li>
       <li>Children complete practice sessions regularly at home and/or school.</li>
       <li>Parents, teachers, and SLPs receive regular progress reports.</li>
       <li>SLPs have current data on each student&rsquo;s assigned practice and progress across their caseload.</li>
