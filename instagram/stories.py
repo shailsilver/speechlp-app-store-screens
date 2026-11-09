@@ -27,7 +27,7 @@ S = [
  ("slp-4", "grad-d", "For SLPs · 4 of 4", "Be honest: how do you know if home practice actually happens?",
   "",
   poll(["I ask parents","Data sheets","An app","Honestly, I don't 😅"]) +
-  '<div class="foot">See how we solve this at <b>Booth 2046</b>.<br>Free picture books &amp; speech sound posters!</div>', "📋", ""),
+  '<div class="foot">See how we solve this at <b>Booth 2046</b>.<br>Free posters, plus our book when<br>you start a SpeechTherapist.app trial.</div>', "📋", ""),
  # ---------- Parent set ----------
  ("parent-1", "grad-e", "For parents · 1 of 4", "What language do you speak with your kids at home?",
   "We're making SpeechLP for more families.",
