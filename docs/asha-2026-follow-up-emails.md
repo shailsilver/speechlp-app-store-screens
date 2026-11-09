@@ -201,8 +201,9 @@ Co-founder, SpeechTherapist.app & SpeechLP
 ## Checklist before Nov 18
 
 - [ ] Build the booth form, then make a QR code and a small stand sign: "Scan for your free poster"
-- [ ] Make a second sign at the book stack: "Start your free SpeechTherapist.app trial, take home our book"
-- [ ] Fix the "One year since our first ASHA" handout: it says the book and poster are "Both free at the booth." Change it to "Free poster at the booth. Free book when you start a SpeechTherapist.app trial."
+- [ ] Make a second sign at the book stack: "Start your free SpeechTherapist.app trial, take home our book (while they last)"
+- [ ] Fix the ASHA profile handout (Two products, one workflow): its bottom bar says "Free book and poster while they last!" Change it to "Free poster, plus our book with a free trial, while they last!"
+- [ ] Fix the "One year since our first ASHA" handout: it says the book and poster are "Both free at the booth." Change it to "Free poster at the booth, and a free book when you start a SpeechTherapist.app trial, while they last."
 - [ ] Print a paper backup form
 - [ ] Set up the 4 emails in your email tool with the role tags, and schedule them
 - [ ] Booking link for 15-min walkthroughs (Calendly, Cal.com, etc.)
