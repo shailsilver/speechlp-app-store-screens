@@ -8,7 +8,7 @@ Fill in anything in [brackets]. Keep each email short. SLPs read email between s
 
 ## How it fits together
 
-1. **At the booth:** people scan one QR code (on a small stand sign) that opens a 30-second form. The form decides which version of Email 1 they get. Tie it to the giveaways: "Scan for a free poster / to claim the book."
+1. **At the booth:** people scan one QR code (on a small stand sign) that opens a 30-second form. The form decides which version of Email 1 they get. Tie it to the giveaways: "Scan to claim your free *Learn to Speak and Read* book / speech sound ages poster."
 2. **After ASHA:** four emails over about two and a half weeks. They skip Thanksgiving week (Thanksgiving is Thu Nov 26).
 3. **Main call to action:** book a 15-minute Zoom walkthrough. You don't have to do long demos at a busy booth with two people.
 
@@ -48,7 +48,7 @@ Anyone who ticks Q7 also gets the Founding SLP invite in Email 3. Faculty who ti
 | 3 | **Thu Dec 3** | Proof (research) + Founding SLP invite + trial reminder |
 | 4 | **Tue Dec 8** | Last nudge + one-question reply (languages) |
 
-Booth trials (14 days) end around Dec 4. Email 3 lands just before that.
+Booth trials of SpeechTherapist.app (14 days) end around Dec 4. Email 3 lands just before that.
 
 ---
 
@@ -155,7 +155,7 @@ Hi [First name],
 
 We built these tools because we're SLPs, and we wanted proof, not just good feelings.
 
-**Our research:** [1–2 sentence summary of the retrospective study, e.g. "In our retrospective study of [N] children, those who practiced at home [key finding]."] → [Read the study](https://speechlp.com/research/)
+**Our first research report:** in a descriptive preprint of 101 children who kept practicing the same sounds for two months, app-scored accuracy rose from 69.4% to 74.9%. It's an early look, not proof. Our scoring hasn't yet been checked against SLP ratings, which is exactly what we're now partnering with universities to do. → [Read the report](https://speechlp.com/research/)
 
 **Founding SLP group.** We're inviting **25 SLPs** to help shape what we build next. You'd get:
 
