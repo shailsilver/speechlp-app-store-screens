@@ -8,7 +8,9 @@ Fill in anything in [brackets]. Keep each email short. SLPs read email between s
 
 ## How it fits together
 
-1. **At the booth:** people scan one QR code (on a small stand sign) that opens a 30-second form. The form decides which version of Email 1 they get. Tie it to the giveaways: "Scan to claim your free *Learn to Speak and Read* book / speech sound ages poster."
+1. **At the booth:** people scan one QR code (on a small stand sign) that opens a 30-second form. The form decides which version of Email 1 they get. Tie it to the giveaways:
+   - **Poster** (speech sound ages): free for anyone who fills out the form. "Scan for your free poster."
+   - **Book** (*Learn to Speak and Read*): free when an SLP starts a SpeechTherapist.app trial at the booth. The trial signup collects their email, so they don't need the form too. Tag them "Started trial at ASHA" so they get Version A or B of Email 1 and the trial reminder in Email 3.
 2. **After ASHA:** four emails over about two and a half weeks. They skip Thanksgiving week (Thanksgiving is Thu Nov 26).
 3. **Main call to action:** book a 15-minute Zoom walkthrough. You don't have to do long demos at a busy booth with two people.
 
@@ -199,6 +201,8 @@ Co-founder, SpeechTherapist.app & SpeechLP
 ## Checklist before Nov 18
 
 - [ ] Build the booth form, then make a QR code and a small stand sign: "Scan for your free poster"
+- [ ] Make a second sign at the book stack: "Start your free SpeechTherapist.app trial, take home our book"
+- [ ] Fix the "One year since our first ASHA" handout: it says the book and poster are "Both free at the booth." Change it to "Free poster at the booth. Free book when you start a SpeechTherapist.app trial."
 - [ ] Print a paper backup form
 - [ ] Set up the 4 emails in your email tool with the role tags, and schedule them
 - [ ] Booking link for 15-min walkthroughs (Calendly, Cal.com, etc.)
