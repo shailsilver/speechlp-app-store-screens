@@ -20,25 +20,25 @@
     --todo-bd: #e0b400;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', 'DejaVu Sans', sans-serif; color: var(--ink); background: #fff; font-size: 10.6pt; line-height: 1.5; }
+  body { font-family: 'Carlito', 'Calibri', 'Liberation Sans', sans-serif; color: var(--ink); background: #fff; font-size: 12pt; line-height: 1.45; }
   .page { width: 8.5in; height: 11in; position: relative; overflow: hidden; page-break-after: always; break-after: page; }
   .page:last-child { page-break-after: auto; break-after: auto; }
   .inner { position: absolute; left: 0.85in; right: 0.85in; top: 1.55in; bottom: 0.75in; }
   h1, h2, h3, .display { font-family: 'Inter Display', 'Inter', sans-serif; }
   h2 { font-size: 15pt; margin: 0 0 8pt; }
   h3 { font-size: 12pt; color: var(--indigo); margin: 14pt 0 5pt; }
-  p { margin: 0 0 8pt; text-align: justify; }
+  p { margin: 0 0 8pt; text-align: left; }
   ul { margin: 0 0 6pt 16pt; }
   li { margin-bottom: 3pt; }
   .cite { white-space: nowrap; }
-  .todo { background: var(--todo-bg); border: 1.5px dashed var(--todo-bd); border-radius: 6px; padding: 7pt 10pt; font-size: 9.4pt; color: #6b5400; margin: 6pt 0 10pt; }
+  .todo { background: var(--todo-bg); border: 1.5px dashed var(--todo-bd); border-radius: 6px; padding: 7pt 10pt; font-size: 10.3pt; color: #6b5400; margin: 6pt 0 10pt; }
   .todo b { color: #4d3c00; }
   span.todo-inline { background: var(--todo-bg); border-bottom: 1.5px dashed var(--todo-bd); padding: 0 3px; color: #6b5400; }
 
   /* running header (wave) */
   .wave { position: absolute; top: 0; left: 0; width: 100%; height: 1.35in; }
   .wave-title { position: absolute; top: 0.32in; right: 0.4in; color: #fff; font-weight: 700; font-size: 10.5pt; }
-  .footer { position: absolute; left: 0.85in; right: 0.85in; bottom: 0.35in; display: flex; justify-content: space-between; align-items: flex-end; font-size: 8pt; color: var(--muted); }
+  .footer { position: absolute; left: 0.85in; right: 0.85in; bottom: 0.35in; display: flex; justify-content: space-between; align-items: flex-end; font-size: 8.8pt; color: var(--muted); }
   .footer .pg { font-size: 10pt; color: var(--ink); }
 
   /* logo */
@@ -93,30 +93,31 @@
   /* figures */
   .fig { display: flex; gap: 18pt; align-items: center; margin: 10pt 0 12pt; }
   .fig img { border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
-  .fig .cap { font-style: italic; color: var(--muted); font-size: 10pt; }
+  .fig .cap { font-style: italic; color: var(--muted); font-size: 11.0pt; }
 
-  .exec p, .exec li { font-size: 9.6pt; line-height: 1.4; margin-bottom: 4pt; }
+  .exec p, .exec li { font-size: 10.6pt; line-height: 1.4; margin-bottom: 4pt; }
   .exec h3 { margin: 8pt 0 3pt; }
-  .evid p, .evid li { font-size: 9.6pt; line-height: 1.42; }
+  .evid p, .evid li { font-size: 10.6pt; line-height: 1.42; }
+  .dense p, .dense li, .dense td, .dense th { font-size: 11pt; line-height: 1.4; }
   /* logic model */
   .lm-title { text-align: center; font-size: 16pt; font-weight: 700; letter-spacing: 3px; margin: 8pt 0 12pt; }
   .lm-head { color: #fff; text-align: center; font-weight: 700; font-size: 10pt; padding: 8pt; letter-spacing: .5px; }
   .lm-head.red { background: var(--coral); }
   .lm-head.blue { background: var(--indigo); }
   .lm-head.green { background: var(--teal); }
-  .lm-body { background: var(--panel); padding: 9pt 12pt; font-size: 9.3pt; margin: 4pt 0 6pt; }
+  .lm-body { background: var(--panel); padding: 9pt 12pt; font-size: 10.2pt; margin: 4pt 0 6pt; }
   .lm-body p { text-align: left; margin-bottom: 4pt; }
   .lm-cols { display: flex; gap: 8pt; }
   .lm-cols > div { flex: 1; display: flex; flex-direction: column; }
   .lm-cols .lm-body { flex: 1; }
 
   /* references */
-  .refs p { text-align: left; padding-left: 0.35in; text-indent: -0.35in; font-size: 8.7pt; line-height: 1.35; margin-bottom: 3.5pt; }
+  .refs p { text-align: left; padding-left: 0.35in; text-indent: -0.35in; font-size: 9.6pt; line-height: 1.35; margin-bottom: 3.5pt; }
 
   /* chart placeholder */
   .chart-ph { flex: 0 0 2.4in; height: 1.7in; border: 1.5px dashed var(--todo-bd); background: var(--todo-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; color: #6b5400; font-size: 9pt; padding: 10pt; }
 
-  table.study { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 4pt 0 10pt; }
+  table.study { width: 100%; border-collapse: collapse; font-size: 10.2pt; margin: 4pt 0 10pt; }
   table.study th, table.study td { text-align: left; vertical-align: top; padding: 5pt 8pt; border-bottom: 1px solid #dcdce6; }
   table.study th { width: 1.55in; color: var(--indigo-dk); }
 </style>
@@ -318,7 +319,7 @@
 <section class="page">
   <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none" style="height:1.0in"><path d="M0 0 H850 V60 C 650 40, 450 100, 0 70 Z" fill="#6F61A8"/><path d="M0 70 C 450 100, 650 40, 850 60 V68 C 650 50, 450 110, 0 78 Z" fill="#72B4E4"/></svg>
   <div class="inner" style="top:1.15in">
-    <div style="text-align:center;margin-bottom:12pt"><img class="logo-img lg" src="img/speechlp-logo.png" alt="SpeechLP"></div>
+    <div style="text-align:center;margin-bottom:8pt"><img class="logo-img md" src="img/speechlp-logo.png" alt="SpeechLP"></div>
     <h2 style="text-align:center;font-size:14pt">SpeechLP&reg; Foundational Research Summary</h2>
     <h2 style="margin-top:12pt">Introduction</h2>
     <p>Speech sound disorders are among the most common communication difficulties of childhood. In a large
@@ -433,9 +434,9 @@
     celebrate success with animated characters. These elements are designed to increase the number of productions a
     child is willing to attempt in a session.</p>
     <div class="fig">
-      <img src="img/img_6580.jpg" style="width:0.62in" alt="Beary Hungry">
-      <img src="img/img_6581.jpg" style="width:0.62in" alt="Baby Talk">
-      <img src="img/img_6582.jpg" style="width:0.62in" alt="Chicken Little">
+      <img src="img/img_6580.jpg" style="width:0.56in" alt="Beary Hungry">
+      <img src="img/img_6581.jpg" style="width:0.56in" alt="Baby Talk">
+      <img src="img/img_6582.jpg" style="width:0.56in" alt="Chicken Little">
       <div class="cap">Every game is played by saying the target words aloud; correct productions earn stars.</div>
     </div>
     <p><b>Automated feedback on every word.</b> Each practice card shows a pictured target word and automatically plays a
@@ -551,7 +552,7 @@
 <section class="page">
   <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#6F61A8"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#72B4E4"/></svg>
   <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
-  <div class="inner">
+  <div class="inner dense">
     <h2 style="margin-top:0">Planned Evaluation</h2>
     <p>SpeechLP is committed to building evidence beyond Tier 4 and is inviting university research partners to two starting studies. In each, SpeechLP provides practice data, the app
     platform, engineering support, and recruitment through connected SLPs; the partner leads study design, ethics approval,
@@ -585,7 +586,7 @@
 <section class="page">
   <svg class="wave" viewBox="0 0 850 135" preserveAspectRatio="none"><path d="M0 0 H850 V95 C 650 70, 450 135, 0 100 Z" fill="#6F61A8"/><path d="M0 100 C 450 135, 650 70, 850 95 V104 C 650 80, 450 145, 0 110 Z" fill="#72B4E4"/></svg>
   <div class="wave-title">SpeechLP: ESSA Evidence Packet</div>
-  <div class="inner">
+  <div class="inner dense">
     <h2 style="margin-top:0">Research Partnership Terms</h2>
     <ul>
       <li><b>Independence.</b> Partner researchers control the analysis and can publish regardless of results. SpeechLP reviews
@@ -608,7 +609,7 @@
     children&rsquo;s speech sound and language disorders in schools and via teletherapy, and cognitive-communication impairments
     during nearly six years at a brain injury and concussion clinic. SPEAK OUT!-trained; brings a prior advertising career to
     family engagement and app design; licensed in Colorado and Washington. Delivers the instructional cueing and provides models in SpeechLP&rsquo;s video lessons.</p>
-    <p><b>Shail Silver</b> &mdash; Cofounder and Chairman. <b>Jabali Ndungu</b> &mdash; Head of Engineering. <b>Matthew Siu</b> &mdash; Software Engineer. Jabali and Matthew also provide data and analysis support. <b>Cindy Cheng</b> &mdash; UX/UI Designer; designed <span class="todo-inline">[SpeechLP&rsquo;s games, characters, and app interface &mdash; confirm]</span>.</p>
+    <p><b>Shail Silver</b> &mdash; Cofounder and Chairman. <b>Jabali Ndungu</b> &mdash; Head of Engineering. <b>Matthew Siu</b> &mdash; Software Engineer. Jabali and Matthew also provide data and analysis support. <b>Cindy Cheng</b> &mdash; UX/UI Designer; designs the SpeechLP and SpeechTherapist.app interfaces, games, and characters.</p>
     <div style="background:var(--panel);border-left:4px solid var(--indigo);padding:8pt 14pt;margin-top:6pt">
       <p style="margin:0"><b>Next step.</b> Districts, schools, and university researchers interested in partnering on SpeechLP
       research are invited to a 30-minute call. Contact Alissa Fox, M.S., CCC-SLP, at <b>alissa@speechlp.com</b>.</p>
