@@ -449,7 +449,7 @@
     English home practice. In a single-case study of a self-supervised home speech app, two of four children showed slight
     improvement on trained words, without improvement on untrained words (Str&ouml;mbergsson et al., 2026). SpeechLP&rsquo;s
     acceptance model has not yet been validated against SLP ratings; that validation is the first planned study, and SpeechLP is
-    working to fine-tune the model, with research results guiding where it needs to improve. One known gap: the current model recognizes /&#658;/ (as in &ldquo;measure&rdquo;) as /t&#643;/ (&ldquo;ch&rdquo;), so those roughly 29 cards rely on workarounds. Children&rsquo;s audio is not stored on SpeechLP&rsquo;s servers.</p>
+    working to fine-tune the model, with research results guiding where it needs to improve. One known gap: the current model recognizes /&#658;/ (as in &ldquo;measure&rdquo;) as /t&#643;/ (&ldquo;ch&rdquo;), so those roughly 29 cards rely on workarounds. SpeechLP never receives any audio.</p>
   </div>
   <div class="footer" style="justify-content:flex-end"><div class="pg">Foundational Research Summary, Page 4</div></div>
 </section>
@@ -593,7 +593,7 @@
       approve findings.</li>
       <li><b>Agreements.</b> A data use agreement covers access, privacy, storage, and ownership of any models or methods a
       partner develops using SpeechLP data. Ethics approval runs through the partner&rsquo;s institutional review board.</li>
-      <li><b>Privacy.</b> Data is shared de-identified, with small groups suppressed. Account and child identifiers never leave SpeechLP, and SpeechLP does not store children&rsquo;s audio on its servers.</li>
+      <li><b>Privacy.</b> Data is shared de-identified, with small groups suppressed. Account and child identifiers never leave SpeechLP, and SpeechLP never receives any audio from the app.</li>
       <li><b>Support.</b> App licenses for study participants, engineering time for data exports, and co-authorship for SpeechLP
       clinicians where contributions warrant it. Funding can be discussed once a specific study is scoped.</li>
       <li><b>Transparency.</b> SpeechLP&rsquo;s cofounders have a financial interest in the app, and this is disclosed in all outputs.</li>
@@ -636,8 +636,7 @@
         </ul>
       </div>
     </div>
-    <p><b>Privacy.</b> SpeechLP complies with COPPA, FERPA, HIPAA, and PIPEDA. Speech recognition runs on the device where supported; on devices without on-device recognition, or if a lesson starts before SpeechLP&rsquo;s speech model has loaded, audio may be sent to Apple&rsquo;s speech recognition service. SpeechLP does not store children&rsquo;s audio on its servers; only text transcripts of what the app recognized are saved. An optional &ldquo;Record a run&rdquo; feature saves the child&rsquo;s voice on the family&rsquo;s own device.</p>
-    <div class="todo"><b>TO CONFIRM (Shail, Jabali):</b> Verify the COPPA, FERPA, HIPAA, and PIPEDA statements and the audio-handling description (including Apple speech recognition fallback) before external sharing. These statements also appear in the school implementation model and the partnership terms.</div>
+    <p><b>Privacy.</b> SpeechLP complies with COPPA, FERPA, HIPAA, and PIPEDA. Speech recognition runs on the device where supported. Apple&rsquo;s speech recognition, used as a backup checker, may process audio on the device or on Apple&rsquo;s servers, subject to Apple&rsquo;s terms of service. SpeechLP never receives any audio. Transcribed text is stored as depersonalized data: all direct and indirect personal identifiers are removed or masked so it can no longer be used to identify a specific individual. An optional &ldquo;Record a run&rdquo; feature saves the child&rsquo;s voice on the family&rsquo;s own device.</p>
     
     <div class="fig" style="margin:4pt 0 8pt">
       <img src="img/st-assign-targets.jpg" style="width:1.85in;border-radius:6px" alt="Choosing practice targets in SpeechTherapist.app">
@@ -671,7 +670,7 @@
       <tr><th>Data privacy</th><td>Covered on the previous page. Districts can expect a signed student data privacy agreement, such as the Student Data Privacy Consortium&rsquo;s
       National Data Privacy Agreement or a state-specific agreement.</td></tr>
     </table>
-    <div class="todo"><b>TO CONFIRM before submission:</b> Recommendations, not commitments; keep only what SpeechLP will offer. <b>Alissa:</b> review the full model for feasibility.  <b>Shail:</b> privacy agreements.</div>
+    <div class="todo"><b>TO CONFIRM before submission:</b> Recommendations, not commitments; keep only what SpeechLP will offer. <b>Alissa:</b> review the full model for feasibility.  </div>
     <h2 style="margin-top:12pt">Conclusion</h2>
     <p>SpeechLP brings together several research-supported ingredients of speech sound intervention&mdash;age-based selection of target sounds, expert modeling, high-dose practice across many words,
     motivating game-based practice, and family involvement&mdash;in a tool children can use between SLP sessions. An initial descriptive
