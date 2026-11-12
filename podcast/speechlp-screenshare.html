@@ -29,7 +29,7 @@
   }
   .phone img { display: block; border-radius: 42px; height: 860px; }
   .phone.sm img { height: 700px; border-radius: 36px; }
-  .phone.xs img { height: 560px; border-radius: 30px; }
+  .phone.xs img { height: 600px; border-radius: 30px; }
   .phone.xs { border-radius: 38px; padding: 9px; }
   .tilt-l { transform: rotate(-4deg) translateY(30px); }
   .tilt-r { transform: rotate(4deg) translateY(30px); }
@@ -46,10 +46,11 @@
   ul.features li::before { content: "★"; position: absolute; left: 0; color: #FFD54A; }
   ul.features li small { display: block; font-size: 30px; opacity: .8; margin-top: 6px; }
   .num { position: absolute; bottom: 36px; right: 54px; font-size: 24px; opacity: .55; }
+  .panel { background:#fff; border-radius:28px; padding:14px; box-shadow:0 30px 70px rgba(0,0,0,.35); }
+  .panel img { display:block; border-radius:18px; }
 </style>
 </head>
 <body>
-
 <!-- 1. Title -->
 <section class="page blue">
   <div class="text">
@@ -58,8 +59,8 @@
     <p class="sub">Games they'll actually want to play, SLP-guided video lessons, and guided learning paths.</p>
   </div>
   <div class="phones title-phones">
-    <div class="phone sm tilt-l"><img src="img/78.jpg"></div>
-    <div class="phone"><img src="img/80.jpg"></div>
+    <div class="phone sm tilt-l"><img src="img/path2.jpg"></div>
+    <div class="phone"><img src="img/word.jpg"></div>
     <div class="phone sm tilt-r"><img src="img/79.jpg"></div>
   </div>
   <div class="num">1</div>
@@ -68,13 +69,13 @@
 <!-- 2. Learning path -->
 <section class="page blue">
   <div class="text">
-    <div class="eyebrow">Learn</div>
+    <div class="eyebrow">Learning path</div>
     <h2>Level up through guided learning paths</h2>
-    <p class="sub">Kids move along the path level by level, one lesson at a time.</p>
+    <p class="sub">Everything happens on one path. Kids tap <b>Level&nbsp;▶</b> to play the next game and move up level by level.</p>
   </div>
   <div class="phones">
-    <div class="phone"><img src="img/78.jpg"></div>
-    <div class="phone"><img src="img/83.jpg"></div>
+    <div class="phone"><img src="img/path2.jpg"></div>
+    <div class="phone"><img src="img/path17.jpg"></div>
   </div>
   <div class="num">2</div>
 </section>
@@ -82,20 +83,32 @@
 <!-- 3. SLP lessons -->
 <section class="page pink">
   <div class="text">
-    <div class="eyebrow">Learn</div>
+    <div class="eyebrow">Lessons</div>
     <h2>SLP-Guided Video Lessons</h2>
-    <p class="sub">Learn from certified speech pathologists, like Mari Gottlieb, M.A. CCC-SLP.</p>
+    <p class="sub">Learn from certified speech pathologists, like Mari Gottlieb, M.A. CCC-SLP. Then preview the words in the game, with the target sound highlighted.</p>
   </div>
   <div class="phones">
     <div class="phone"><img src="img/79.jpg"></div>
+    <div class="panel"><img src="img/words-in-this-game.jpg" style="width:520px"></div>
   </div>
   <div class="num">3</div>
 </section>
 
-<!-- 4. Games overview -->
+<!-- 4. Say the word -->
+<section class="page orange">
+  <div class="text">
+    <div class="eyebrow">In the game</div>
+    <h2>Say the word on the screen!</h2>
+    <p class="sub">Kids say each target word out loud while they play.</p>
+  </div>
+  <div class="phones"><div class="phone"><img src="img/word.jpg"></div><div class="phone"><img src="img/86.jpg"></div></div>
+  <div class="num">4</div>
+</section>
+
+<!-- 5. Games overview -->
 <section class="page orange center">
   <div>
-    <div class="eyebrow">Practice</div>
+    <div class="eyebrow">Games</div>
     <h2 style="margin-bottom:0">Games They'll Actually Want to Play</h2>
   </div>
   <div class="grid">
@@ -103,39 +116,44 @@
     <div><div class="phone xs"><img src="img/81.jpg"></div><div class="label">Baby Talk</div><div class="caption">Say it right — make it pass!</div></div>
     <div><div class="phone xs"><img src="img/82.jpg"></div><div class="label">Chicken Little</div><div class="caption">Say it right — make it pass!</div></div>
     <div><div class="phone xs"><img src="img/84.jpg"></div><div class="label">Pilot Penguin</div><div class="caption">Play with your chosen sounds.</div></div>
-    <div><div class="phone xs"><img src="img/85.jpg"></div><div class="label">Sentence</div><div class="caption">Say a sentence with the chosen word.</div></div>
   </div>
-  <div class="num">4</div>
-</section>
-
-<!-- 5-9. One page per game -->
-<section class="page orange">
-  <div class="text"><div class="eyebrow">Practice game</div><h2>Beary Hungry</h2><p class="sub">Feed the bear — say it right!</p></div>
-  <div class="phones"><div class="phone"><img src="img/80.jpg"></div></div>
   <div class="num">5</div>
 </section>
+
+<!-- 6-9. One page per game -->
 <section class="page orange">
-  <div class="text"><div class="eyebrow">Practice game</div><h2>Baby Talk</h2><p class="sub">Say it right — make it pass!</p></div>
-  <div class="phones"><div class="phone"><img src="img/81.jpg"></div></div>
+  <div class="text"><div class="eyebrow">Game</div><h2>Beary Hungry</h2><p class="sub">Feed the bear — say it right!</p></div>
+  <div class="phones"><div class="phone"><img src="img/80.jpg"></div></div>
   <div class="num">6</div>
 </section>
 <section class="page orange">
-  <div class="text"><div class="eyebrow">Practice game</div><h2>Chicken Little</h2><p class="sub">Say it right — make it pass!</p></div>
-  <div class="phones"><div class="phone"><img src="img/82.jpg"></div></div>
+  <div class="text"><div class="eyebrow">Game</div><h2>Baby Talk</h2><p class="sub">Say it right — make it pass!</p></div>
+  <div class="phones"><div class="phone"><img src="img/81.jpg"></div></div>
   <div class="num">7</div>
 </section>
 <section class="page orange">
-  <div class="text"><div class="eyebrow">Practice game</div><h2>Pilot Penguin</h2><p class="sub">Play with your chosen sounds. Tap <u>Choose sounds</u> on any game to pick the target sounds.</p></div>
-  <div class="phones"><div class="phone"><img src="img/84.jpg"></div><div class="phone"><img src="img/86.jpg"></div></div>
+  <div class="text"><div class="eyebrow">Game</div><h2>Chicken Little</h2><p class="sub">Say it right — make it pass!</p></div>
+  <div class="phones"><div class="phone"><img src="img/82.jpg"></div></div>
   <div class="num">8</div>
 </section>
 <section class="page orange">
-  <div class="text"><div class="eyebrow">Practice game</div><h2>Sentence</h2><p class="sub">Say a sentence with the chosen word.</p></div>
-  <div class="phones"><div class="phone"><img src="img/85.jpg"></div></div>
+  <div class="text"><div class="eyebrow">Game</div><h2>Pilot Penguin</h2><p class="sub">Play with your chosen sounds. Tap <u>Choose sounds</u> to pick the target sounds.</p></div>
+  <div class="phones"><div class="phone"><img src="img/84.jpg"></div><div class="phone"><img src="img/word.jpg"></div></div>
   <div class="num">9</div>
 </section>
 
-<!-- 10. What's inside -->
+<!-- 10. Post game report -->
+<section class="page red" style="gap:60px;padding:0 90px">
+  <div class="text">
+    <div class="eyebrow">Progress</div>
+    <h2>Track Their Progress</h2>
+    <p class="sub" style="font-size:34px">A Post Game Report shows targets met, results for each word, observations for SLPs, and practice tips.</p>
+  </div>
+  <div class="panel"><img src="img/report-wide.jpg" style="width:1050px"></div>
+  <div class="num">10</div>
+</section>
+
+<!-- 11. What's inside -->
 <section class="page teal">
   <div class="text" style="flex:0 0 640px">
     <div class="eyebrow">What's inside</div>
@@ -150,24 +168,23 @@
       <li>Track Their Progress<small>Full report for parents, teachers &amp; SLPs</small></li>
     </ul>
   </div>
-  <div class="num">10</div>
+  <div class="num">11</div>
 </section>
 
-<!-- 11. For SLPs -->
-<section class="page blue">
-  <div class="text" style="flex:0 0 760px">
+<!-- 12. For SLPs -->
+<section class="page blue" style="gap:70px">
+  <div class="text" style="flex:0 0 620px">
     <div class="eyebrow">For speech therapists</div>
-    <h2>speechtherapist.app</h2>
-    <p class="sub" style="font-size:64px;margin-top:10px">$20<span style="font-size:36px;opacity:.8">/month</span></p>
-  </div>
-  <div class="text">
-    <ul class="features">
-      <li>Sign up at speechtherapist.app</li>
-      <li>Add your students</li>
-      <li>Invite caregivers to connect</li>
+    <h2 style="font-size:66px">speechtherapist.app</h2>
+    <p class="sub" style="font-size:64px;margin:6px 0 30px">$20<span style="font-size:36px;opacity:.8">/month</span></p>
+    <ul class="features" style="font-size:38px">
+      <li style="padding:14px 0 14px 60px">Sign up at speechtherapist.app</li>
+      <li style="padding:14px 0 14px 60px">Add your students</li>
+      <li style="padding:14px 0 14px 60px">Invite caregivers to connect</li>
     </ul>
   </div>
-  <div class="num">11</div>
+  <div class="panel"><img src="img/slp-dashboard.jpg" style="width:960px"></div>
+  <div class="num">12</div>
 </section>
 
 </body>

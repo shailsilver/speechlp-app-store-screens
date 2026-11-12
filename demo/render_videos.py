@@ -25,7 +25,7 @@ PHONE_Y = 470
 S = SCR_W / SRC_W                  # source -> screen scale
 
 TOP_BAR = 110                      # status bar height (source px)
-TAB_BAR = 2150                     # tab bar starts (source px)
+TAB_BAR = 2532                     # no tab bar any more: content runs to the bottom
 
 
 # ---------------------------------------------------------------- helpers
@@ -38,9 +38,76 @@ def lerp(a, b, t):
     return a + (b - a) * t
 
 
+# The app no longer has the Learn / Practice tab bar: kids stay on the learning path.
+# Screenshots were taken with the old tab bar, so it is removed here.
+CUT = 2085                         # everything below this (tab bar + icons) is removed
+PATH_SCREENS = {78, 83}            # learning-path maps: crop to above the bar, fill screen
+GAME_SCREENS = {80, 81, 82, 84}    # game cards: extend the sky down over the bar
+PATH_K = SRC_H / CUT               # zoom factor for path screens
+PATH_X0 = (SRC_W - SRC_W / PATH_K) / 2
+
+
+def path_pt(x, y):
+    """Map a point from the original path screenshot into the cleaned (cropped) version."""
+    return ((x - PATH_X0) * PATH_K, y * PATH_K)
+
+
+CUR = ROOT / "demo" / "assets" / "current"
+
+
+def compose_report():
+    """Post Game Report laid out as a phone screen (report table + SLP notes stacked)."""
+    rep = Image.open(CUR / "post-game-report.png").convert("RGB")
+    out = Image.new("RGB", (SRC_W, SRC_H), "white")
+    left = rep.crop((0, 0, 1000, 1357))
+    left = left.resize((SRC_W, round(1357 * SRC_W / 1000)), Image.LANCZOS)
+    out.paste(left, (0, 60))
+    y = 60 + left.height + 10
+    for box in [(1055, 5, 1970, 195), (1055, 200, 1970, 510), (1090, 545, 1920, 595)]:
+        c = rep.crop(box)
+        w = SRC_W - 40
+        c = c.resize((w, round(c.height * w / c.width)), Image.LANCZOS)
+        out.paste(c, (20, y))
+        y += c.height + 10
+    return out
+
+
 @lru_cache(maxsize=None)
 def src(n):
-    return Image.open(ROOT / f"IMG_65{n}.png").convert("RGB")
+    if n == "report":
+        return compose_report()
+    if isinstance(n, str):
+        im = Image.open(CUR / f"{n}.png").convert("RGB")
+        # fit to phone aspect: scale to width, crop/pad height
+        h = round(im.height * SRC_W / im.width)
+        im = im.resize((SRC_W, h), Image.LANCZOS)
+        if h >= SRC_H:
+            off = (h - SRC_H) // 2
+            return im.crop((0, off, SRC_W, off + SRC_H))
+        canvas = Image.new("RGB", (SRC_W, SRC_H), im.getpixel((5, h - 5)))
+        canvas.paste(im, (0, (SRC_H - h) // 2))
+        return canvas
+    im = Image.open(ROOT / f"IMG_65{n}.png").convert("RGB")
+    if n in PATH_SCREENS:
+        orig = im
+        im = im.crop((PATH_X0, 0, SRC_W - PATH_X0, CUT)).resize((SRC_W, SRC_H), Image.LANCZOS)
+        # put the status bar + menu buttons back at their real size, feathered into the map
+        band_h, fe = 250, 40
+        mask = Image.new("L", (SRC_W, band_h), 255)
+        mask.paste(Image.linear_gradient("L").rotate(180).resize((SRC_W, fe)), (0, band_h - fe))
+        im.paste(orig.crop((0, 0, SRC_W, band_h)), (0, 0), mask)
+    elif n in GAME_SCREENS:
+        row = im.crop((0, CUT - 4, SRC_W, CUT - 2)).resize((1, 1), Image.BOX).getpixel((0, 0))
+        fill = Image.new("RGB", (SRC_W, SRC_H - CUT))
+        d = ImageDraw.Draw(fill)
+        for y in range(fill.height):
+            t = y / fill.height
+            d.line([(0, y), (SRC_W, y)], fill=tuple(round(lerp(c, min(255, c + 18), t)) for c in row))
+        im.paste(fill, (0, CUT))
+        # soften the join
+        band = im.crop((0, CUT - 40, SRC_W, CUT + 40)).filter(ImageFilter.GaussianBlur(10))
+        im.paste(band.crop((0, 20, SRC_W, 60)), (0, CUT - 20))
+    return im
 
 
 @lru_cache(maxsize=None)
@@ -194,22 +261,32 @@ def promo_card_img():
     wdt = sum(fe.getlength(ch) for ch in eyebrow) + sp * (len(eyebrow) - 1)
     x = (W - wdt) / 2
     for ch in eyebrow:
-        d.text((x, 560), ch, font=fe, fill=(255, 255, 255, 190))
+        d.text((x, 420), ch, font=fe, fill=(255, 255, 255, 190))
         x += fe.getlength(ch) + sp
     size = 92
     while font(size).getlength("speechtherapist.app") > W - 100:
         size -= 2
-    center("speechtherapist.app", font(size), 640)
+    center("speechtherapist.app", font(size), 640 - 140)
     fp, fm = font(150), font(52)
     pw = fp.getlength("$20") + fm.getlength("/month")
     x = (W - pw) / 2
-    d.text((x, 790), "$20", font=fp, fill="white")
-    d.text((x + fp.getlength("$20") + 6, 868), "/month", font=fm, fill=(255, 255, 255, 210))
+    d.text((x, 600), "$20", font=fp, fill="white")
+    d.text((x + fp.getlength("$20") + 6, 678), "/month", font=fm, fill=(255, 255, 255, 210))
+    # real SLP dashboard screenshot
+    dash = Image.open(CUR / "slp-dashboard.png").convert("RGB")
+    dw = W - 110
+    dash = dash.resize((dw, round(dash.height * dw / dash.width)), Image.LANCZOS)
+    m = Image.new("L", dash.size, 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, dash.width - 1, dash.height - 1), radius=26, fill=255)
+    sh = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(sh).rounded_rectangle((55, 820, 55 + dw, 820 + dash.height + 20), radius=30, fill=120)
+    card.paste((10, 10, 40), (0, 0), sh.filter(ImageFilter.GaussianBlur(24)))
+    card.paste(dash, (55, 800), m)
     fl = font(50)
     items = ["Sign up today", "Add your students", "Invite caregivers to connect"]
     block = max(fl.getlength(it) for it in items) + 70
     x0 = (W - block) / 2
-    y = 1050
+    y = 800 + round(612 * (W - 110) / 952) + 60
     for it in items:
         cx, cy, R, r = x0 + 24, y + 30, 26, 11
         pts = [(cx + (R if k % 2 == 0 else r) * math.sin(math.pi * k / 5),
@@ -218,6 +295,35 @@ def promo_card_img():
         d.text((x0 + 70, y), it, font=fl, fill="white")
         y += 96
     return card
+
+
+def draw_pulse(frame, sx, sy, t):
+    """Listening rings radiating from the mic button (source coords)."""
+    x, y = PHONE_X + sx * S, PHONE_Y + sy * S
+    ov = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(ov)
+    for k in range(3):
+        q = ((t / 1.2) + k / 3) % 1
+        r = 40 + 90 * q
+        d.ellipse((x - r, y - r, x + r, y + r), outline=(255, 255, 255, int(200 * (1 - q))), width=5)
+    frame.alpha_composite(ov)
+
+
+def slide_up(base, sheet_name, dur, out=False):
+    """A bottom sheet (e.g. 'Words in this game') slides up over a dimmed screen."""
+    B = screen_static(base)
+    sh = Image.open(CUR / f"{sheet_name}.png").convert("RGB")
+    sh = sh.resize((SCR_W, round(sh.height * SCR_W / sh.width)), Image.LANCZOS)
+    dark = Image.blend(B, Image.new("RGB", B.size, (0, 0, 0)), 0.45)
+
+    def fn(t):
+        k = ease(t / dur) if dur else 1
+        if out:
+            k = 1 - k
+        img = Image.blend(B, dark, k)
+        img.paste(sh, (0, SCR_H - round(sh.height * k)))
+        return img
+    return Clip(dur, fn)
 
 
 # ------------------------------------------------------- timeline engine
@@ -286,7 +392,7 @@ def vscroll(a, b, dur):
     return Clip(dur, fn)
 
 
-def render(name, colors, clips, captions, taps, end_card=None, promo=True, subdir=""):
+def render(name, colors, clips, captions, taps, end_card=None, promo=True, subdir="", pulses=()):
     """
     clips:    list of Clip, played back to back
     captions: list of (start, end, title, sub)
@@ -333,6 +439,9 @@ def render(name, colors, clips, captions, taps, end_card=None, promo=True, subdi
                     frame.alpha_composite(lay, (0, 10 + dy))
             for (s, sx, sy) in taps:
                 draw_tap(frame, sx, sy, (t - s) / 0.9)
+            for (ps, pe, px, py) in pulses:
+                if ps <= t <= pe:
+                    draw_pulse(frame, px, py, t - ps)
             # fade in from brand colour at start
             if t < 0.4:
                 frame = Image.blend(Image.new("RGBA", (W, H), hexrgb(colors[0]) + (255,)),
@@ -353,57 +462,60 @@ def render(name, colors, clips, captions, taps, end_card=None, promo=True, subdi
 
 
 # --------------------------------------------------------------- videos
-# Tap targets in source (1170x2532) coordinates
-LEARN_TAB = (292, 2300)
-PRACTICE_TAB = (878, 2300)
-PENGUIN_PIN = (410, 985)
+# Current app: kids stay on the learning path (no Learn / Practice tabs).
+# Tap targets are in 1170x2532 source coordinates.
+K = SRC_W / 560                                  # report screenshots are 560 px wide
+LEVEL_PLAY = (455 * K, 1125 * K)                 # "LEVEL 2 ▶" button on the path
+LESSON_PIN = (313 * K, 595 * K)                  # lesson marker above level 2
+MIC = (280 * K, 958 * K)                         # mic button on the say-the-word screen
 START_GAME = (585, 1865)
-CHOOSE_SOUNDS = {80: (585, 512), 84: (585, 597), 85: (585, 595)}
+CHOOSE_SOUNDS = {80: (585, 512), 84: (585, 597)}
 CENTER = (SRC_W / 2, SRC_H / 2)
 
 END = ("SpeechLP", "Learn from certified speech pathologists", 2.6)
 
 
 def video_tour():
+    P2, P17, WORD, REP = "path-level-2", "path-level-17", "game-say-the-word", "report"
     clips = [
-        hold(78, 3.0, 1.35, 1.0, PENGUIN_PIN, CENTER),            # 0.0
-        vscroll(78, 83, 1.0),                                     # 3.0
-        hold(83, 2.4),                                            # 4.0
-        hold(83, 1.0),                                            # 6.4 tap Practice
-        crossfade(lambda: screen_static(83), lambda: screen_static(80), 0.5),  # 7.4
-        hold(80, 1.4),                                            # 7.9
-        swipe(80, 81, 0.5), hold(81, 1.1),                        # 9.3
-        swipe(81, 82, 0.5), hold(82, 1.1),                        # 10.9
-        swipe(82, 85, 0.5), hold(85, 1.1),                        # 12.5
-        swipe(85, 84, 0.5), hold(84, 2.2),                        # 14.1 (tap choose sounds @14.9)
-        hold(84, 1.2),                                            # 16.8 tap start @16.9
-        crossfade(lambda: screen_static(84), lambda: zoomed(86, 1.12, 585, 1100), 0.6),  # 18.0
-        hold(86, 3.4, 1.12, 1.0, (585, 1100), CENTER),            # 18.6 -> 22.0
+        hold(P2, 3.0, 1.3, 1.0, (585, 1300), CENTER),                       # 0.0
+        hold(P2, 1.0),                                                      # 3.0 tap Level ▶ @3.1
+        crossfade(lambda: screen_static(P2), lambda: screen_static(WORD), 0.6),  # 4.0
+        hold(WORD, 4.4, 1.0, 1.06, CENTER, (585, 1700)),                    # 4.6 mic pulse
+        crossfade(lambda: zoomed(WORD, 1.06, 585, 1700), lambda: screen_static(REP), 0.6),  # 9.0
+        hold(REP, 4.4, 1.0, 1.25, (585, 900), (585, 1500)),                 # 9.6
+        crossfade(lambda: zoomed(REP, 1.25, 585, 1500), lambda: screen_static(P17), 0.6),  # 14.0
+        hold(P17, 3.4, 1.0, 1.15, CENTER, (585, 1000)),                     # 14.6 -> 18.0
     ]
     captions = [
-        (0.0, 6.6, "Level up through guided learning paths", None),
-        (7.2, 14.5, "Games They'll Actually Want to Play", "Swipe to pick a game"),
-        (14.7, 16.9, "Choose the sounds to practice", None),
-        (17.1, 22.0, "Say it right — make it pass!", None),
+        (0.0, 3.9, "Level up through guided learning paths", None),
+        (4.4, 8.9, "Say the word on the screen!", "Practice target sounds out loud"),
+        (9.4, 13.9, "Track Their Progress", "A Post Game Report after each game"),
+        (14.4, 18.0, "Keep climbing, level by level", None),
     ]
-    taps = [(6.5, *PRACTICE_TAB), (14.9, *CHOOSE_SOUNDS[84]), (16.9, *START_GAME)]
-    render("01-app-tour", ("#4A5FC1", "#2C3E8C"), clips, captions, taps, END)
+    taps = [(3.1, *LEVEL_PLAY)]
+    pulses = [(5.0, 8.9, *MIC)]
+    render("01-app-tour", ("#4A5FC1", "#2C3E8C"), clips, captions, taps, END, pulses=pulses)
 
 
 def video_lessons():
+    P2 = "path-level-2"
     clips = [
-        hold(78, 2.6, 1.0, 1.0),                                  # 0.0  tap Learn @0.6
-        hold(78, 1.6, 1.0, 1.4, CENTER, PENGUIN_PIN),             # 2.6  tap pin @3.4
-        crossfade(lambda: zoomed(78, 1.4, *PENGUIN_PIN), lambda: screen_static(79), 0.6),  # 4.2
-        hold(79, 2.6),                                            # 4.8
-        hold(79, 3.4, 1.0, 1.9, CENTER, (585, 400)),              # 7.4 -> 10.8 zoom on SLP
-        hold(79, 2.0, 1.9, 1.0, (585, 400), CENTER),              # 10.8 -> 12.8
+        hold(P2, 2.2, 1.0, 1.0),                                            # 0.0 tap pin @1.2
+        hold(P2, 0.8, 1.0, 1.3, CENTER, LESSON_PIN),                        # 2.2
+        crossfade(lambda: zoomed(P2, 1.3, *LESSON_PIN), lambda: screen_static(79), 0.6),  # 3.0
+        hold(79, 2.4),                                                      # 3.6
+        hold(79, 3.0, 1.0, 1.9, CENTER, (585, 400)),                        # 6.0 zoom on SLP
+        hold(79, 1.0, 1.9, 1.0, (585, 400), CENTER),                        # 9.0
+        slide_up(79, "words-in-this-game", 0.6),                            # 10.0
+        Clip(3.4, slide_up(79, "words-in-this-game", 0).fn),                # 10.6 -> 14.0
     ]
     captions = [
-        (0.0, 4.2, "Level up through guided learning paths", "Tap a lesson to start"),
-        (4.6, 12.8, "SLP-Guided Video Lessons", "Learn from certified speech pathologists"),
+        (0.0, 2.9, "Level up through guided learning paths", "Tap a lesson to start"),
+        (3.4, 9.9, "SLP-Guided Video Lessons", "Learn from certified speech pathologists"),
+        (10.2, 14.0, "Hear every word first", "Target sound highlighted"),
     ]
-    taps = [(0.7, *LEARN_TAB), (1.7, *PENGUIN_PIN)]
+    taps = [(1.2, *LESSON_PIN)]
     render("02-slp-lessons", ("#D94FAD", "#9B2FAF"), clips, captions, taps, END)
 
 
@@ -413,22 +525,30 @@ def video_games():
         (81, "Baby Talk", "Say it right — make it pass!"),
         (82, "Chicken Little", "Say it right — make it pass!"),
         (84, "Pilot Penguin", "Play with your chosen sounds."),
-        (85, "Sentence", "Say a sentence with the chosen word."),
     ]
+    WORD = "game-say-the-word"
     clips, captions, t = [], [], 0.0
-    card_c = (585, 1350)
     for i, (n, title, sub) in enumerate(games):
         if i:
             clips.append(swipe(games[i - 1][0], n, 0.5))
             t += 0.5
-        clips.append(hold(n, 2.6))
-        captions.append((t, t + 2.6 - 0.1, title, sub))
-        t += 2.6
-    clips.append(crossfade(lambda: screen_static(85), lambda: screen_static(86), 0.6))
-    clips.append(hold(86, 3.0, 1.0, 1.1))
-    captions.append((t + 0.3, t + 3.6, "Games They'll Actually Want to Play", None))
-    taps = [(t - 1.2, *START_GAME)]
-    render("03-practice-games", ("#E8973E", "#C0631E"), clips, captions, taps, END)
+        clips.append(hold(n, 2.4))
+        captions.append((t, t + 2.3, title, sub))
+        t += 2.4
+    # Pilot Penguin: choose sounds, start, play
+    clips.append(hold(84, 2.0))                     # tap Choose sounds, then Start Game
+    captions.append((t, t + 1.9, "Choose the sounds to practice", None))
+    taps = [(t + 0.1, *CHOOSE_SOUNDS[84]), (t + 1.1, *START_GAME)]
+    t += 2.0
+    clips.append(crossfade(lambda: screen_static(84), lambda: screen_static(WORD), 0.6))
+    clips.append(hold(WORD, 3.6, 1.0, 1.06, CENTER, (585, 1700)))
+    captions.append((t + 0.3, t + 4.2, "Say the word on the screen!", None))
+    pulses = [(t + 0.8, t + 4.2, *MIC)]
+    t += 4.2
+    clips.append(crossfade(lambda: zoomed(WORD, 1.06, 585, 1700), lambda: screen_static(86), 0.6))
+    clips.append(hold(86, 2.8, 1.0, 1.1))
+    captions.append((t + 0.3, t + 3.4, "Games They'll Actually Want to Play", None))
+    render("03-practice-games", ("#E8973E", "#C0631E"), clips, captions, taps, END, pulses=pulses)
 
 
 if __name__ == "__main__":
