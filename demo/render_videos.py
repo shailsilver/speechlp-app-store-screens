@@ -167,6 +167,59 @@ def draw_tap(frame, sx, sy, p):
     frame.alpha_composite(ov)
 
 
+@lru_cache(maxsize=None)
+def end_card_img(c1, c2, title, sub):
+    card = gradient(hexrgb(c1), hexrgb(c2)).convert("RGBA")
+    d = ImageDraw.Draw(card)
+    f1, f2 = font(140), font(48)
+    d.text(((W - f1.getlength(title)) / 2, 780), title, font=f1, fill="white")
+    for j, ln in enumerate(wrap(sub, f2, W - 140)):
+        d.text(((W - f2.getlength(ln)) / 2, 980 + j * 62), ln, font=f2, fill=(255, 255, 255, 230))
+    return card
+
+
+@lru_cache(maxsize=None)
+def promo_card_img():
+    """speechtherapist.app pricing card (for SLPs)."""
+    card = gradient(hexrgb("#4A5FC1"), hexrgb("#2C3E8C")).convert("RGBA")
+    d = ImageDraw.Draw(card)
+
+    def center(text, f, y, fill="white"):
+        d.text(((W - f.getlength(text)) / 2, y), text, font=f, fill=fill)
+
+    fe = font(34)
+    eyebrow = "FOR SPEECH THERAPISTS"
+    # letter-spaced eyebrow
+    sp = 8
+    wdt = sum(fe.getlength(ch) for ch in eyebrow) + sp * (len(eyebrow) - 1)
+    x = (W - wdt) / 2
+    for ch in eyebrow:
+        d.text((x, 560), ch, font=fe, fill=(255, 255, 255, 190))
+        x += fe.getlength(ch) + sp
+    size = 92
+    while font(size).getlength("speechtherapist.app") > W - 100:
+        size -= 2
+    center("speechtherapist.app", font(size), 640)
+    fp, fm = font(150), font(52)
+    pw = fp.getlength("$20") + fm.getlength("/month")
+    x = (W - pw) / 2
+    d.text((x, 790), "$20", font=fp, fill="white")
+    d.text((x + fp.getlength("$20") + 6, 868), "/month", font=fm, fill=(255, 255, 255, 210))
+    fl = font(50)
+    items = ["Sign up today", "Add your students", "Invite caregivers to connect"]
+    block = max(fl.getlength(it) for it in items) + 70
+    x0 = (W - block) / 2
+    y = 1050
+    for it in items:
+        cx, cy, R, r = x0 + 24, y + 30, 26, 11
+        pts = [(cx + (R if k % 2 == 0 else r) * math.sin(math.pi * k / 5),
+                cy - (R if k % 2 == 0 else r) * math.cos(math.pi * k / 5)) for k in range(10)]
+        d.polygon(pts, fill=(255, 213, 74))
+        d.text((x0 + 70, y), it, font=fl, fill="white")
+        y += 96
+    return card
+
+
 # ------------------------------------------------------- timeline engine
 class Clip:
     """A segment of screen content: fn(local_t) -> screen image."""
@@ -233,19 +286,21 @@ def vscroll(a, b, dur):
     return Clip(dur, fn)
 
 
-def render(name, colors, clips, captions, taps, end_card=None):
+def render(name, colors, clips, captions, taps, end_card=None, promo=True, subdir=""):
     """
     clips:    list of Clip, played back to back
     captions: list of (start, end, title, sub)
     taps:     list of (start, src_x, src_y) — each tap lasts 0.9s
     end_card: (title, sub, dur) shown full-screen after the clips
     """
-    OUT.mkdir(parents=True, exist_ok=True)
+    out_dir = OUT / subdir
+    out_dir.mkdir(parents=True, exist_ok=True)
     total = sum(c.dur for c in clips)
-    end_dur = end_card[2] if end_card else 0
+    PROMO_DUR = 4.0
+    end_dur = (end_card[2] if end_card else 0) + (PROMO_DUR if promo else 0)
     n_frames = round((total + end_dur) * FPS)
     bg = background(*colors)
-    path = OUT / f"{name}.mp4"
+    path = out_dir / f"{name}.mp4"
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
            "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
            "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
@@ -285,19 +340,16 @@ def render(name, colors, clips, captions, taps, end_card=None):
             last = frame
         else:
             te = t - total
-            card = gradient(hexrgb(colors[0]), hexrgb(colors[1])).convert("RGBA")
-            d = ImageDraw.Draw(card)
-            f1, f2 = font(140), font(48)
-            title, sub, _ = end_card
-            d.text(((W - f1.getlength(title)) / 2, 780), title, font=f1, fill="white")
-            for j, ln in enumerate(wrap(sub, f2, W - 140)):
-                d.text(((W - f2.getlength(ln)) / 2, 980 + j * 62), ln, font=f2,
-                       fill=(255, 255, 255, 230))
-            frame = Image.blend(last, card, ease(te / 0.6))
+            card = end_card_img(colors[0], colors[1], end_card[0], end_card[1])
+            if te < end_card[2]:
+                frame = Image.blend(last, card, ease(te / 0.6))
+            else:
+                frame = Image.blend(card, promo_card_img(), ease((te - end_card[2]) / 0.6))
         proc.stdin.write(frame.convert("RGB").tobytes())
     proc.stdin.close()
     proc.wait()
     print(f"wrote {path} ({total + end_dur:.1f}s)")
+    return path
 
 
 # --------------------------------------------------------------- videos
@@ -381,6 +433,12 @@ def video_games():
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "all"
+    _render = render
     for key, fn in [("tour", video_tour), ("lessons", video_lessons), ("games", video_games)]:
         if which in (key, "all"):
+            # with speechtherapist.app end card (podcast / social / web)
+            render = _render
+            fn()
+            # App Store-safe version without external pricing
+            render = lambda *a, **k: _render(*a, **k, promo=False, subdir="app-store")
             fn()
