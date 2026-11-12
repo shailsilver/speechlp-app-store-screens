@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SpeechLP — Screenshare</title>
+<style>
+  @font-face { font-family: "Funnel Display"; src: url("../demo/assets/FunnelDisplay-Bold.ttf"); font-weight: 700; }
+  @page { size: 1920px 1080px; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Funnel Display", sans-serif; color: #fff; }
+  .page {
+    width: 1920px; height: 1080px; position: relative; overflow: hidden;
+    page-break-after: always; display: flex; align-items: center; gap: 90px; padding: 0 130px;
+  }
+  .blue   { background: linear-gradient(160deg, #4A5FC1 0%, #2C3E8C 100%); }
+  .pink   { background: linear-gradient(160deg, #D94FAD 0%, #9B2FAF 100%); }
+  .orange { background: linear-gradient(160deg, #E8973E 0%, #C0631E 100%); }
+  .teal   { background: linear-gradient(160deg, #2DD4BF 0%, #0F766E 100%); }
+  .red    { background: linear-gradient(160deg, #E8554E 0%, #C0392B 100%); }
+  .text { flex: 1; }
+  .eyebrow { font-size: 30px; letter-spacing: 6px; text-transform: uppercase; opacity: .75; margin-bottom: 26px; }
+  h1 { font-size: 104px; line-height: 1.02; margin-bottom: 34px; text-shadow: 0 3px 8px rgba(0,0,0,.18); }
+  h2 { font-size: 80px; line-height: 1.05; margin-bottom: 30px; text-shadow: 0 3px 8px rgba(0,0,0,.18); }
+  p.sub { font-size: 40px; line-height: 1.3; opacity: .92; max-width: 900px; }
+  .phones { display: flex; gap: 40px; align-items: center; }
+  .phone {
+    background: #111116; border-radius: 52px; padding: 12px;
+    box-shadow: 0 30px 70px rgba(0,0,0,.35); flex-shrink: 0;
+  }
+  .phone img { display: block; border-radius: 42px; height: 860px; }
+  .phone.sm img { height: 700px; border-radius: 36px; }
+  .phone.xs img { height: 560px; border-radius: 30px; }
+  .phone.xs { border-radius: 38px; padding: 9px; }
+  .tilt-l { transform: rotate(-4deg) translateY(30px); }
+  .tilt-r { transform: rotate(4deg) translateY(30px); }
+  .center { flex-direction: column; justify-content: center; text-align: center; gap: 50px; padding: 0 80px; }
+  .grid { display: flex; gap: 34px; justify-content: center; }
+  .grid > div { display: flex; flex-direction: column; align-items: center; width: 310px; }
+  .title-phones .phone img { height: 780px; }
+  .title-phones .phone.sm img { height: 620px; }
+  .title-phones { gap: 24px; }
+  .label { margin-top: 18px; font-size: 30px; text-align: center; }
+  .caption { font-size: 24px; opacity: .75; text-align: center; margin-top: 4px; }
+  ul.features { list-style: none; font-size: 46px; line-height: 1.25; }
+  ul.features li { padding: 22px 0 22px 70px; position: relative; border-bottom: 2px solid rgba(255,255,255,.18); }
+  ul.features li::before { content: "★"; position: absolute; left: 0; color: #FFD54A; }
+  ul.features li small { display: block; font-size: 30px; opacity: .8; margin-top: 6px; }
+  .num { position: absolute; bottom: 36px; right: 54px; font-size: 24px; opacity: .55; }
+</style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="page blue">
+  <div class="text">
+    <div class="eyebrow">Speech therapy practice app</div>
+    <h1>SpeechLP</h1>
+    <p class="sub">Games they'll actually want to play, SLP-guided video lessons, and guided learning paths.</p>
+  </div>
+  <div class="phones title-phones">
+    <div class="phone sm tilt-l"><img src="img/78.jpg"></div>
+    <div class="phone"><img src="img/80.jpg"></div>
+    <div class="phone sm tilt-r"><img src="img/79.jpg"></div>
+  </div>
+  <div class="num">1</div>
+</section>
+
+<!-- 2. Learning path -->
+<section class="page blue">
+  <div class="text">
+    <div class="eyebrow">Learn</div>
+    <h2>Level up through guided learning paths</h2>
+    <p class="sub">Kids move along the path level by level, one lesson at a time.</p>
+  </div>
+  <div class="phones">
+    <div class="phone"><img src="img/78.jpg"></div>
+    <div class="phone"><img src="img/83.jpg"></div>
+  </div>
+  <div class="num">2</div>
+</section>
+
+<!-- 3. SLP lessons -->
+<section class="page pink">
+  <div class="text">
+    <div class="eyebrow">Learn</div>
+    <h2>SLP-Guided Video Lessons</h2>
+    <p class="sub">Learn from certified speech pathologists, like Mari Gottlieb, M.A. CCC-SLP.</p>
+  </div>
+  <div class="phones">
+    <div class="phone"><img src="img/79.jpg"></div>
+  </div>
+  <div class="num">3</div>
+</section>
+
+<!-- 4. Games overview -->
+<section class="page orange center">
+  <div>
+    <div class="eyebrow">Practice</div>
+    <h2 style="margin-bottom:0">Games They'll Actually Want to Play</h2>
+  </div>
+  <div class="grid">
+    <div><div class="phone xs"><img src="img/80.jpg"></div><div class="label">Beary Hungry</div><div class="caption">Feed the bear — say it right!</div></div>
+    <div><div class="phone xs"><img src="img/81.jpg"></div><div class="label">Baby Talk</div><div class="caption">Say it right — make it pass!</div></div>
+    <div><div class="phone xs"><img src="img/82.jpg"></div><div class="label">Chicken Little</div><div class="caption">Say it right — make it pass!</div></div>
+    <div><div class="phone xs"><img src="img/84.jpg"></div><div class="label">Pilot Penguin</div><div class="caption">Play with your chosen sounds.</div></div>
+    <div><div class="phone xs"><img src="img/85.jpg"></div><div class="label">Sentence</div><div class="caption">Say a sentence with the chosen word.</div></div>
+  </div>
+  <div class="num">4</div>
+</section>
+
+<!-- 5-9. One page per game -->
+<section class="page orange">
+  <div class="text"><div class="eyebrow">Practice game</div><h2>Beary Hungry</h2><p class="sub">Feed the bear — say it right!</p></div>
+  <div class="phones"><div class="phone"><img src="img/80.jpg"></div></div>
+  <div class="num">5</div>
+</section>
+<section class="page orange">
+  <div class="text"><div class="eyebrow">Practice game</div><h2>Baby Talk</h2><p class="sub">Say it right — make it pass!</p></div>
+  <div class="phones"><div class="phone"><img src="img/81.jpg"></div></div>
+  <div class="num">6</div>
+</section>
+<section class="page orange">
+  <div class="text"><div class="eyebrow">Practice game</div><h2>Chicken Little</h2><p class="sub">Say it right — make it pass!</p></div>
+  <div class="phones"><div class="phone"><img src="img/82.jpg"></div></div>
+  <div class="num">7</div>
+</section>
+<section class="page orange">
+  <div class="text"><div class="eyebrow">Practice game</div><h2>Pilot Penguin</h2><p class="sub">Play with your chosen sounds. Tap <u>Choose sounds</u> on any game to pick the target sounds.</p></div>
+  <div class="phones"><div class="phone"><img src="img/84.jpg"></div><div class="phone"><img src="img/86.jpg"></div></div>
+  <div class="num">8</div>
+</section>
+<section class="page orange">
+  <div class="text"><div class="eyebrow">Practice game</div><h2>Sentence</h2><p class="sub">Say a sentence with the chosen word.</p></div>
+  <div class="phones"><div class="phone"><img src="img/85.jpg"></div></div>
+  <div class="num">9</div>
+</section>
+
+<!-- 10. What's inside -->
+<section class="page teal">
+  <div class="text" style="flex:0 0 640px">
+    <div class="eyebrow">What's inside</div>
+    <h2>SpeechLP</h2>
+  </div>
+  <div class="text">
+    <ul class="features">
+      <li>24-Word Screener<small>Spot all tricky sounds</small></li>
+      <li>A Library of 1,000+ Words<small>Across every sound &amp; position</small></li>
+      <li>Games They'll Actually Want to Play</li>
+      <li>SLP-Guided Video Lessons<small>Learn from certified speech pathologists</small></li>
+      <li>Track Their Progress<small>Full report for parents, teachers &amp; SLPs</small></li>
+    </ul>
+  </div>
+  <div class="num">10</div>
+</section>
+
+</body>
+</html>
