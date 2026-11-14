@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SpeechTherapist.app — Demo Film</title>
+<style>
+  @font-face { font-family: "Funnel"; src: url("FunnelDisplay-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Inter"; src: url("Inter.woff2"); font-weight: 100 900; }
+  :root { --teal: #22A07F; --teal2: #34d3a6; --ink: #0f2233; --muted: #6b7a8c; --line: #e6eaf0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #071a22; }
+  body { font-family: "Inter", sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+  .stage { position: absolute; inset: 0; overflow: hidden; perspective: 2400px; }
+  .bg { position: absolute; inset: -10%; background: radial-gradient(120% 90% at 30% 15%, #0f4a4a 0%, #0a2b36 45%, #061722 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: .45; }
+  .b1 { width: 900px; height: 900px; background: #1fc79a; }
+  .b2 { width: 1000px; height: 1000px; background: #2a7bd8; }
+  .b3 { width: 700px; height: 700px; background: #5b6cff; opacity: .3; }
+  .gridlines { position: absolute; inset: 0; opacity: .07;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 80px 80px; }
+  .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,8,14,.6) 100%); }
+  .scene { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .w { display: inline-block; }
+  .hook { font-family: "Funnel"; font-size: 132px; line-height: 1.04; letter-spacing: -1px; }
+  .hook .hl { background: linear-gradient(90deg, #4af0bf, #6fb6ff); -webkit-background-clip: text; color: transparent; padding: 0 4px; }
+  .eyebrow { font-weight: 700; font-size: 22px; letter-spacing: 7px; text-transform: uppercase; color: #7fe6c6; margin-bottom: 20px; }
+  .step { display: inline-flex; align-items: center; gap: 14px; }
+  .step b { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: #fff; display: inline-flex; align-items: center; justify-content: center; letter-spacing: 0; font-size: 22px; }
+  h2 { font-family: "Funnel"; font-size: 80px; line-height: 1.04; letter-spacing: -1px; margin-bottom: 26px; }
+  .sub { font-size: 34px; line-height: 1.35; color: rgba(255,255,255,.86); font-weight: 500; }
+  .col { position: absolute; left: 130px; top: 50%; width: 700px; }
+
+  .card { position: absolute; background: #fff; color: var(--ink); border-radius: 30px; box-shadow: 0 50px 120px rgba(0,10,20,.55); }
+  .card h4 { font-size: 30px; font-weight: 700; }
+  .muted { color: var(--muted); }
+
+  /* logo */
+  .pulse-icon { width: 260px; height: 260px; border-radius: 58px; background: var(--teal); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 80px rgba(34,160,127,.45); }
+  .pulse-icon svg { width: 190px; }
+  .wordmark { font-family: "Funnel"; font-size: 120px; letter-spacing: -2px; }
+  .wordmark span { color: #6ff0c5; }
+
+  /* invite */
+  .node { position: absolute; width: 230px; text-align: center; }
+  .node .av { width: 170px; height: 170px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 80px; box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+  .node .lb { font-size: 28px; font-weight: 700; }
+  .codebox { display: flex; gap: 14px; margin-top: 24px; }
+  .codebox i { width: 66px; height: 84px; border-radius: 16px; background: #eef7f4; border: 3px solid #cdeee3; font-style: normal; font-family: "Funnel"; font-size: 46px; color: var(--ink); display: flex; align-items: center; justify-content: center; }
+  .linkline { position: absolute; height: 6px; border-radius: 3px; background: repeating-linear-gradient(90deg, #6ff0c5 0 18px, transparent 18px 30px); }
+  .badge { position: absolute; padding: 16px 30px; border-radius: 40px; background: #e7fbf3; color: #0f8a66; font-weight: 800; font-size: 30px; box-shadow: 0 20px 50px rgba(0,0,0,.3); display: flex; gap: 12px; align-items: center; }
+
+  /* assign */
+  .chipx { display: inline-flex; align-items: center; padding: 14px 24px; border-radius: 16px; background: #f1f5f9; border: 2px solid var(--line); font-size: 28px; font-weight: 600; color: var(--ink); }
+  .chipx.on { background: #e5f7f1; border-color: #9fe0c9; color: #0d7a5b; }
+  .fly { position: absolute; }
+
+  /* dashboard (rebuilt; accuracy shown per sound only) */
+  .dash { width: 1180px; padding: 34px 38px 30px; }
+  .dash .hd { display: flex; justify-content: space-between; align-items: flex-start; }
+  .dash .ttl { display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 700; }
+  .dash .who { margin-top: 6px; font-size: 20px; }
+  .btns { display: flex; gap: 12px; }
+  .btn { padding: 10px 18px; border-radius: 12px; font-size: 18px; font-weight: 600; border: 2px solid #d9cff7; color: #6d4bd8; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
+  .tile { border: 2px solid var(--line); border-radius: 18px; padding: 18px 20px; text-align: center; }
+  .tile .k { font-size: 20px; color: var(--muted); font-weight: 600; }
+  .tile .v { font-size: 52px; font-weight: 800; margin-top: 4px; }
+  .sect { margin-top: 22px; font-size: 22px; font-weight: 700; }
+  .chart { margin-top: 10px; border: 2px solid var(--line); border-radius: 18px; height: 170px; display: flex; align-items: flex-end; justify-content: space-around; padding: 14px 30px 34px; position: relative; }
+  .bar { width: 64px; border-radius: 10px 10px 4px 4px; background: linear-gradient(180deg, #34d3a6, #1f9a78); position: relative; }
+  .bar span { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-size: 17px; color: var(--muted); font-weight: 600; }
+  .bar em { position: absolute; top: -26px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 17px; font-weight: 700; color: #1f6f5a; }
+  .snds { margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .snd { border: 2px solid var(--line); border-radius: 18px; padding: 16px 20px; position: relative; }
+  .snd .p { font-family: "Funnel"; font-size: 34px; }
+  .snd .pc { position: absolute; right: 20px; top: 16px; font-size: 30px; font-weight: 800; color: #12805f; }
+  .snd .tr { font-size: 18px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+  .snd .track { margin-top: 12px; height: 12px; border-radius: 6px; background: #edf1f5; overflow: hidden; }
+  .snd .fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #34d3a6, #1f9a78); width: 0; }
+  .hw { margin-top: 20px; border: 2px solid var(--line); border-radius: 18px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .hw .chipx { font-size: 20px; padding: 8px 14px; border-radius: 12px; margin-right: 8px; }
+  .tag { position: absolute; padding: 10px 18px; border-radius: 14px; background: #5b6cff; color: #fff; font-weight: 800; font-size: 20px; box-shadow: 0 12px 30px rgba(60,70,200,.45); white-space: nowrap; }
+
+  .phone { position: absolute; width: 300px; height: 650px; border-radius: 50px; background: #0d0d14; padding: 11px; box-shadow: 0 50px 110px rgba(0,8,14,.6); }
+  .phone .scr { width: 100%; height: 100%; border-radius: 40px; overflow: hidden; }
+  .phone img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #6ff0c5; box-shadow: 0 0 20px 6px rgba(111,240,197,.7); }
+
+  .seals { display: flex; gap: 30px; margin-top: 50px; }
+  .seal { width: 250px; padding: 34px 0 30px; border-radius: 30px; background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.16); }
+  .seal .s1 { font-family: "Funnel"; font-size: 52px; }
+  .seal svg { width: 54px; margin-bottom: 10px; }
+
+  .price { font-family: "Funnel"; font-size: 170px; line-height: 1; }
+  .price small { font-size: 54px; color: rgba(255,255,255,.8); }
+  .url { margin-top: 26px; display: inline-block; padding: 22px 46px; border-radius: 60px; background: var(--teal); font-size: 44px; font-weight: 800; box-shadow: 0 25px 60px rgba(34,160,127,.5); }
+  .bul { margin-top: 34px; display: flex; gap: 46px; font-size: 32px; font-weight: 600; color: rgba(255,255,255,.9); }
+  .bul span::before { content: "✓ "; color: #6ff0c5; }
+  .works { margin-top: 36px; display: flex; align-items: center; gap: 16px; font-size: 28px; color: rgba(255,255,255,.8); font-weight: 600; }
+  .works img { height: 54px; border-radius: 12px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="bg" id="bg"></div>
+  <div class="blob b1" id="b1"></div><div class="blob b2" id="b2"></div><div class="blob b3" id="b3"></div>
+  <div class="gridlines" id="grid"></div>
+
+  <!-- A. Hook -->
+  <section class="scene center" id="A">
+    <div class="hook"><span class="w">Home</span> <span class="w">practice,</span><br><span class="w hl">measured,</span><br><span class="w">not</span> <span class="w">assumed.</span></div>
+  </section>
+
+  <!-- B. Logo -->
+  <section class="scene center" id="B">
+    <div style="display:flex; align-items:center; gap:46px">
+      <div class="pulse-icon" id="Bicon"><svg viewBox="0 0 100 60"><path id="Bpath" d="M4 32 H28 L38 10 L52 54 L62 24 L70 32 H96" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="wordmark" id="Bword">SpeechTherapist<span>.app</span></div>
+    </div>
+    <div class="sub" id="Btag" style="margin-top:50px; font-size:40px; font-weight:600">The SLP companion to SpeechLP</div>
+  </section>
+
+  <!-- C. Invite -->
+  <section class="scene" id="C">
+    <div class="col" id="Ct">
+      <div class="eyebrow step"><b>1</b>Invite</div>
+      <h2>Connect each family to your caseload.</h2>
+      <div class="sub">Invite a caregiver with a connection code.</div>
+    </div>
+    <div class="node" id="Cn1" style="left:960px; top:330px"><div class="av" style="background:#e7fbf3">🩺</div><div class="lb">You, the SLP</div></div>
+    <div class="node" id="Cn2" style="left:1560px; top:330px"><div class="av" style="background:#efeaff"><img src="img/lp_icon.png" style="width:110px"></div><div class="lb">Family on SpeechLP</div></div>
+    <div class="linkline" id="Cline" style="left:1175px; top:415px; width:400px"></div>
+    <div class="card" id="Ccode" style="left:1040px; top:620px; padding:28px 34px">
+      <div class="muted" style="font-size:22px; font-weight:700; letter-spacing:2px">CONNECTION CODE</div>
+      <div class="codebox" id="Ccodes"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="badge" id="Cbadge" style="left:1250px; top:225px">✓ Connected</div>
+  </section>
+
+  <!-- D. Assign -->
+  <section class="scene" id="D">
+    <div class="col" id="Dt">
+      <div class="eyebrow step"><b>2</b>Assign</div>
+      <h2>Assign exactly what to practice.</h2>
+      <div class="sub">Target sounds, word positions and blends, ready in SpeechLP at home.</div>
+    </div>
+    <div class="card" id="Dcard" style="left:980px; top:250px; width:800px; padding:36px 40px">
+      <h4>Active homework assignment</h4>
+      <div class="muted" style="font-size:20px; margin-top:4px">Leo M.</div>
+      <div style="margin-top:26px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">SOUND</div>
+      <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap"><span class="chipx" id="Da">/s/</span></div>
+      <div style="margin-top:24px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">POSITIONS</div>
+      <div style="display:flex; gap:12px; margin-top:12px"><span class="chipx" id="Db">Initial</span><span class="chipx">Medial</span><span class="chipx" id="Dc">Final</span></div>
+      <div style="margin-top:24px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">INITIAL BLENDS</div>
+      <div style="display:flex; gap:12px; margin-top:12px"><span class="chipx" id="Dd">ST</span><span class="chipx" id="De">SP</span><span class="chipx">SK</span><span class="chipx">SN</span></div>
+      <div id="Dsend" style="margin-top:32px; display:inline-block; padding:16px 30px; border-radius:16px; background:var(--teal); color:#fff; font-weight:800; font-size:24px">Assign to Leo</div>
+    </div>
+  </section>
+
+  <!-- E. Monitor (dashboard) -->
+  <section class="scene" id="E">
+    <div id="Et" style="position:absolute; left:0; right:0; top:46px; text-align:center">
+      <div class="eyebrow step" style="justify-content:center"><b>3</b>Monitor</div>
+      <h2 style="font-size:66px; margin-bottom:0">See home practice, sound by sound.</h2>
+    </div>
+    <div class="phone" id="Ephone" style="left:90px; top:290px"><div class="scr"><img src="img/word.jpg"></div></div>
+    <div id="dots"></div>
+    <div class="card dash" id="Edash" style="left:560px; top:150px">
+      <div class="hd">
+        <div>
+          <div class="ttl"><svg width="34" height="24" viewBox="0 0 100 60"><path d="M4 32 H28 L38 10 L52 54 L62 24 L70 32 H96" fill="none" stroke="#22A07F" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>SpeechLP Client Performance &amp; Active Homework</div>
+          <div class="who muted">Linked SpeechLP user · progress for Leo M.</div>
+        </div>
+        <div class="btns"><span class="btn" style="border-color:#e3e8ee;color:#8a96a6">Demo data</span></div>
+      </div>
+      <div class="tiles">
+        <div class="tile" id="T1"><div class="k">Home sessions</div><div class="v" id="V1">0</div></div>
+        <div class="tile" id="T2"><div class="k">Words practiced</div><div class="v" id="V2">0</div></div>
+        <div class="tile" id="T3"><div class="k">Sounds in practice</div><div class="v" id="V3">0</div></div>
+      </div>
+      <div class="sect">Words practiced this week</div>
+      <div class="chart" id="chart"></div>
+      <div class="sect">Accuracy by sound</div>
+      <div class="snds">
+        <div class="snd" id="S0"><div class="p">/s/</div><div class="pc" id="P0">0%</div><div class="tr">96 tries</div><div class="track"><div class="fill" id="F0"></div></div></div>
+        <div class="snd" id="S1"><div class="p">/st/</div><div class="pc" id="P1">0%</div><div class="tr">28 tries</div><div class="track"><div class="fill" id="F1"></div></div></div>
+        <div class="snd" id="S2"><div class="p">/sp/</div><div class="pc" id="P2">0%</div><div class="tr">18 tries</div><div class="track"><div class="fill" id="F2"></div></div></div>
+      </div>
+      <div class="hw"><div style="font-size:20px; font-weight:700">Active homework</div><div><span class="chipx on">Sounds: s · initial, final</span><span class="chipx on">Initial blends: ST, SP</span></div></div>
+      <div class="tag" id="Ftag" style="left:830px; top:520px">Next focus: /sp/</div>
+    </div>
+    <div id="Ft" style="position:absolute; left:0; right:0; bottom:40px; text-align:center; font-size:34px; font-weight:600"></div>
+  </section>
+
+  <!-- G. Trust -->
+  <section class="scene center" id="G">
+    <div class="eyebrow">Privacy built in</div>
+    <h2 id="Gh" style="margin-bottom:0">SpeechLP never receives any audio.</h2>
+    <div class="seals">
+      <div class="seal" id="G0"><svg viewBox="0 0 24 24"><path fill="#6ff0c5" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg><div class="s1">COPPA</div></div>
+      <div class="seal" id="G1"><svg viewBox="0 0 24 24"><path fill="#6ff0c5" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg><div class="s1">FERPA</div></div>
+      <div class="seal" id="G2"><svg viewBox="0 0 24 24"><path fill="#6ff0c5" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg><div class="s1">HIPAA</div></div>
+      <div class="seal" id="G3"><svg viewBox="0 0 24 24"><path fill="#6ff0c5" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg><div class="s1">PIPEDA</div></div>
+    </div>
+    <div class="sub" id="Gs" style="margin-top:40px; font-size:30px">SpeechLP complies with COPPA, FERPA, HIPAA and PIPEDA.</div>
+  </section>
+
+  <!-- H. CTA -->
+  <section class="scene center" id="H">
+    <div style="display:flex; align-items:center; gap:26px" id="Hlogo">
+      <div class="pulse-icon" style="width:110px; height:110px; border-radius:26px"><svg viewBox="0 0 100 60" style="width:80px"><path d="M4 32 H28 L38 10 L52 54 L62 24 L70 32 H96" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="wordmark" style="font-size:72px">SpeechTherapist<span>.app</span></div>
+    </div>
+    <div class="price" id="Hprice" style="margin-top:40px">$20<small>/month</small></div>
+    <div class="url" id="Hurl">speechtherapist.app</div>
+    <div class="bul" id="Hbul"><span>Add your students</span><span>Invite caregivers</span><span>Assign &amp; monitor</span></div>
+    <div class="works" id="Hworks">Works with <img src="img/lp_icon.png"> SpeechLP on iPhone, iPad &amp; web</div>
+  </section>
+
+  <div class="vignette"></div>
+</div>
+
+<script src="engine.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const B = 2.4;
+
+window.GLOBAL = t => {
+  const T = window.__duration, w = 2 * Math.PI / T;
+  put('#b1', { x: 1000 + 280 * Math.sin(w * t), y: -300 + 160 * Math.cos(2 * w * t) });
+  put('#b2', { x: -350 + 240 * Math.cos(w * t), y: 420 + 180 * Math.sin(2 * w * t) });
+  put('#b3', { x: 700 + 280 * Math.sin(w * t + 2), y: 600 + 140 * Math.cos(w * t) });
+  $('#grid').style.backgroundPosition = `0 ${(t / T) * 80 * 6}px`;
+};
+
+// A. hook
+const hookW = [...document.querySelectorAll('#A .w')];
+function A(lt, dur) {
+  hookW.forEach((w, i) => {
+    const a = 0.25 + i * 0.24, k = prog(lt, a, a + 0.7, Ease.spring);
+    put(w, { y: 90 * (1 - k), s: 0.6 + 0.4 * k, o: prog(lt, a, a + 0.25) });
+  });
+  const out = prog(lt, dur - 0.55, dur, Ease.in);
+  put('#A', { s: 1 + 0.04 * lt / dur + 0.25 * out, o: 1 - out, blur: 14 * out });
+}
+
+// B. logo: heartbeat line draws itself
+const bp = $('#Bpath'); const BL = bp.getTotalLength();
+bp.style.strokeDasharray = BL;
+function B_(lt, dur) {
+  const k = prog(lt, 0, 1.0, Ease.spring);
+  put('#Bicon', { s: 0.3 + 0.7 * k, r: -15 * (1 - k), o: prog(lt, 0, .2) });
+  bp.style.strokeDashoffset = BL * (1 - prog(lt, 0.4, 1.3, Ease.inOut));
+  const w = prog(lt, 0.6, 1.4, Ease.out5);
+  $('#Bword').style.clipPath = `inset(0 ${100 - 100 * w}% 0 0)`;
+  put('#Bword', { x: -40 * (1 - w), o: w });
+  put('#Btag', { y: 30 * (1 - prog(lt, 1.3, 2.0, Ease.out)), o: prog(lt, 1.3, 1.9) });
+  put('#B', { s: 1 + 0.03 * lt / dur, o: edge(lt, dur, .01, .5) });
+}
+
+// C. invite
+const code = 'K7Q4M2';
+const codeEls = [...document.querySelectorAll('#Ccodes i')];
+function C(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Ct', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Ct').style.transform += ' translateY(-50%)';
+  put('#Cn1', { s: 0.5 + 0.5 * prog(lt, .3, 1.1, Ease.spring), o: e * prog(lt, .3, .6) });
+  put('#Ccode', { y: 60 * (1 - prog(lt, .7, 1.5, Ease.out5)), o: e * prog(lt, .7, 1.1) });
+  codeEls.forEach((c, i) => {
+    const a = 1.4 + i * 0.22, k = prog(lt, a, a + 0.35, Ease.back);
+    c.textContent = lt > a ? code[i] : '';
+    put(c, { s: lt > a ? 0.6 + 0.4 * k : 1, o: 1 });
+  });
+  put('#Cn2', { s: 0.5 + 0.5 * prog(lt, 3.0, 3.8, Ease.spring), o: e * prog(lt, 3.0, 3.3) });
+  const lk = prog(lt, 3.6, 4.6, Ease.inOut);
+  $('#Cline').style.clipPath = `inset(0 ${100 - 100 * lk}% 0 0)`;
+  $('#Cline').style.backgroundPosition = `${lt * 60}px 0`;
+  put('#Cline', { o: e });
+  put('#Cbadge', { s: 0.4 + 0.6 * prog(lt, 4.6, 5.3, Ease.spring), o: e * prog(lt, 4.6, 4.8) });
+}
+
+// D. assign
+function D(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Dt', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Dt').style.transform += ' translateY(-50%)';
+  const k = prog(lt, 0, 1.1, Ease.out5);
+  put('#Dcard', { x: 200 * (1 - k), ry: -18 * (1 - k) - 5, rx: 3, o: e });
+  ['#Da', '#Db', '#Dc', '#Dd', '#De'].forEach((id, i) => {
+    const a = 1.3 + i * 0.45, on = lt > a, kk = prog(lt, a, a + 0.4, Ease.back);
+    $(id).classList.toggle('on', on);
+    put(id, { s: on ? 0.85 + 0.15 * kk : 1 });
+  });
+  const sk = prog(lt, 4.0, 4.3) * (1 - prog(lt, 4.3, 4.7));
+  put('#Dsend', { s: 1 - 0.08 * sk });
+  $('#Dsend').style.boxShadow = `0 0 0 ${18 * prog(lt, 4.1, 5.0, Ease.out)}px rgba(52,211,166,${0.5 * (1 - prog(lt, 4.1, 5.0))})`;
+  $('#Dsend').textContent = lt > 4.3 ? '✓ Assigned' : 'Assign to Leo';
+}
+
+// E/F. monitor + plan (one continuous dashboard shot)
+const week = [['Mon', 28], ['Tue', 31], ['Wed', 0], ['Thu', 26], ['Fri', 30], ['Sat', 27], ['Sun', 0]];
+const barEls = week.map(([d, v]) => { const b = document.createElement('div'); b.className = 'bar'; b.innerHTML = `<em></em><span>${d}</span>`; $('#chart').appendChild(b); return { b, v }; });
+const dots = [];
+for (let i = 0; i < 18; i++) { const d = document.createElement('div'); d.className = 'dot'; $('#dots').appendChild(d); dots.push(d); }
+const snd = [82, 71, 68];
+function E(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Et', { y: -30 * (1 - prog(lt, 0, .8, Ease.out)), o: e * (1 - prog(lt, 9.4, 10.0)) });
+  put('#Ephone', { x: -250 * (1 - prog(lt, 0, 1.0, Ease.out5)), ry: 18, o: e * (1 - prog(lt, 7.0, 7.8)) });
+  // data flows from the child's phone into the dashboard
+  dots.forEach((d, i) => {
+    const ph = ((lt * 0.9 + i / dots.length) % 1);
+    const on = lt > 1.0 && lt < 7.2;
+    const x = lerp(330, 640, Ease.inOut(ph)), y = lerp(560 + 40 * Math.sin(i), 480 + 120 * Math.cos(i * 1.7), Ease.inOut(ph)) - 120 * Math.sin(Math.PI * ph);
+    put(d, { x, y, s: 0.6 + 0.6 * Math.sin(Math.PI * ph), o: on ? Math.sin(Math.PI * ph) * e : 0 });
+  });
+  // camera: full view → push in on accuracy-by-sound
+  const push = prog(lt, 7.2, 8.6, Ease.inOut);
+  const k = prog(lt, 0.2, 1.4, Ease.out5);
+  put('#Edash', { x: 260 * (1 - k) - 200 * push, y: 40 * (1 - k) - 120 * push, ry: -14 * (1 - k) - 4 * (1 - push), rx: 3 * (1 - push), s: (0.70 + 0.05 * k) + 0.22 * push, o: e });
+  count('#V1', lt, 1.4, 2.6, 0, 5); count('#V2', lt, 1.5, 3.0, 0, 142); count('#V3', lt, 1.6, 2.4, 0, 3);
+  ['#T1', '#T2', '#T3'].forEach((id, i) => put(id, { s: 0.9 + 0.1 * prog(lt, 1.3 + i * .12, 1.9 + i * .12, Ease.back) }));
+  barEls.forEach(({ b, v }, i) => {
+    const kk = prog(lt, 2.4 + i * 0.12, 3.3 + i * 0.12, Ease.back);
+    b.style.height = Math.max(6, v * 3.4 * kk) + 'px';
+    b.querySelector('em').textContent = kk > 0.6 && v ? v : '';
+    b.style.opacity = v ? 1 : 0.35;
+  });
+  snd.forEach((v, i) => {
+    const a = 3.8 + i * 0.3;
+    count('#P' + i, lt, a, a + 1.2, 0, v, x => Math.round(x) + '%');
+    $('#F' + i).style.width = (v * prog(lt, a, a + 1.2, Ease.out)) + '%';
+  });
+  // plan: flag the lowest sound as next focus
+  const fk = prog(lt, 9.0, 9.7, Ease.spring);
+  put('#Ftag', { s: 0.4 + 0.6 * fk, y: -10 * fk, o: lt > 9.0 ? e : 0 });
+  $('#S2').style.borderColor = lt > 9.0 ? `rgba(91,108,255,${fk})` : '';
+  $('#S2').style.boxShadow = lt > 9.0 ? `0 0 0 ${6 * fk}px rgba(91,108,255,.18)` : '';
+  const ft = $('#Ft');
+  if (lt < 9.0) { ft.innerHTML = 'Home sessions, words practiced and accuracy for each sound.'; put(ft, { o: e * prog(lt, 4.6, 5.2) * (1 - prog(lt, 8.4, 8.9)) }); }
+  else { ft.innerHTML = '<span style="color:#9fb0ff">4 · Plan</span> &nbsp;Use the data to decide what to target next.'; put(ft, { o: e * prog(lt, 9.1, 9.6), y: 15 * (1 - prog(lt, 9.1, 9.7, Ease.out)) }); }
+}
+
+// G. trust
+function G(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Gh', { y: 30 * (1 - prog(lt, 0, .8, Ease.out)), o: e });
+  for (let i = 0; i < 4; i++) { const a = 0.5 + i * 0.2, k = prog(lt, a, a + 0.8, Ease.spring); put('#G' + i, { y: 120 * (1 - k), s: 0.8 + 0.2 * k, o: e * prog(lt, a, a + .3) }); }
+  put('#Gs', { o: e * prog(lt, 1.8, 2.4) });
+}
+
+// H. CTA
+function H(lt, dur) {
+  put('#Hlogo', { y: -30 * (1 - prog(lt, 0, .8, Ease.out)), o: prog(lt, 0, .5) });
+  put('#Hprice', { s: 0.6 + 0.4 * prog(lt, 0.4, 1.3, Ease.spring), o: prog(lt, .4, .7) });
+  put('#Hurl', { y: 40 * (1 - prog(lt, 1.0, 1.8, Ease.out5)), s: 1 + 0.02 * Math.sin(lt * 3), o: prog(lt, 1.0, 1.4) });
+  put('#Hbul', { o: prog(lt, 1.7, 2.3), y: 20 * (1 - prog(lt, 1.7, 2.4, Ease.out)) });
+  put('#Hworks', { o: prog(lt, 2.3, 2.9) });
+  const out = prog(lt, dur - 0.9, dur - 0.1, Ease.in);
+  put('#H', { s: 1 - 0.06 * out, o: 1 - out, blur: 10 * out });
+}
+
+window.SCENES = [
+  { start: 0,      end: 2 * B,  el: '#A', fn: A },
+  { start: 2 * B,  end: 4 * B,  el: '#B', fn: B_ },
+  { start: 4 * B,  end: 6.5 * B, el: '#C', fn: C },
+  { start: 6.5 * B, end: 9 * B, el: '#D', fn: D },
+  { start: 9 * B,  end: 14 * B, el: '#E', fn: E },
+  { start: 14 * B, end: 16 * B, el: '#G', fn: G },
+  { start: 16 * B, end: 19 * B + 0.4, el: '#H', fn: H },
+];
+Engine.boot();
+</script>
+</body>
+</html>
