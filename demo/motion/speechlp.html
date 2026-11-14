@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SpeechLP — Demo Film</title>
+<style>
+  @font-face { font-family: "Funnel"; src: url("FunnelDisplay-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Inter"; src: url("Inter.woff2"); font-weight: 100 900; }
+  :root { --ink: #12284A; --violet: #6C5CE7; --blue: #4A5FC1; --sun: #FFD54A; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #1b1446; }
+  body { font-family: "Inter", sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+  .stage { position: absolute; inset: 0; overflow: hidden; perspective: 2200px; }
+  .bg { position: absolute; inset: -10%; background: radial-gradient(120% 90% at 30% 20%, #4b3fd6 0%, #2a1f86 45%, #160f45 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; }
+  .b1 { width: 900px; height: 900px; background: #ff5fb2; }
+  .b2 { width: 1000px; height: 1000px; background: #3fb8ff; }
+  .b3 { width: 800px; height: 800px; background: #8b6bff; }
+  .spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px 3px rgba(255,255,255,.6); }
+  .grain { position: absolute; inset: 0; opacity: .05; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>"); }
+  .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(5,2,25,.55) 100%); }
+
+  .scene { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .w { display: inline-block; will-change: transform; }
+
+  h1, h2, .big { font-family: "Funnel"; font-weight: 700; letter-spacing: -1px; }
+  .hook { font-size: 132px; line-height: 1.02; text-shadow: 0 10px 40px rgba(0,0,0,.25); }
+  .hook .hl { background: linear-gradient(90deg, #FFD54A, #ff8fd0); -webkit-background-clip: text; color: transparent; padding: 0 6px; }
+  .eyebrow { font-family: "Inter"; font-weight: 700; font-size: 22px; letter-spacing: 7px; text-transform: uppercase; color: #c8c2ff; margin-bottom: 22px; }
+  h2 { font-size: 86px; line-height: 1.03; margin-bottom: 28px; text-shadow: 0 8px 30px rgba(0,0,0,.25); }
+  .sub { font-size: 36px; line-height: 1.35; color: rgba(255,255,255,.88); font-weight: 500; }
+  .col { position: absolute; left: 140px; top: 50%; width: 760px; transform: translateY(-50%); }
+  .col.right { left: auto; right: 130px; }
+
+  .phone { position: absolute; width: 400px; height: 866px; border-radius: 64px; background: #0d0d14; padding: 14px;
+           box-shadow: 0 60px 120px rgba(8,4,40,.55), 0 0 0 2px rgba(255,255,255,.08) inset; transform-style: preserve-3d; }
+  .phone .scr { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #000; }
+  .phone .scr img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+  .phone .glare { position: absolute; inset: 14px; border-radius: 50px; background: linear-gradient(115deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 40%); pointer-events: none; }
+  .tap { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 6px solid #fff; opacity: 0; }
+  .tapdot { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: rgba(255,255,255,.85); opacity: 0; }
+
+  /* logo */
+  .logo-icon { width: 300px; filter: drop-shadow(0 30px 60px rgba(0,0,0,.35)); }
+  .logo-word { height: 150px; filter: brightness(0) invert(1); }
+  .lockup { display: flex; align-items: center; gap: 46px; }
+  .tagline { margin-top: 54px; font-size: 40px; font-weight: 600; color: #e6e1ff; }
+
+  /* stats */
+  .stats { display: flex; gap: 46px; margin-top: 60px; }
+  .stat { width: 470px; padding: 50px 40px 46px; border-radius: 40px; background: rgba(255,255,255,.09);
+          border: 2px solid rgba(255,255,255,.16); backdrop-filter: blur(6px); box-shadow: 0 30px 80px rgba(0,0,0,.25); }
+  .stat .big { font-size: 150px; line-height: 1; background: linear-gradient(180deg, #fff, #cfc8ff); -webkit-background-clip: text; color: transparent; }
+  .stat .lbl { margin-top: 18px; font-size: 30px; font-weight: 600; line-height: 1.3; color: rgba(255,255,255,.9); }
+
+  /* words panel (rebuilt from the app UI) */
+  .wpanel { position: absolute; width: 640px; padding: 40px 40px 34px; border-radius: 44px; background: #f4f3fb; color: #2b2b44;
+            box-shadow: 0 50px 110px rgba(8,4,40,.5); }
+  .wpanel .t { font-family: "Funnel"; font-size: 46px; display: flex; justify-content: space-between; align-items: center; }
+  .wpanel .n { width: 58px; height: 58px; border-radius: 50%; background: #7a5cf0; color: #fff; font-size: 30px; display: flex; align-items: center; justify-content: center; font-family: Inter; font-weight: 700; }
+  .wpanel .snd { margin: 18px 0 26px; font-size: 26px; font-weight: 700; color: #9a98ad; display: flex; align-items: center; gap: 16px; }
+  .wpanel .snd b { background: #ffc531; color: #3a2a00; border-radius: 14px; padding: 6px 18px; font-size: 30px; box-shadow: 0 5px 0 #d79c00; }
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chip { background: linear-gradient(180deg, #ffd24a, #ffb81f); border-radius: 22px; box-shadow: 0 8px 0 #d99300, 0 14px 24px rgba(0,0,0,.12);
+          padding: 20px 26px; font-family: "Funnel"; font-size: 44px; color: #2e2a1a; display: flex; justify-content: space-between; align-items: center; }
+  .chip u { color: #4a74ff; text-decoration-thickness: 4px; text-underline-offset: 6px; }
+  .chip .spk { width: 34px; height: 34px; }
+
+  /* waveform + success */
+  .wave { position: absolute; display: flex; align-items: center; gap: 9px; height: 300px; }
+  .wave i { display: block; width: 12px; border-radius: 6px; background: linear-gradient(180deg, #8ee3ff, #ffffff, #b49bff); }
+  .pill { position: absolute; padding: 22px 40px; border-radius: 60px; background: #e9fbef; color: #12823f; font-weight: 800; font-size: 40px;
+          display: flex; align-items: center; gap: 16px; box-shadow: 0 30px 70px rgba(0,0,0,.3); }
+  .pill .ck { width: 52px; height: 52px; border-radius: 50%; background: #20b25a; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 34px; }
+  .star { position: absolute; width: 70px; height: 70px; margin: -35px 0 0 -35px; }
+
+  .name { position: absolute; font-family: "Funnel"; font-size: 40px; text-align: center; width: 400px; text-shadow: 0 6px 20px rgba(0,0,0,.35); }
+
+  .report { position: absolute; width: 1240px; border-radius: 34px; background: #fff; padding: 18px; box-shadow: 0 60px 130px rgba(8,4,40,.55); }
+  .report img { width: 100%; display: block; border-radius: 20px; }
+  .rowhl { position: absolute; left: 18px; height: 40px; border-radius: 10px; background: rgba(108,92,231,.14); border: 3px solid rgba(108,92,231,.6); }
+
+  .hero { width: 520px; height: 520px; border-radius: 50%; box-shadow: 0 50px 120px rgba(0,0,0,.45); }
+  .platforms { margin-top: 30px; font-size: 34px; font-weight: 600; color: #e3deff; letter-spacing: 1px; }
+  .companion { margin-top: 26px; display: flex; align-items: center; gap: 18px; font-size: 30px; font-weight: 600; color: rgba(255,255,255,.85); }
+  .companion img { height: 52px; border-radius: 12px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="bg" id="bg"></div>
+  <div class="blob b1" id="b1"></div><div class="blob b2" id="b2"></div><div class="blob b3" id="b3"></div>
+  <div id="sparks"></div>
+
+  <!-- A. Hook -->
+  <section class="scene center" id="A">
+    <div class="hook" id="hook">Speech practice<br>they'll <span class="hl">actually</span><br>want to play.</div>
+  </section>
+
+  <!-- B. Logo -->
+  <section class="scene center" id="B">
+    <div class="lockup"><img class="logo-icon" id="licon" src="img/lp_icon.png"><img class="logo-word" id="lword" src="img/lp_word.png"></div>
+    <div class="tagline" id="ltag">Built by practicing speech-language pathologists</div>
+  </section>
+
+  <!-- C. Learning path -->
+  <section class="scene" id="C">
+    <div class="col" id="Ctext">
+      <div class="eyebrow">Guided learning path</div>
+      <h2 id="Ch">One path.<br>Always knows<br>what's next.</h2>
+      <div class="sub" id="Cs">Kids level up through speaking games, numbered levels and rewards.</div>
+    </div>
+    <div class="phone" id="Cphone" style="left:1180px; top:107px">
+      <div class="scr"><img id="Cimg1" src="img/path2.jpg"><img id="Cimg2" src="img/path17.jpg"></div>
+      <div class="glare"></div>
+      <div class="tapdot" id="Ctapd"></div><div class="tap" id="Ctap"></div>
+    </div>
+  </section>
+
+  <!-- D. Stats -->
+  <section class="scene center" id="D">
+    <div class="eyebrow" id="Deb">Grounded in speech-language research</div>
+    <h2 id="Dh" style="margin-bottom:0">Focused, high-dose practice</h2>
+    <div class="stats">
+      <div class="stat" id="D1"><div class="big"><span id="Dn1">15</span></div><div class="lbl">word age-based screeners,<br>ages 3–9</div></div>
+      <div class="stat" id="D2"><div class="big"><span id="Dn2">1,500</span>+</div><div class="lbl">target words across all<br>24 English consonants</div></div>
+      <div class="stat" id="D3"><div class="big"><span id="Dn3">2</span></div><div class="lbl">CCC-SLPs modeling<br>every sound</div></div>
+    </div>
+  </section>
+
+  <!-- E. SLP lessons + words preview -->
+  <section class="scene" id="E">
+    <div class="col right" id="Etext" style="width:640px">
+      <div class="eyebrow">SLP video lessons</div>
+      <h2>Every sound, modeled by a certified SLP.</h2>
+      <div class="sub">Then kids preview and hear every word before they play.</div>
+    </div>
+    <div class="phone" id="Ephone" style="left:150px; top:107px">
+      <div class="scr"><img src="img/slp.jpg"></div><div class="glare"></div>
+    </div>
+    <div class="wpanel" id="Epanel" style="left:470px; top:300px">
+      <div class="t">Words in this game <span class="n">5</span></div>
+      <div class="snd">Sounds <b>s</b></div>
+      <div class="chips">
+        <div class="chip" id="ch0"><span><u>s</u>andwich</span><svg class="spk" viewBox="0 0 24 24"><path fill="#7a6a3a" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></div>
+        <div class="chip" id="ch1"><span><u>s</u>quare</span><svg class="spk" viewBox="0 0 24 24"><path fill="#7a6a3a" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></div>
+        <div class="chip" id="ch2"><span><u>s</u>tar</span><svg class="spk" viewBox="0 0 24 24"><path fill="#7a6a3a" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></div>
+        <div class="chip" id="ch3"><span><u>s</u>ad</span><svg class="spk" viewBox="0 0 24 24"><path fill="#7a6a3a" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></div>
+        <div class="chip" id="ch4"><span><u>s</u>oda</span><svg class="spk" viewBox="0 0 24 24"><path fill="#7a6a3a" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- F. Say it out loud -->
+  <section class="scene" id="F">
+    <div class="center" style="position:absolute; left:0; right:0; top:70px" id="Ftext">
+      <div class="eyebrow">Speaking games</div>
+      <h2 style="font-size:76px; margin-bottom:0">Every game is played out loud.</h2>
+    </div>
+    <div class="wave" id="waveL" style="left:200px; top:520px"></div>
+    <div class="wave" id="waveR" style="right:200px; top:520px; flex-direction:row-reverse"></div>
+    <div class="phone" id="Fphone" style="left:760px; top:250px; width:400px">
+      <div class="scr"><img src="img/word.jpg"></div><div class="glare"></div>
+    </div>
+    <div id="stars"></div>
+    <div class="pill" id="Fpill" style="left:1240px; top:640px"><span class="ck">✓</span>Nice progress</div>
+    <div class="sub" id="Fsub" style="position:absolute; left:0; right:0; bottom:60px; text-align:center">Automated speech recognition gives feedback on every word.</div>
+  </section>
+
+  <!-- G. Games -->
+  <section class="scene" id="G">
+    <div class="center" style="position:absolute; left:0; right:0; top:70px" id="Gtext">
+      <div class="eyebrow">Practice games</div>
+      <h2 style="font-size:76px">Games they'll actually want to play.</h2>
+    </div>
+    <div class="phone" id="G0" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/beary.jpg"></div></div>
+    <div class="phone" id="G1" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/babytalk.jpg"></div></div>
+    <div class="phone" id="G2" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/chicken.jpg"></div></div>
+    <div class="phone" id="G3" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/pilot.jpg"></div></div>
+  </section>
+
+  <!-- H. Report -->
+  <section class="scene" id="H">
+    <div class="col" id="Htext" style="width:520px; left:110px">
+      <div class="eyebrow">Progress</div>
+      <h2 style="font-size:76px">Every word, measured.</h2>
+      <div class="sub">Post-game reports for parents, teachers and SLPs.</div>
+    </div>
+    <div class="report" id="Hrep" style="left:650px; top:150px">
+      <img src="img/post-game-report.jpg">
+      <div class="rowhl" id="Hrow"></div>
+    </div>
+  </section>
+
+  <!-- I. Outro -->
+  <section class="scene center" id="I">
+    <img class="hero" id="Ihero" src="img/hero.png">
+    <div class="lockup" id="Ilock" style="margin-top:40px; gap:28px"><img src="img/lp_icon.png" style="width:110px"><img src="img/lp_word.png" style="height:84px; filter:brightness(0) invert(1)"></div>
+    <div class="platforms" id="Iplat">iPhone · iPad · Web</div>
+    <div class="companion" id="Icomp">For SLPs: pairs with <img src="img/st_icon.png"> SpeechTherapist.app</div>
+  </section>
+
+  <div class="grain"></div><div class="vignette"></div>
+</div>
+
+<script src="engine.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const B = 2.4;                       // one bar at 100 BPM
+
+// ---------- global background ----------
+const sparks = [];
+for (let i = 0; i < 34; i++) {
+  const d = document.createElement('div'); d.className = 'spark'; $('#sparks').appendChild(d);
+  sparks.push({ d, x: (i * 397) % 1920, y: (i * 211) % 1080, sp: 14 + (i * 7) % 30, ph: i * 1.7, sz: 0.4 + ((i * 13) % 10) / 12 });
+}
+window.GLOBAL = t => {
+  put('#b1', { x: 1100 + 260 * Math.sin(t * 0.21), y: -260 + 160 * Math.cos(t * 0.17) });
+  put('#b2', { x: -300 + 220 * Math.cos(t * 0.15), y: 380 + 200 * Math.sin(t * 0.19) });
+  put('#b3', { x: 600 + 300 * Math.sin(t * 0.11 + 2), y: 500 + 160 * Math.cos(t * 0.13) });
+  $('#bg').style.filter = `hue-rotate(${Math.sin(t * 0.08) * 18}deg)`;
+  for (const p of sparks) {
+    const y = ((p.y - t * p.sp) % 1180 + 1180) % 1180 - 50;
+    put(p.d, { x: p.x + 30 * Math.sin(t * 0.5 + p.ph), y, s: p.sz, o: 0.25 + 0.35 * (0.5 + 0.5 * Math.sin(t * 2 + p.ph)) });
+  }
+  // global fade from/to black
+  const end = window.__duration;
+  $('#stage').style.opacity = Math.min(prog(t, 0, 0.6), 1 - prog(t, end - 0.9, end));
+};
+
+// ---------- A. hook ----------
+const hookW = words('#hook');
+function A(lt, dur) {
+  hookW.forEach((w, i) => {
+    const a = 0.25 + i * 0.22;
+    const k = prog(lt, a, a + 0.7, Ease.spring);
+    put(w, { y: 90 * (1 - k), s: 0.6 + 0.4 * k, o: prog(lt, a, a + 0.25), rx: 0 });
+  });
+  const out = prog(lt, dur - 0.55, dur, Ease.in);
+  put('#hook', { s: 1 + 0.04 * lt / dur + 0.25 * out, o: 1 - out, blur: 14 * out });
+}
+
+// ---------- B. logo ----------
+function B_(lt, dur) {
+  const k = prog(lt, 0.0, 1.0, Ease.spring);
+  put('#licon', { s: 0.2 + 0.8 * k, r: -25 * (1 - k), o: prog(lt, 0, 0.2), y: 0 });
+  const w = prog(lt, 0.45, 1.25, Ease.out5);
+  $('#lword').style.clipPath = `inset(0 ${100 - 100 * w}% 0 0)`;
+  put('#lword', { x: -40 * (1 - w), o: w });
+  put('#ltag', { y: 30 * (1 - prog(lt, 1.2, 1.9, Ease.out)), o: prog(lt, 1.2, 1.9) });
+  const e = edge(lt, dur, 0.01, 0.5);
+  put('#B', { s: 1 + 0.03 * lt / dur, o: e });
+}
+
+// ---------- C. learning path ----------
+function C(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Ctext', { x: -60 * (1 - prog(lt, 0, 0.9, Ease.out)), y: -540 + 540, o: e });
+  $('#Ctext').style.transform += ' translateY(-50%)';
+  const pk = prog(lt, 0, 1.2, Ease.out5);
+  put('#Cphone', { x: 300 * (1 - pk), y: 0, rx: 6, ry: kf(lt, [[0, -38], [1.2, -16], [dur, -10]]), r: 2 - 2 * pk, o: e });
+  // climb: crossfade path 2 -> path 17 with a slow push
+  const c = prog(lt, 3.4, 4.4);
+  put('#Cimg1', { s: 1 + 0.06 * prog(lt, 0, 3.6, Ease.lin), y: 60 * c, o: 1 - c });
+  put('#Cimg2', { s: 1.08 - 0.08 * prog(lt, 3.4, dur, Ease.out), y: -60 * (1 - c), o: c });
+  // tap on LEVEL ▶ at the end
+  const tp = (lt - (dur - 1.7)) / 0.9;
+  const tx = 296, ty = 776;
+  $('#Ctap').style.left = $('#Ctapd').style.left = tx + 'px';
+  $('#Ctap').style.top = $('#Ctapd').style.top = ty + 'px';
+  put('#Ctapd', { s: tp > 0 && tp < 1 ? (tp < .3 ? 0.85 : 1) : 1, o: tp > 0 && tp < 1 ? 0.9 * (1 - prog(tp, .5, 1)) : 0 });
+  put('#Ctap', { s: 0.6 + 1.6 * prog(tp, .25, 1, Ease.out), o: tp > .25 && tp < 1 ? 1 - prog(tp, .25, 1) : 0 });
+}
+
+// ---------- D. stats ----------
+function D(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Deb', { o: e * prog(lt, 0, .5), y: 20 * (1 - prog(lt, 0, .6, Ease.out)) });
+  put('#Dh', { o: e * prog(lt, .1, .6), y: 30 * (1 - prog(lt, .1, .8, Ease.out)) });
+  ['#D1', '#D2', '#D3'].forEach((id, i) => {
+    const a = 0.45 + i * 0.28, k = prog(lt, a, a + 0.9, Ease.spring);
+    put(id, { y: 160 * (1 - k), s: 0.85 + 0.15 * k, ry: 25 * (1 - k), o: e * prog(lt, a, a + 0.3) });
+  });
+  count('#Dn1', lt, 0.5, 1.6, 0, 15);
+  count('#Dn2', lt, 0.75, 2.2, 0, 1500);
+  count('#Dn3', lt, 1.0, 1.6, 0, 2);
+}
+
+// ---------- E. lessons ----------
+function E_(lt, dur) {
+  const e = edge(lt, dur);
+  const pk = prog(lt, 0, 1.1, Ease.out5);
+  put('#Ephone', { x: -260 * (1 - pk), ry: 22 - 8 * prog(lt, 0, dur, Ease.lin), rx: 5, o: e });
+  const wp = prog(lt, 1.2, 2.2, Ease.spring);
+  put('#Epanel', { x: 120 * (1 - wp) + 10 * Math.sin(lt * 0.8), y: 40 * (1 - wp) + 8 * Math.cos(lt), ry: -16 * (1 - wp) + 8, rx: 4, s: 0.8 + 0.2 * wp, o: e * prog(lt, 1.2, 1.6) });
+  for (let i = 0; i < 5; i++) {
+    const a = 2.3 + i * 0.5, k = prog(lt, a, a + 0.25, Ease.out) * (1 - prog(lt, a + 0.45, a + 0.75));
+    const el = $('#ch' + i);
+    el.style.transform = `translateY(${-10 * k}px) scale(${1 + 0.07 * k})`;
+    el.style.boxShadow = `0 8px 0 #d99300, 0 ${14 + 20 * k}px ${24 + 30 * k}px rgba(255,190,40,${0.12 + 0.5 * k})`;
+  }
+  put('#Etext', { x: 60 * (1 - prog(lt, 0.3, 1.2, Ease.out)), o: e * prog(lt, 0.3, 0.9) });
+  $('#Etext').style.transform += ' translateY(-50%)';
+}
+
+// ---------- F. say it out loud ----------
+const bars = [];
+for (const id of ['#waveL', '#waveR']) for (let i = 0; i < 26; i++) { const b = document.createElement('i'); $(id).appendChild(b); bars.push({ b, i, side: id }); }
+const stars = [];
+for (let i = 0; i < 12; i++) {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('class', 'star');
+  s.innerHTML = '<path fill="#FFD54A" stroke="#fff6c8" stroke-width=".6" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/>';
+  $('#stars').appendChild(s); stars.push(s);
+}
+function F(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Ftext', { y: -30 * (1 - prog(lt, 0, .8, Ease.out)), o: e });
+  const pk = prog(lt, 0, 1.0, Ease.spring);
+  put('#Fphone', { y: 200 * (1 - pk), s: 0.9 + 0.1 * pk + 0.03 * Math.sin(lt * 1.3), rx: 6 * (1 - pk), o: e });
+  // voice: bars energise while "speaking" (1.2s → 3.6s)
+  const speak = prog(lt, 1.0, 1.4) * (1 - prog(lt, 3.4, 3.8));
+  for (const { b, i, side } of bars) {
+    const d = side === '#waveL' ? 25 - i : i;
+    const env = Math.exp(-d / 14);
+    const v = 0.5 + 0.5 * Math.sin(lt * 13 + i * 0.9) * Math.sin(lt * 5.3 + i * 0.37 + (side === '#waveL' ? 1 : 0));
+    const h = 10 + (30 + 230 * v) * env * speak + 8 * (1 - speak);
+    b.style.height = h + 'px';
+    b.style.opacity = (0.35 + 0.65 * env) * e;
+  }
+  // success
+  const sk = prog(lt, 3.7, 4.4, Ease.spring);
+  put('#Fpill', { s: 0.5 + 0.5 * sk, x: -40 * (1 - sk), o: e * prog(lt, 3.7, 3.9) });
+  stars.forEach((s, i) => {
+    const a = (i / stars.length) * Math.PI * 2 + 0.3;
+    const k = prog(lt, 3.75, 5.0, Ease.out5);
+    const r = 120 + 360 * k;
+    s.style.left = (960 + Math.cos(a) * r) + 'px';
+    s.style.top = (680 + Math.sin(a) * r * 0.75) + 'px';
+    put(s, { s: (0.5 + 0.6 * ((i * 7) % 5) / 5) * (k > 0 ? 1 : 0), r: 200 * k + i * 30, o: lt > 3.75 ? 1 - prog(lt, 4.6, 5.6) : 0 });
+  });
+  put('#Fsub', { o: e * prog(lt, 4.2, 4.8), y: 20 * (1 - prog(lt, 4.2, 4.9, Ease.out)) });
+}
+
+// ---------- G. games fan ----------
+const gNames = ['Beary Hungry', 'Baby Talk', 'Chicken Little', 'Pilot Penguin'];
+gNames.forEach((n, i) => { const d = document.createElement('div'); d.className = 'name'; d.id = 'Gn' + i; d.textContent = n; $('#G').appendChild(d); });
+function G(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Gtext', { y: -30 * (1 - prog(lt, 0, .8, Ease.out)), o: e });
+  for (let i = 0; i < 4; i++) {
+    const a = 0.2 + i * 0.22, k = prog(lt, a, a + 1.1, Ease.spring);
+    const slot = (i - 1.5);
+    const x = 960 - 150 + slot * 360, y = 300;
+    const el = $('#G' + i);
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    const bob = 12 * Math.sin(lt * 1.6 + i);
+    put(el, { y: 500 * (1 - k) + bob, z: -80 * Math.abs(slot), ry: -slot * 12 * k + 40 * (1 - k), r: slot * 3 * k, s: 0.95, o: e * prog(lt, a, a + 0.3) });
+    const n = $('#Gn' + i);
+    n.style.left = (x - 50) + 'px'; n.style.top = (y + 670) + 'px';
+    put(n, { y: 20 * (1 - prog(lt, a + 0.6, a + 1.1, Ease.out)) + bob, o: e * prog(lt, a + 0.6, a + 1.1) });
+  }
+}
+
+// ---------- H. report ----------
+function H(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Htext', { x: -50 * (1 - prog(lt, 0.2, 1.0, Ease.out)), o: e * prog(lt, .2, .8) });
+  $('#Htext').style.transform += ' translateY(-50%)';
+  const k = prog(lt, 0, 1.2, Ease.out5);
+  put('#Hrep', { x: 300 * (1 - k), ry: -24 * (1 - k) - 6, rx: 4, s: 0.86 + 0.06 * prog(lt, 0, dur, Ease.lin), o: e });
+  // highlight rows one after another (rows in source image: y = 808 + 65n, width 0..900 of 2000)
+  const sc = 1204 / 2000, row = Math.floor(clamp((lt - 1.3) / 0.38, 0, 8));
+  const hl = $('#Hrow');
+  hl.style.top = (18 + (788 + 65 * row) * sc) + 'px';
+  hl.style.width = (830 * sc) + 'px'; hl.style.left = (18 + 70 * sc) + 'px'; hl.style.height = (60 * sc) + 'px';
+  hl.style.opacity = lt > 1.3 ? e : 0;
+}
+
+// ---------- I. outro ----------
+function I(lt, dur) {
+  const k = prog(lt, 0, 1.2, Ease.spring);
+  put('#Ihero', { s: 0.3 + 0.7 * k, r: -40 * (1 - k) + 2 * Math.sin(lt * 1.2), o: prog(lt, 0, .3) });
+  put('#Ilock', { y: 30 * (1 - prog(lt, .6, 1.3, Ease.out)), o: prog(lt, .6, 1.2) });
+  put('#Iplat', { y: 20 * (1 - prog(lt, 1.1, 1.8, Ease.out)), o: prog(lt, 1.1, 1.7) });
+  put('#Icomp', { y: 20 * (1 - prog(lt, 1.6, 2.3, Ease.out)), o: prog(lt, 1.6, 2.2) });
+}
+
+window.SCENES = [
+  { start: 0,      end: 2 * B,  el: '#A', fn: A },
+  { start: 2 * B,  end: 4 * B,  el: '#B', fn: B_ },
+  { start: 4 * B,  end: 7 * B,  el: '#C', fn: C },
+  { start: 7 * B,  end: 9 * B,  el: '#D', fn: D },
+  { start: 9 * B,  end: 12 * B, el: '#E', fn: E_ },
+  { start: 12 * B, end: 15 * B, el: '#F', fn: F },
+  { start: 15 * B, end: 17 * B, el: '#G', fn: G },
+  { start: 17 * B, end: 19 * B + 1.2, el: '#H', fn: H },
+  { start: 19 * B + 1.2, end: 22 * B, el: '#I', fn: I },
+];
+Engine.boot();
+</script>
+</body>
+</html>
