@@ -75,6 +75,10 @@
   .pill .ck { width: 52px; height: 52px; border-radius: 50%; background: #20b25a; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 34px; }
   .star { position: absolute; width: 70px; height: 70px; margin: -35px 0 0 -35px; }
 
+  .gcard { position: absolute; left: 0; top: 0; width: 380px; height: 676px; border-radius: 40px; padding: 10px; background: #fff;
+           box-shadow: 0 50px 100px rgba(8,4,40,.5); transform-style: preserve-3d; }
+  .gcard img { width: 100%; height: 100%; object-fit: cover; border-radius: 32px; display: block; }
+  .gbadge { position: absolute; top: 26px; right: -14px; padding: 8px 18px; border-radius: 12px; font-weight: 800; font-size: 20px; letter-spacing: 1px; color: #fff; box-shadow: 0 10px 24px rgba(0,0,0,.3); }
   .name { position: absolute; font-family: "Funnel"; font-size: 40px; text-align: center; width: 400px; text-shadow: 0 6px 20px rgba(0,0,0,.35); }
 
   .report { position: absolute; width: 1240px; border-radius: 34px; background: #fff; padding: 18px; box-shadow: 0 60px 130px rgba(8,4,40,.55); }
@@ -165,19 +169,20 @@
     </div>
     <div id="stars"></div>
     <div class="pill" id="Fpill" style="left:1190px; top:700px"><span class="ck">✓</span>Nice progress</div>
-    <div class="sub" id="Fsub" style="position:absolute; left:0; right:0; bottom:46px; text-align:center; font-size:32px">Automated speech recognition gives feedback on every word.</div>
+    <div class="sub" id="Fsub" style="position:absolute; left:0; right:0; bottom:26px; text-align:center; font-size:32px">Automated speech recognition gives feedback on every word.<div style="font-size:20px; margin-top:8px; color:rgba(255,255,255,.6); font-weight:500">App feedback guides practice. It is not a diagnosis or clinical score.</div></div>
   </section>
 
   <!-- G. Games -->
   <section class="scene" id="G">
-    <div class="center" style="position:absolute; left:0; right:0; top:70px" id="Gtext">
-      <div class="eyebrow">Practice games</div>
-      <h2 style="font-size:76px">Games they'll actually want to play.</h2>
+    <div class="center" style="position:absolute; left:0; right:0; top:56px" id="Gtext">
+      <div class="eyebrow">7 speaking games</div>
+      <h2 style="font-size:72px; margin-bottom:0">Games they'll actually want to play.</h2>
     </div>
-    <div class="phone" id="G0" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/beary.jpg"></div></div>
-    <div class="phone" id="G1" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/babytalk.jpg"></div></div>
-    <div class="phone" id="G2" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/chicken.jpg"></div></div>
-    <div class="phone" id="G3" style="width:300px; height:650px; border-radius:50px; padding:11px"><div class="scr" style="border-radius:40px"><img src="img/pilot.jpg"></div></div>
+    <div id="carousel" style="position:absolute; left:0; top:0; width:1920px; height:1080px; transform-style:preserve-3d"></div>
+    <div id="Ginfo" style="position:absolute; left:0; right:0; top:885px; text-align:center">
+      <div id="Gname" style="font-family:Funnel; font-size:56px; text-shadow:0 6px 20px rgba(0,0,0,.3)"></div>
+      <div id="Gtag" style="font-size:32px; font-weight:600; color:#ffe58a; margin-top:6px"></div>
+    </div>
   </section>
 
   <!-- H. Report -->
@@ -344,23 +349,42 @@ function F(lt, dur) {
 }
 
 // ---------- G. games fan ----------
-const gNames = ['Beary Hungry', 'Baby Talk', 'Chicken Little', 'Pilot Penguin'];
-gNames.forEach((n, i) => { const d = document.createElement('div'); d.className = 'name'; d.id = 'Gn' + i; d.textContent = n; $('#G').appendChild(d); });
+const GAMES = [
+  ['perry', 'Perry In Submarine', 'Say it right before it hits the sub.'],
+  ['pilot', 'Pilot Penguin', 'Say each word to help Perry fly home.', 'FREE TO PLAY', '#22a06b'],
+  ['treasure', 'Treasure Fishing', 'Say it right to reel it in.'],
+  ['star', 'Star Catcher', 'Beam up the word by saying it.'],
+  ['chicken', 'Chicken Little', 'Say it right to protect Chicken Little.'],
+  ['babytalk', 'Baby Talk', 'Say it right to make it pass.'],
+  ['beary', 'Beary Hungry', 'Feed the bear by saying the word.'],
+];
+const gcards = GAMES.map(([img, name, tag, badge, col]) => {
+  const d = document.createElement('div'); d.className = 'gcard';
+  d.innerHTML = `<img src="img/games/${img}.jpg">` + (badge ? `<div class="gbadge" style="background:${col}">${badge}</div>` : '');
+  $('#carousel').appendChild(d); return d;
+});
 function G(lt, dur) {
   const e = edge(lt, dur);
   put('#Gtext', { y: -30 * (1 - prog(lt, 0, .8, Ease.out)), o: e });
-  for (let i = 0; i < 4; i++) {
-    const a = 0.2 + i * 0.22, k = prog(lt, a, a + 1.1, Ease.spring);
-    const slot = (i - 1.5);
-    const x = 960 - 150 + slot * 360, y = 300;
-    const el = $('#G' + i);
-    el.style.left = x + 'px'; el.style.top = y + 'px';
-    const bob = 12 * Math.sin(lt * 1.6 + i);
-    put(el, { y: 500 * (1 - k) + bob, z: -80 * Math.abs(slot), ry: -slot * 12 * k + 40 * (1 - k), r: slot * 3 * k, s: 0.95, o: e * prog(lt, a, a + 0.3) });
-    const n = $('#Gn' + i);
-    n.style.left = (x - 50) + 'px'; n.style.top = (y + 670) + 'px';
-    put(n, { y: 20 * (1 - prog(lt, a + 0.6, a + 1.1, Ease.out)) + bob, o: e * prog(lt, a + 0.6, a + 1.1) });
-  }
+  // cover-flow: focus steps through the 7 games, ~1.15s each, eased between stops
+  const step = 1.15, t0 = 0.9;
+  const raw = clamp((lt - t0) / step, 0, GAMES.length - 1);
+  const base = Math.floor(raw), frac = raw - base;
+  const ease = Ease.inOut(clamp((frac - 0.55) / 0.45));     // hold, then glide to the next card
+  const focus = base + ease;
+  const intro = prog(lt, 0, 1.0, Ease.out5);
+  gcards.forEach((c, i) => {
+    const d = i - focus, ad = Math.abs(d);
+    const x = 960 - 190 + d * 300 + (1 - intro) * 900;
+    const y = 190 + ad * 30;
+    put(c, { x, y, z: -ad * 260, ry: -Math.sign(d) * Math.min(ad, 1.4) * 38, s: 1, o: e * clamp(1.6 - ad * 0.45) * prog(lt, 0, 0.5) });
+    c.style.zIndex = 100 - Math.round(ad * 10);
+  });
+  const cur = Math.round(focus);
+  const g = GAMES[clamp(cur, 0, GAMES.length - 1)];
+  $('#Gname').textContent = g[1]; $('#Gtag').textContent = g[2];
+  const near = 1 - Math.min(1, Math.abs(focus - cur) * 2.2);
+  put('#Ginfo', { o: e * near * prog(lt, 0.6, 1.0), y: 12 * (1 - near) });
 }
 
 // ---------- H. report ----------
@@ -397,9 +421,9 @@ window.SCENES = [
   { start: 7 * B,  end: 9 * B,  el: '#D', fn: D },
   { start: 9 * B,  end: 12 * B, el: '#E', fn: E_ },
   { start: 12 * B, end: 15 * B, el: '#F', fn: F },
-  { start: 15 * B, end: 17 * B, el: '#G', fn: G },
-  { start: 17 * B, end: 19 * B + 1.2, el: '#H', fn: H },
-  { start: 19 * B + 1.2, end: 22 * B + 0.4, el: '#I', fn: I },
+  { start: 15 * B, end: 19 * B, el: '#G', fn: G },
+  { start: 19 * B, end: 21 * B + 1.2, el: '#H', fn: H },
+  { start: 21 * B + 1.2, end: 24 * B + 0.4, el: '#I', fn: I },
 ];
 Engine.boot();
 </script>
