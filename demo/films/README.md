@@ -8,7 +8,8 @@
 | `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 106s | Laptop 2: SLP practice film, then documentation film. Silent. |
 | `SpeechTherapist-Film-Booth-Loop.mp4` | 46s | SLP home-practice film on its own. Silent, seamless loop. |
 | `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 60s | SLP documentation film on its own. Silent, seamless loop. |
-| `*-Web-Music.mp4` | — | The same films with an original music bed (SpeechLP also has the game's own sound effects). |
+| `*-Voiceover.mp4` | — | **Narrated** versions (founder voiceover over ducked music). Best for the website and social. |
+| `*-Web-Music.mp4` | — | The same films with music only (SpeechLP also has the game's own sound effects). |
 
 4K (3840×2160) versions of every file are made in `demo/films/4K/` but are not committed
 (about 450 MB); they were delivered directly. The 1080p files are downscaled from the 4K renders.
@@ -40,3 +41,8 @@ The last frame matches the first, so there is no visible jump.
 Source is in `demo/motion/` (HTML scenes + `engine.js`). Render with:
 `node demo/motion/render.js demo/motion/speechlp.html out.mp4` (needs Playwright + ffmpeg).
 Preview a frame: open `speechlp.html?t=12.5` in a browser.
+
+## Voiceover
+Script: `voiceover-scripts.md` / `Voiceover-Script.pdf`. Lines are cut from the founder's two recordings
+with Whisper word timestamps and placed on each scene by `demo/motion/voiceover.py`; music is
+side-chain ducked about 10 dB under the voice. Raw recordings are not committed.
