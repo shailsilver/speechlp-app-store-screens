@@ -5,10 +5,13 @@
 | File | Length | Use |
 |---|---|---|
 | `SpeechLP-Film-Booth-Loop.mp4` | 70s | Laptop 1 at the booth. Silent, seamless loop. |
-| `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 101s | Laptop 2 at the booth: practice film then docs film. Silent. |
+| `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 106s | Laptop 2: SLP practice film, then documentation film. Silent. |
 | `SpeechTherapist-Film-Booth-Loop.mp4` | 46s | SLP home-practice film on its own. Silent, seamless loop. |
-| `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 56s | SLP documentation film on its own. Silent, seamless loop. |
-| `*-Web-Music.mp4` | — | The same three films with an original music bed, for the website. |
+| `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 60s | SLP documentation film on its own. Silent, seamless loop. |
+| `*-Web-Music.mp4` | — | The same films with an original music bed (SpeechLP also has the game's own sound effects). |
+
+4K (3840×2160) versions of every file are made in `demo/films/4K/` but are not committed
+(about 450 MB); they were delivered directly. The 1080p files are downscaled from the 4K renders.
 
 **Looping on a Mac:** open in QuickTime Player → View → Loop (⌥⌘L) → View → Enter Full Screen.
 The last frame matches the first, so there is no visible jump.
@@ -21,6 +24,8 @@ The last frame matches the first, so there is no visible jump.
 - SpeechTherapist.app shows **no overall accuracy %** and no accuracy trend (accuracy is only
   meaningful per phoneme). It shows home sessions, words practiced, words per day, and accuracy by
   sound. Numbers are the demo account's (labelled "Demo data"); the weekly breakdown is illustrative.
+- Invite and assign screens in both SLP films are real frames from the SpeechTherapist.app ×
+  SpeechLP home-practice demo video (connection code 8WF-R99, demo student Leo M.).
 - Documentation film: the SOAP note, clinical insight and "Maya, age 5" demo client are taken verbatim
   from the public walkthrough at speechtherapist.app/demo. Document lists come from the product
   changelog (private practice: SOAP, evaluations, progress reports, parent updates, lesson plans;
@@ -29,8 +34,6 @@ The last frame matches the first, so there is no visible jump.
 - SpeechLP live gameplay (Perry In Submarine, 5–0 win, Snaily evolving, FRIEND pack → Gooey) is from
   the founder's screen recording (296×640 source, so it is slightly soft when enlarged).
 - SpeechLP games: all seven games with taglines from speechlp.com; card art from the website.
-- The invite (connection code) and assign screens are stylized illustrations of the workflow,
-  not screenshots of the live app.
 - Music is synthesized by `demo/motion/music.py` (original, royalty-free).
 
 ## Re-rendering
