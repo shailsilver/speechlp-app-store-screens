@@ -126,14 +126,14 @@
     <div class="col" id="Ct">
       <div class="eyebrow step"><b>1</b>Invite</div>
       <h2>Connect each family to your caseload.</h2>
-      <div class="sub">Invite a caregiver with a connection code.</div>
+      <div class="sub">Every student gets a SpeechLP connection code. Share it, copy a link, or email the caregiver.</div>
     </div>
     <div class="node" id="Cn1" style="left:960px; top:330px"><div class="av" style="background:#e7fbf3">🩺</div><div class="lb">You, the SLP</div></div>
     <div class="node" id="Cn2" style="left:1560px; top:330px"><div class="av" style="background:#efeaff"><img src="img/lp_icon.png" style="width:110px"></div><div class="lb">Family on SpeechLP</div></div>
     <div class="linkline" id="Cline" style="left:1175px; top:415px; width:400px"></div>
-    <div class="card" id="Ccode" style="left:1040px; top:620px; padding:28px 34px">
-      <div class="muted" style="font-size:22px; font-weight:700; letter-spacing:2px">CONNECTION CODE</div>
-      <div class="codebox" id="Ccodes"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="card" id="Ccode" style="left:1030px; top:585px; width:620px; height:431px; padding:0; overflow:hidden">
+      <img id="Cinv1" src="img/st/invite_a.png" style="position:absolute; inset:0; width:100%">
+      <img id="Cinv2" src="img/st/invite_b.png" style="position:absolute; inset:0; width:100%">
     </div>
     <div class="badge" id="Cbadge" style="left:1250px; top:225px">✓ Connected</div>
   </section>
@@ -143,19 +143,13 @@
     <div class="col" id="Dt">
       <div class="eyebrow step"><b>2</b>Assign</div>
       <h2>Assign exactly what to practice.</h2>
-      <div class="sub">Target sounds, word positions and blends, ready in SpeechLP at home.</div>
+      <div class="sub">Pick target sounds, positions and blends. One click sends them to the family’s SpeechLP app.</div>
     </div>
-    <div class="card" id="Dcard" style="left:980px; top:250px; width:800px; padding:36px 40px">
-      <h4>Active homework assignment</h4>
-      <div class="muted" style="font-size:20px; margin-top:4px">Leo M.</div>
-      <div style="margin-top:26px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">SOUND</div>
-      <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap"><span class="chipx" id="Da">/s/</span></div>
-      <div style="margin-top:24px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">POSITIONS</div>
-      <div style="display:flex; gap:12px; margin-top:12px"><span class="chipx" id="Db">Initial</span><span class="chipx">Medial</span><span class="chipx" id="Dc">Final</span></div>
-      <div style="margin-top:24px; font-size:20px; font-weight:700; color:#6b7a8c; letter-spacing:1px">INITIAL BLENDS</div>
-      <div style="display:flex; gap:12px; margin-top:12px"><span class="chipx" id="Dd">ST</span><span class="chipx" id="De">SP</span><span class="chipx">SK</span><span class="chipx">SN</span></div>
-      <div id="Dsend" style="margin-top:32px; display:inline-block; padding:16px 30px; border-radius:16px; background:var(--teal); color:#fff; font-weight:800; font-size:24px">Assign to Leo</div>
+    <div class="card" id="Dcard" style="left:930px; top:110px; width:880px; height:807px; padding:0; overflow:hidden">
+      <img id="Dt1" src="img/st/targets_a.png" style="position:absolute; inset:0; width:100%">
+      <img id="Dt2" src="img/st/targets_b.png" style="position:absolute; inset:0; width:100%">
     </div>
+    <div class="badge" id="Dbadge" style="left:1180px; top:940px">✓ Sent to the family's SpeechLP app</div>
   </section>
 
   <!-- E. Monitor (dashboard) -->
@@ -261,18 +255,12 @@ function B_(lt, dur) {
 }
 
 // C. invite
-const code = 'K7Q4M2';
-const codeEls = [...document.querySelectorAll('#Ccodes i')];
 function C(lt, dur) {
   const e = edge(lt, dur);
   put('#Ct', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Ct').style.transform += ' translateY(-50%)';
   put('#Cn1', { s: 0.5 + 0.5 * prog(lt, .3, 1.1, Ease.spring), o: e * prog(lt, .3, .6) });
-  put('#Ccode', { y: 60 * (1 - prog(lt, .7, 1.5, Ease.out5)), o: e * prog(lt, .7, 1.1) });
-  codeEls.forEach((c, i) => {
-    const a = 1.4 + i * 0.22, k = prog(lt, a, a + 0.35, Ease.back);
-    c.textContent = lt > a ? code[i] : '';
-    put(c, { s: lt > a ? 0.6 + 0.4 * k : 1, o: 1 });
-  });
+  put('#Ccode', { y: 60 * (1 - prog(lt, .7, 1.5, Ease.out5)), ry: -6, o: e * prog(lt, .7, 1.1) });
+  put('#Cinv2', { o: prog(lt, 2.2, 2.6) });            // "Copy Code" → "Copied"
   put('#Cn2', { s: 0.5 + 0.5 * prog(lt, 3.0, 3.8, Ease.spring), o: e * prog(lt, 3.0, 3.3) });
   const lk = prog(lt, 3.6, 4.6, Ease.inOut);
   $('#Cline').style.clipPath = `inset(0 ${100 - 100 * lk}% 0 0)`;
@@ -287,15 +275,8 @@ function D(lt, dur) {
   put('#Dt', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Dt').style.transform += ' translateY(-50%)';
   const k = prog(lt, 0, 1.1, Ease.out5);
   put('#Dcard', { x: 200 * (1 - k), ry: -18 * (1 - k) - 5, rx: 3, o: e });
-  ['#Da', '#Db', '#Dc', '#Dd', '#De'].forEach((id, i) => {
-    const a = 1.3 + i * 0.45, on = lt > a, kk = prog(lt, a, a + 0.4, Ease.back);
-    $(id).classList.toggle('on', on);
-    put(id, { s: on ? 0.85 + 0.15 * kk : 1 });
-  });
-  const sk = prog(lt, 4.0, 4.3) * (1 - prog(lt, 4.3, 4.7));
-  put('#Dsend', { s: 1 - 0.08 * sk });
-  $('#Dsend').style.boxShadow = `0 0 0 ${18 * prog(lt, 4.1, 5.0, Ease.out)}px rgba(52,211,166,${0.5 * (1 - prog(lt, 4.1, 5.0))})`;
-  $('#Dsend').textContent = lt > 4.3 ? '✓ Assigned' : 'Assign to Leo';
+  put('#Dt2', { o: prog(lt, 2.2, 2.8) });              // /s/ ini+fin → plus ST, SP blends
+  put('#Dbadge', { s: 0.5 + 0.5 * prog(lt, 4.0, 4.7, Ease.spring), o: e * prog(lt, 4.0, 4.2) });
 }
 
 // E/F. monitor + plan (one continuous dashboard shot)

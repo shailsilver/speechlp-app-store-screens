@@ -1,5 +1,5 @@
 // Render a motion page to MP4 frame by frame.
-// node render.js <page.html> <out.mp4> [audio.wav] [--fps 30] [--from s] [--to s] [--w 1920 --h 1080]
+// node render.js <page.html> <out.mp4> [audio.wav] [--fps 30] [--from s] [--to s] [--w 1920 --h 1080] [--scale 2 → 4K]
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -7,11 +7,11 @@ const path = require('path');
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const [page_, out, audio] = args.filter((a, i) => !a.startsWith('--') && !(i > 0 && args[i - 1].startsWith('--')));
-const FPS = +opt('--fps', 30), W = +opt('--w', 1920), H = +opt('--h', 1080);
+const FPS = +opt('--fps', 30), W = +opt('--w', 1920), H = +opt('--h', 1080), SCALE = +opt('--scale', 1);
 
 (async () => {
   const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--disable-lcd-text'] });
-  const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: SCALE });
   await page.goto('file://' + path.resolve(page_));
   await page.evaluate(() => window.__ready);
   const dur = await page.evaluate(() => window.__duration);
@@ -20,7 +20,7 @@ const FPS = +opt('--fps', 30), W = +opt('--w', 1920), H = +opt('--h', 1080);
 
   const ff = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-'];
   if (audio) ff.push('-ss', String(from), '-i', audio);
-  ff.push('-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p',
+  ff.push('-c:v', 'libx264', '-preset', 'medium', '-crf', SCALE > 1 ? '19' : '17', '-pix_fmt', 'yuv420p',
     '-profile:v', 'high', '-movflags', '+faststart');
   if (audio) ff.push('-c:a', 'aac', '-b:a', '192k', '-shortest');
   ff.push(out);

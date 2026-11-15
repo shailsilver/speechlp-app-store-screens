@@ -101,6 +101,7 @@
     </div>
     <h2 id="Bh" style="margin:50px 0 34px; font-size:70px">One app for private practice and schools.</h2>
     <div class="toggle" id="Btog"><div class="knob" id="Bknob"></div><span id="Bpp">Private practice</span><span id="Bsc">School</span></div>
+    <div class="sub" id="Bboth" style="margin-top:30px; font-size:28px; color:rgba(255,255,255,.75)">Work in both settings? You start with the school tools.</div>
   </section>
 
   <!-- C. Record -->
@@ -122,7 +123,7 @@
     <div id="Dt" style="position:absolute; left:110px; top:120px; width:560px">
       <div class="eyebrow">Step 2 · SOAP note</div>
       <h2 style="font-size:72px">A SOAP note, drafted for you.</h2>
-      <div class="sub" id="Dsub">The software drafts.<br>You always have the final say.</div>
+      <div class="sub" id="Dsub">The software drafts.<br>You always have the final say.<br><span style="font-size:26px; color:rgba(255,255,255,.7)">Review each section, edit with a sentence, then sign off.</span></div>
     </div>
     <div class="card note" id="Dnote" style="left:760px; top:70px">
       <div class="top"><div class="ti"><svg width="30" height="30" viewBox="0 0 24 24"><path fill="#1f9d72" d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h10v1.6H8V12zm0 3.4h10V17H8v-1.6zm0 3.4h7v1.6H8v-1.6z"/></svg>SOAP note · Maya, age 5</div><div class="pill" id="Dstatus" style="background:#fff4e0; color:#a2620a">Draft</div></div>
@@ -130,6 +131,11 @@
       <div class="sec" id="sO"><div class="L">O</div><div id="tO"></div></div>
       <div class="sec" id="sA"><div class="L">A</div><div id="tA"></div></div>
       <div class="sec" id="sP"><div class="L">P</div><div id="tP"></div></div>
+    </div>
+    <div class="cmd" id="Dvoice" style="left:760px; top:20px; background:#e7fbf3; border-color:#a6e8cf; color:#0d7a5b">✓ Written in your own writing voice</div>
+    <div class="card" id="Dpdf" style="left:110px; top:640px; width:560px; padding:28px 32px">
+      <div style="display:flex; align-items:center; gap:16px"><div style="width:64px; height:80px; border-radius:10px; background:#fdecec; color:#c0392b; font-weight:900; display:flex; align-items:center; justify-content:center; font-size:22px">PDF</div>
+      <div><div style="font-size:26px; font-weight:800">Exported with your letterhead</div><div class="muted" style="font-size:20px; margin-top:4px">Or copy to clipboard · your EHR template</div></div></div>
     </div>
     <div class="cmd" id="Dcmd" style="left:1040px; top:930px">✎ <span id="Dcmdt"></span></div>
     <div class="signbtn" id="Dsign" style="left:1500px; top:930px">Sign off</div>
@@ -139,12 +145,12 @@
   <!-- E. Insight -->
   <section class="scene center" id="E">
     <div class="eyebrow">Clinical insights</div>
-    <h2 style="font-size:66px">A second look, just for you.</h2>
+    <h2 style="font-size:66px">Don’t just sign off. Think ahead.</h2>
     <div class="card insight" id="Ecard" style="position:relative; text-align:left">
       <div class="hd">✦ CLINICAL INSIGHT</div>
       <p>Maya's final /k/ errors were <b>omissions</b> (final-consonant deletion), not fronting — and she's stimulable for final /k/. A reasonable next step is minimal pairs that contrast the final sound present vs. absent (e.g., “bee” vs. “beak”).</p>
     </div>
-    <div class="sub" id="Esub" style="margin-top:30px; font-size:26px; color:rgba(255,255,255,.65)">A learning extra, never part of the signed note.</div>
+    <div class="sub" id="Esub" style="margin-top:30px; font-size:26px; color:rgba(255,255,255,.65)">Not part of the signed note, but it can help shape your Plan and your next session.</div>
   </section>
 
   <!-- F. Private practice docs -->
@@ -161,19 +167,11 @@
     <div class="col" id="Ht">
       <div class="eyebrow">Both settings</div>
       <h2>Invite caregivers. Assign SpeechLP home practice.</h2>
-      <div class="sub">One tap invites the family to kid-friendly speech games. You see when they practice.</div>
+      <div class="sub">Share the student’s connection code. The family enters it in SpeechLP and is connected automatically. Then pick targets and send home practice.</div>
     </div>
-    <div class="card invite" id="Hcard" style="left:900px; top:330px">
-      <div style="font-size:28px; font-weight:800">Send home practice</div>
-      <div class="muted" style="font-size:20px; margin-top:6px">Maya, age 5 · /k/ initial, final</div>
-      <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap">
-        <span class="pill" style="background:#e5f7f1; color:#0d7a5b; font-size:22px">/k/ initial</span>
-        <span class="pill" style="background:#e5f7f1; color:#0d7a5b; font-size:22px">/k/ final</span>
-        <span class="pill" style="background:#efeaff; color:#5b3fd0; font-size:22px">SpeechLP games</span>
-      </div>
-      <div style="margin-top:28px"><span class="btn" id="Hbtn">Invite Maya's family</span></div>
-    </div>
-    <div class="phone" id="Hphone" style="left:1560px; top:230px"><div class="scr"><img src="img/games/perry.jpg"></div></div>
+    <div class="card" id="Hinv" style="left:880px; top:200px; width:700px; height:487px; padding:0; overflow:hidden"><img src="img/st/invite_b.png" style="width:100%; display:block"></div>
+    <div class="card" id="Htgt" style="left:1060px; top:150px; width:740px; height:678px; padding:0; overflow:hidden"><img src="img/st/targets_b.png" style="width:100%; display:block"></div>
+    <div class="badge" id="Hbadge" style="position:absolute; left:1150px; top:880px; padding:16px 30px; border-radius:40px; background:#e7fbf3; color:#0f8a66; font-weight:800; font-size:28px; box-shadow:0 20px 50px rgba(0,0,0,.3)">✓ Connected automatically · practice sent</div>
     <div id="hdots"></div>
   </section>
 
@@ -229,6 +227,7 @@ function B_(lt, dur) {
   put('#Blogo', { s: 0.6 + 0.4 * prog(lt, 0, 0.9, Ease.spring), o: prog(lt, 0, .3) });
   put('#Bh', { y: 30 * (1 - prog(lt, .5, 1.2, Ease.out)), o: prog(lt, .5, 1.0) });
   put('#Btog', { y: 30 * (1 - prog(lt, .9, 1.6, Ease.out)), o: prog(lt, .9, 1.3) });
+  put('#Bboth', { o: prog(lt, 2.6, 3.1) });
   // flip back and forth: private practice → school → private practice
   const k = kf(lt, [[0, 0], [2.0, 0], [2.6, 1], [3.6, 1], [4.2, 0]]);
   setToggle($('#Bknob'), $('#Bpp'), $('#Bsc'), k);
@@ -299,6 +298,9 @@ function D(lt, dur) {
   else if (lt > 7.0) { st.textContent = 'Reviewing'; st.style.background = '#efeaff'; st.style.color = '#5b3fd0'; }
   else { st.textContent = 'Draft'; st.style.background = '#fff4e0'; st.style.color = '#a2620a'; }
   put('#Dsub', { o: prog(lt, 1.0, 1.6) });
+  put('#Dvoice', { y: -20 * (1 - prog(lt, 1.2, 1.8, Ease.out)), o: e * prog(lt, 1.2, 1.6) * (1 - prog(lt, 6.6, 7.0)) });
+  const pk = prog(lt, 12.0, 12.8, Ease.spring);
+  put('#Dpdf', { y: 120 * (1 - pk), z: 50, s: 0.85 + 0.15 * pk, r: -2 * (1 - pk), o: lt > 12 ? e * prog(lt, 12.0, 12.3) : 0 });
 }
 
 // E
@@ -318,16 +320,11 @@ const PP = [
   ['🗓️', 'Lesson plans', 'Next session’s plan, with targets, materials and activities.'],
 ];
 const SCHOOL = [
-  ['🏫', 'IEP Builder', 'With per-section review.', true],
-  ['📋', 'IEP Evaluation Report', ''],
-  ['✉️', 'Prior Written Notice', ''],
-  ['🧭', 'MTSS Intervention Planner', ''],
-  ['✅', 'Permission to Evaluate & Re-evaluate', ''],
-  ['🔁', 'Re-evaluation Report', ''],
-  ['🗒️', 'Student Session Log', ''],
-  ['⏱️', 'Session Logger', 'Medicaid encounter notes.'],
-  ['💬', 'AAC Device Funding Report', ''],
+  ['🏫', 'IEP Builder', 'Drafts each IEP section for your review.', true],
+  ['🧭', 'MTSS Intervention Planner', 'Plan and track tiered interventions.', true],
+  ['💬', 'AAC Device Funding Report', 'Build the case for a communication device.', true],
 ];
+const SCHOOL_MORE = ['IEP Evaluation Report', 'Prior Written Notice', 'Permission to Evaluate', 'Re-evaluation Report', 'Student Session Log', 'Session Logger'];
 function mkDoc([ic, t, d, hero], i, setName) {
   const el = document.createElement('div'); el.className = 'card doc' + (hero ? ' hero' : '');
   el.innerHTML = `<div class="ic" style="background:${setName === 'pp' ? '#e5f7f1' : '#eaf1ff'}">${ic}</div><div class="dt">${t}</div>` +
@@ -336,7 +333,11 @@ function mkDoc([ic, t, d, hero], i, setName) {
 }
 const ppEls = PP.map((d, i) => mkDoc(d, i, 'pp'));
 const scEls = SCHOOL.map((d, i) => mkDoc(d, i, 'sc'));
-scEls.forEach(el => { el.style.width = '340px'; el.style.height = '210px'; el.style.padding = '24px 26px'; el.querySelector('.dt').style.fontSize = '25px'; });
+scEls.forEach(el => { el.style.width = '440px'; el.style.height = '300px'; });
+const moreEl = document.createElement('div');
+moreEl.style.cssText = 'position:absolute; left:0; top:0; width:1920px; text-align:center; font-size:26px; font-weight:600; color:rgba(255,255,255,.85)';
+moreEl.innerHTML = '<span style="color:#7fe6c6; letter-spacing:3px; font-size:20px; font-weight:800">PLUS</span>&nbsp;&nbsp;' + SCHOOL_MORE.join('&nbsp; · &nbsp;');
+$('#docs').appendChild(moreEl);
 function F(lt, dur) {
   const e = edge(lt, dur);
   const flip = prog(lt, 6.4, 7.1, Ease.inOut);        // switch to School at ~6.4s
@@ -350,13 +351,13 @@ function F(lt, dur) {
     const [x, y, s] = ppPos[i];
     put(el, { x, y: y + 160 * (1 - k) + 8 * Math.sin(lt * 1.3 + i), s: s * (0.85 + 0.15 * k), ry: (i % 2 ? -1 : 1) * 10 * (1 - k), o: e * prog(lt, a, a + .3) * (1 - flip) });
   });
-  // school: 3×3 grid
+  // school: three featured builders, the rest listed below
   scEls.forEach((el, i) => {
-    const a = 6.6 + i * 0.12, k = prog(lt, a, a + 0.8, Ease.spring);
-    const col = i % 3, row = Math.floor(i / 3);
-    const x = 400 + col * 390, y = 290 + row * 245;
-    put(el, { x, y: y + 120 * (1 - k), s: (el.classList.contains('hero') ? 1.04 : 1) * (0.85 + 0.15 * k), o: e * prog(lt, a, a + .3) });
+    const a = 6.6 + i * 0.18, k = prog(lt, a, a + 0.9, Ease.spring);
+    const x = 260 + i * 490, y = 330;
+    put(el, { x, y: y + 140 * (1 - k) + 8 * Math.sin(lt * 1.3 + i), s: 0.85 + 0.15 * k, ry: (1 - i) * 8 * (1 - k), o: e * prog(lt, a, a + .3) });
   });
+  put(moreEl, { y: 720 + 20 * (1 - prog(lt, 7.6, 8.3, Ease.out)), o: e * prog(lt, 7.6, 8.1) });
 }
 
 // H
@@ -365,13 +366,11 @@ for (let i = 0; i < 12; i++) { const d = document.createElement('div'); d.style.
 function H(lt, dur) {
   const e = edge(lt, dur);
   put('#Ht', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Ht').style.transform += ' translateY(-50%)';
-  put('#Hcard', { x: 120 * (1 - prog(lt, 0.2, 1.1, Ease.out5)), ry: -10, o: e * prog(lt, .2, .5) });
-  const press = prog(lt, 2.0, 2.15) * (1 - prog(lt, 2.15, 2.4));
-  put('#Hbtn', { s: 1 - 0.07 * press });
-  $('#Hbtn').textContent = lt > 2.2 ? '✓ Invite sent' : "Invite Maya's family";
-  put('#Hphone', { y: 300 * (1 - prog(lt, 2.4, 3.3, Ease.spring)), r: 4, o: e * prog(lt, 2.4, 2.7) });
-  hdots.forEach((d, i) => { const q = ((lt - 2.2) * 1.1 + i / hdots.length) % 1; const on = lt > 2.2;
-    put(d, { x: lerp(1460, 1640, q), y: lerp(560, 520, q) - 80 * Math.sin(Math.PI * q), o: on ? Math.sin(Math.PI * q) * e : 0 }); });
+  const sw = prog(lt, 3.0, 3.8, Ease.inOut);                 // invite → targets
+  put('#Hinv', { x: 120 * (1 - prog(lt, 0.2, 1.1, Ease.out5)) - 200 * sw, ry: -8, s: 1 - 0.15 * sw, o: e * prog(lt, .2, .5) * (1 - sw) });
+  put('#Htgt', { x: 200 * (1 - sw), ry: -8, s: 0.85 + 0.15 * sw, o: e * sw });
+  put('#Hbadge', { s: 0.5 + 0.5 * prog(lt, 5.0, 5.7, Ease.spring), o: e * prog(lt, 5.0, 5.2) });
+  hdots.forEach(d => put(d, { o: 0 }));
 }
 
 // I
@@ -389,11 +388,11 @@ window.SCENES = [
   { start: 0,      end: 2 * B,  el: '#A', fn: A },
   { start: 2 * B,  end: 4 * B,  el: '#B', fn: B_ },
   { start: 4 * B,  end: 6 * B,  el: '#C', fn: C },
-  { start: 6 * B,  end: 11 * B, el: '#D', fn: D },
-  { start: 11 * B, end: 13 * B, el: '#E', fn: E_ },
-  { start: 13 * B, end: 18 * B, el: '#F', fn: F },
-  { start: 18 * B, end: 20 * B, el: '#H', fn: H },
-  { start: 20 * B, end: 23 * B + 0.4, el: '#I', fn: I },
+  { start: 6 * B,  end: 12 * B, el: '#D', fn: D },
+  { start: 12 * B, end: 14 * B, el: '#E', fn: E_ },
+  { start: 14 * B, end: 19 * B, el: '#F', fn: F },
+  { start: 19 * B, end: 22 * B, el: '#H', fn: H },
+  { start: 22 * B, end: 25 * B + 0.4, el: '#I', fn: I },
 ];
 Engine.boot();
 </script>
