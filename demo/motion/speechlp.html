@@ -185,6 +185,21 @@
     </div>
   </section>
 
+  <!-- J. Live gameplay: play, win, evolve, open a pack -->
+  <section class="scene" id="J">
+    <div class="phone" id="Jphone" style="left:300px; top:107px">
+      <div class="scr"><canvas id="Jcv" width="592" height="1280" style="width:100%; height:100%; display:block"></canvas></div><div class="glare"></div>
+    </div>
+    <div id="Jburst"></div>
+    <div class="col right" id="Jt" style="width:880px; right:110px">
+      <div class="eyebrow" id="Jeb"></div>
+      <h2 id="Jh" style="font-size:88px"></h2>
+      <div class="sub" id="Js"></div>
+      <div id="Jd" style="margin-top:18px; font-size:22px; color:rgba(255,255,255,.6)"></div>
+    </div>
+    <div id="Jlive" style="position:absolute; left:318px; top:60px; padding:8px 16px; border-radius:20px; background:rgba(255,60,80,.9); font-weight:800; font-size:18px; letter-spacing:2px">● REAL GAMEPLAY</div>
+  </section>
+
   <!-- H. Report -->
   <section class="scene" id="H">
     <div class="col" id="Htext" style="width:520px; left:110px">
@@ -387,6 +402,58 @@ function G(lt, dur) {
   put('#Ginfo', { o: e * near * prog(lt, 0.6, 1.0), y: 12 * (1 - near) });
 }
 
+// ---------- J. live gameplay ----------
+const CLIP_N = 512, CLIP_FPS = 30;
+const clipFrames = [];
+for (let i = 1; i <= CLIP_N; i++) { const im = new Image(); im.src = `img/clip/${String(i).padStart(4, '0')}.jpg`; clipFrames.push(im); }
+const jcx = $('#Jcv').getContext('2d');
+const jstars = [];
+for (let i = 0; i < 16; i++) {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('class', 'star');
+  s.innerHTML = '<path fill="#FFD54A" stroke="#fff6c8" stroke-width=".6" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/>';
+  $('#Jburst').appendChild(s); jstars.push(s);
+}
+const JCAP = [
+  [0, 4.0, 'Real gameplay', 'Say the word. Earn the stars.', 'Every game is played out loud, with automated feedback on every word.', 'App feedback guides practice. It is not a diagnosis or clinical score.'],
+  [4.0, 6.5, 'Real gameplay', 'Win the match.', 'Every round is won by speaking.', ''],
+  [6.5, 11.5, 'Collect friends', 'Friends evolve as kids play.', 'Keep practicing to level them up.', ''],
+  [11.5, 99, 'Collect friends', 'Open a pack. Meet a new friend.', 'New characters to collect and play with.', ''],
+];
+function J(lt, dur) {
+  const e = edge(lt, dur);
+  const ct = lt - 0.8;                                         // clip time
+  const fi = clamp(Math.floor(ct * CLIP_FPS), 0, CLIP_N - 1);
+  const im = clipFrames[fi];
+  if (im.complete && im.naturalWidth) jcx.drawImage(im, 0, 0, 592, 1280);
+  const pk = prog(lt, 0, 1.0, Ease.out5);
+  put('#Jphone', { x: -300 * (1 - pk), ry: 14 - 6 * prog(lt, 0, dur, Ease.lin), rx: 3, s: 1 + 0.015 * Math.sin(lt * 1.2), o: e });
+  put('#Jlive', { o: e * prog(lt, 0.6, 1.0) });
+  const ci = JCAP.findIndex(c => ct >= c[0] && ct < c[1]);
+  const c = JCAP[Math.max(0, ci)];
+  $('#Jeb').textContent = c[2]; $('#Jh').textContent = c[3]; $('#Js').textContent = c[4]; $('#Jd').textContent = c[5];
+  const local = ct - c[0], left = c[1] - ct;
+  const ko = Math.min(prog(local, 0, 0.45, Ease.out), ci === JCAP.length - 1 ? 1 : prog(left, 0, 0.3, Ease.out));
+  put('#Jt', { x: 50 * (1 - ko), o: e * (lt < 0.8 ? prog(lt, 0.3, 0.8) : ko) });
+  $('#Jt').style.transform += ' translateY(-50%)';
+  // star bursts at the evolution flash and the pack reveal
+  const bursts = [10.0, 15.4];
+  jstars.forEach((st, i) => {
+    let shown = false;
+    for (const b of bursts) {
+      const k = (ct - b) / 1.3;
+      if (k >= 0 && k <= 1) {
+        const a = (i / jstars.length) * Math.PI * 2 + b;
+        const r = 160 + 300 * Ease.out5(k);
+        st.style.left = (500 + Math.cos(a) * r) + 'px'; st.style.top = (540 + Math.sin(a) * r * 0.9) + 'px';
+        put(st, { s: 0.5 + 0.6 * ((i * 7) % 5) / 5, r: 220 * k + i * 30, o: e * (1 - prog(k, 0.55, 1)) });
+        shown = true;
+      }
+    }
+    if (!shown) put(st, { o: 0 });
+  });
+}
+
 // ---------- H. report ----------
 function H(lt, dur) {
   const e = edge(lt, dur);
@@ -420,11 +487,12 @@ window.SCENES = [
   { start: 4 * B,  end: 7 * B,  el: '#C', fn: C },
   { start: 7 * B,  end: 9 * B,  el: '#D', fn: D },
   { start: 9 * B,  end: 12 * B, el: '#E', fn: E_ },
-  { start: 12 * B, end: 15 * B, el: '#F', fn: F },
-  { start: 15 * B, end: 19 * B, el: '#G', fn: G },
-  { start: 19 * B, end: 21 * B + 1.2, el: '#H', fn: H },
-  { start: 21 * B + 1.2, end: 24 * B + 0.4, el: '#I', fn: I },
+  { start: 12 * B, end: 16 * B, el: '#G', fn: G },
+  { start: 16 * B, end: 24 * B, el: '#J', fn: J },
+  { start: 24 * B, end: 26 * B + 1.2, el: '#H', fn: H },
+  { start: 26 * B + 1.2, end: 29 * B + 0.4, el: '#I', fn: I },
 ];
+document.getElementById('F').style.display = 'none';   // replaced by real gameplay (J)
 Engine.boot();
 </script>
 </body>

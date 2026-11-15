@@ -4,7 +4,7 @@
 
 | File | Length | Use |
 |---|---|---|
-| `SpeechLP-Film-Booth-Loop.mp4` | 58s | Laptop 1 at the booth. Silent, seamless loop. |
+| `SpeechLP-Film-Booth-Loop.mp4` | 70s | Laptop 1 at the booth. Silent, seamless loop. |
 | `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 101s | Laptop 2 at the booth: practice film then docs film. Silent. |
 | `SpeechTherapist-Film-Booth-Loop.mp4` | 46s | SLP home-practice film on its own. Silent, seamless loop. |
 | `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 56s | SLP documentation film on its own. Silent, seamless loop. |
@@ -26,6 +26,8 @@ The last frame matches the first, so there is no visible jump.
   changelog (private practice: SOAP, evaluations, progress reports, parent updates, lesson plans;
   school: the nine builders). Pricing wording matches speechtherapist.app/pricing ("$20/seat/month",
   "Free plan available"). The "edit with a sentence" shortened Plan text is illustrative.
+- SpeechLP live gameplay (Perry In Submarine, 5–0 win, Snaily evolving, FRIEND pack → Gooey) is from
+  the founder's screen recording (296×640 source, so it is slightly soft when enlarged).
 - SpeechLP games: all seven games with taglines from speechlp.com; card art from the website.
 - The invite (connection code) and assign screens are stylized illustrations of the workflow,
   not screenshots of the live app.
