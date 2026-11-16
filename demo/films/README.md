@@ -46,3 +46,8 @@ Preview a frame: open `speechlp.html?t=12.5` in a browser.
 Script: `voiceover-scripts.md` / `Voiceover-Script.pdf`. Lines are cut from the founder's two recordings
 with Whisper word timestamps and placed on each scene by `demo/motion/voiceover.py`; music is
 side-chain ducked about 10 dB under the voice. Raw recordings are not committed.
+
+## Captions
+Booth loops of the two SpeechTherapist.app films have 4 burned-in key-line captions (silent playback).
+Voiceover and Web-Music versions have **no** burned-in captions; use the `.srt` files for switchable
+captions on YouTube/website. The SpeechLP film has no captions (its headlines carry every line).
