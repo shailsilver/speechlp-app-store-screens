@@ -149,20 +149,28 @@
     <div class="muted" id="Cdemo" style="position:absolute; left:900px; top:850px; color:rgba(255,255,255,.55); font-size:22px">Demo client: Maya, age 5 — /k/ sound and “I” in sentences</div>
   </section>
 
-  <!-- N. Live session + one-tap cue tagging (screenshot and wording from speechtherapist.app) -->
+  <!-- N. "Add your own input" panel on the SOAP draft page (matches the app UI) -->
   <section class="scene" id="N">
     <div class="col" id="Nt" style="width:560px">
-      <div class="eyebrow">Step 2 · Live session</div>
-      <h2 style="font-size:70px">Tag cues with a single tap.</h2>
-      <div class="sub">Live dB monitoring, rolling transcript with IPA phonemes, and one-tap cue tagging — all during the session.</div>
+      <div class="eyebrow">Step 2 · Your input</div>
+      <h2 style="font-size:70px">Add your own input.</h2>
+      <div class="sub">Your session data, what you noticed, what you were told. Filed into the right sections for you.</div>
     </div>
-    <div class="card" id="Nlive" style="left:770px; top:300px; width:1040px; height:489px; padding:0; overflow:hidden; border-radius:22px">
-      <img src="img/st/live-session.png" style="width:100%; display:block">
-      <div id="Nring0" style="position:absolute; border:4px solid #1f9d72; border-radius:22px; left:762px; top:66px; width:86px; height:38px"></div>
-      <div id="Nring1" style="position:absolute; border:4px solid #2a6fd8; border-radius:22px; left:846px; top:66px; width:84px; height:38px"></div>
-      <div id="Nring2" style="position:absolute; border:4px solid #e0742b; border-radius:22px; left:927px; top:66px; width:82px; height:38px"></div>
+    <div class="card" id="Nin" style="left:770px; top:250px; width:1040px; padding:34px 40px 30px">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div style="display:flex; align-items:center; gap:14px"><span style="font-size:32px; font-weight:800">Session note draft</span><span style="font-size:16px; font-weight:700; color:#8a96a6; letter-spacing:1px">DRAFT</span></div>
+        <span id="Nregen" style="padding:12px 22px; border-radius:12px; background:#1f9d72; color:#fff; font-weight:800; font-size:22px">✦ Regenerate</span>
+      </div>
+      <div style="font-size:20px; color:#6b7a8c; margin-top:6px">Maya, age 5 · 30 min · <span style="color:#1f9d72">✓ Saved</span></div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:18px; font-size:19px; color:#6b7a8c">Format
+        <span style="padding:8px 16px; border-radius:10px; background:#1f9d72; color:#fff; font-weight:700">SOAP ●</span>
+        <span style="padding:8px 16px; border-radius:10px; border:2px solid #e6eaf0; font-weight:600">Informal Evaluation Summary</span></div>
+      <div style="margin-top:22px; border:2px solid #b7e4d3; border-radius:18px; padding:20px 24px; background:#f6fcf9">
+        <div style="font-size:22px; font-weight:800">✦ Add your own input — it gets included in the note</div>
+        <div style="font-size:18px; color:#6b7a8c; margin-top:10px"><b style="color:#0f2233">Write it out</b> — your session data, what you noticed, what you were told. Filed into the right sections for you.</div>
+        <div id="Ntext" style="margin-top:14px; min-height:150px; border:2px solid #e6eaf0; border-radius:14px; background:#fff; padding:16px 18px; font-size:23px; line-height:1.5; color:#0f2233"></div>
+      </div>
     </div>
-    <div class="finger" id="Nfinger"></div>
   </section>
 
   <!-- D. SOAP -->
@@ -369,18 +377,17 @@ function D(lt, dur) {
   put('#Dpdf', { y: 120 * (1 - pk), z: 50, s: 0.85 + 0.15 * pk, r: -2 * (1 - pk), o: lt > 12.7 ? e * prog(lt, 12.7, 13.0) : 0 });
 }
 
-// N: cue tags light up one by one, as if tapped during the session
-const NCH = [[773, 85], [853, 85], [932, 85]];          // chip centres inside the card (px)
+// N: the SLP writes their session data and observations (consistent with the demo note)
+const NIN = '/k/ initial 8 of 10 with a verbal model + placement cue. /k/ final 6 of 10, mostly omitted. “I” vs. “me” 7 of 10 in narration. Caregiver says she’s talking more in sentences.';
 function N(lt, dur) {
   const e = edge(lt, dur);
   put('#Nt', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Nt').style.transform += ' translateY(-50%)';
-  put('#Nlive', { x: 160 * (1 - prog(lt, 0.1, 1.0, Ease.out5)), ry: -8, o: e * prog(lt, .1, .4) });
-  const taps = [2.2, 3.4, 4.6];
-  taps.forEach((t, i) => { const q = (lt - t) / 0.9; put('#Nring' + i, { s: 1 + 0.25 * clamp(q), o: q > 0 && q < 1 ? 1 - q : 0 }); });
-  const f = $('#Nfinger'), card = $('#Nlive').getBoundingClientRect();
-  const idx = lt < taps[1] - 0.3 ? 0 : lt < taps[2] - 0.3 ? 1 : 2;
-  f.style.left = (card.left + NCH[idx][0] * card.width / 1040) + 'px'; f.style.top = (card.top + NCH[idx][1] * card.height / 489 + 8) + 'px';
-  put(f, { o: 0 });
+  put('#Nin', { x: 160 * (1 - prog(lt, 0.1, 1.0, Ease.out5)), ry: -6, o: e * prog(lt, .1, .4) });
+  const k = prog(lt, 1.0, 5.4, Ease.lin);
+  $('#Ntext').innerHTML = typed(NIN, k) + (k < 1 && lt > 1.0 ? caret : '');
+  const press = prog(lt, 5.8, 5.95) * (1 - prog(lt, 5.95, 6.2));
+  put('#Nregen', { s: 1 - 0.08 * press });
+  $('#Nregen').style.boxShadow = `0 0 0 ${16 * prog(lt, 5.9, 6.8, Ease.out)}px rgba(52,211,166,${0.5 * (1 - prog(lt, 5.9, 6.8))})`;
 }
 
 // E
