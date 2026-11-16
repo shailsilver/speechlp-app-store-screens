@@ -77,7 +77,7 @@ def option_b():
     .logos .sep{width:1px;height:.4in;background:#ddd}
     """
     opts = [(f'<img class="ico" src="{img("speechlp-icon")}" alt="">',"Try SpeechLP","Speech sound practice kids do out loud","#6b3fd4","#f3effd"),
-            (f'<img class="ico" src="{img("speechtherapist-icon")}" alt="">',"Try SpeechTherapist.app","Documentation and planning for pediatric SLPs","#0f6b4f","#e6f4ee"),
+            (f'<img class="ico" src="{img("speechtherapist-icon")}" alt="">',"Try SpeechTherapist.app","SLP documentation + assign SpeechLP for home practice","#0f6b4f","#e6f4ee"),
             ('<div class="dot" style="background:#d9534f">&#9993;</div>',"Stay Connected","Get updates, request a demo, or explore research","#d9534f","#fdecea")]
     oh = "".join(f'<div class="opt" style="background:{bg}">{ic}<div><b style="color:{c}">{t}</b><span>{s}</span></div></div>' for ic,t,s,c,bg in opts)
     return f'''<!doctype html><html><head><meta charset="utf-8"><title>ASHA QR Sign - 1 code</title><style>{css}</style></head><body><div class="page">

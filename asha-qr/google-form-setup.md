@@ -13,7 +13,7 @@ Thanks for stopping by Booth 2046!
 ▶ Try SpeechLP (speech sound practice kids do out loud):
 https://app.speechlp.com/?utm_source=asha2026&utm_medium=form&utm_campaign=booth2046
 
-▶ Try SpeechTherapist.app (documentation and planning for pediatric SLPs):
+▶ Try SpeechTherapist.app (SLP documentation + assign SpeechLP for home practice):
 https://speechtherapist.app/?utm_source=asha2026&utm_medium=form&utm_campaign=booth2046
 
 Or stay connected below. It takes about 30 seconds.
