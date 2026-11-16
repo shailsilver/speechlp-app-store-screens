@@ -5,9 +5,9 @@
 | File | Length | Use |
 |---|---|---|
 | `SpeechLP-Film-Booth-Loop.mp4` | 70s | Laptop 1 at the booth. Silent, seamless loop. |
-| `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 106s | Laptop 2: SLP practice film, then documentation film. Silent. |
+| `SpeechTherapist-Laptop2-Combined-Loop.mp4` | 115s | Laptop 2: SLP practice film, then documentation film. Silent. |
 | `SpeechTherapist-Film-Booth-Loop.mp4` | 46s | SLP home-practice film on its own. Silent, seamless loop. |
-| `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 60s | SLP documentation film on its own. Silent, seamless loop. |
+| `SpeechTherapist-Docs-Film-Booth-Loop.mp4` | 70s | SLP documentation film on its own. Silent, seamless loop. |
 | `*-Voiceover.mp4` | — | **Narrated** versions (founder voiceover over ducked music). Best for the website and social. |
 | `*-Web-Music.mp4` | — | The same films with music only (SpeechLP also has the game's own sound effects). |
 
