@@ -25,7 +25,7 @@ def load(name):
     return x, words
 
 
-REC = {n: load(n) for n in ['r304', 'r305']}
+REC = {n: load(n) for n in ['r304', 'r305', 'r307']}
 
 
 def find(rec, phrase, after=0.0, occurrence=1):
@@ -134,6 +134,7 @@ build('docs', 67.6, [
     (0.6,  clip('r305', 'Spend less', 'treating')),
     (5.2,  clip('r305', 'One app', 'schools')),
     (10.0, clip('r305', 'Record or', 'your session')),
+    (15.4, clip('r307', 'Add your', 'you measured')),
     (22.4, clip('r305', 'Your soap', 'writing voice')),
     (26.6, splice(clip('r305', 'Review each', 'each section'), clip('r305', 'and sign', 'sign off', after=70))),
     (33.4, clip('r305', 'You always', 'final say')),
