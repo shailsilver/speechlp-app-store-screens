@@ -120,17 +120,27 @@ build('st', 46.0, [
     (42.6, clip('r305', 'SpeechTherapist .app', 'SpeechTherapist .app', after=50)),
 ])
 
-# ---- Film 3: SpeechTherapist.app documentation (60.4s) — recording 305 second half
-build('docs', 60.4, [
+# ---- Film 3: SpeechTherapist.app documentation (67.6s) — recording 305 second half
+# "No typing" and "edit with a sentence" are cut out of the recorded lines.
+def splice(*parts, gap=0.18):
+    out = []
+    for i, p in enumerate(parts):
+        out.append(p)
+        if i < len(parts) - 1:
+            out.append(np.zeros(int(gap * SR), np.float32))
+    return np.concatenate(out)
+
+build('docs', 67.6, [
     (0.6,  clip('r305', 'Spend less', 'treating')),
     (5.2,  clip('r305', 'One app', 'schools')),
-    (10.0, clip('r305', 'Record or', 'typing')),
-    (15.4, clip('r305', 'Your soap', 'sign off')),
-    (25.0, clip('r305', 'You always', 'final say')),
-    (29.4, clip('r305', 'Clinical insights', 'next session')),
-    (34.4, clip('r305', 'Evaluations', 'lesson plans')),
-    (40.2, clip('r305', 'And for schools', 'funding reports')),
-    (46.2, clip('r305', 'Invite caregivers', 'either setting')),
-    (53.2, clip('r305', 'Documentation included', 'per month', after=100)),
-    (57.4, clip('r305', 'SpeechTherapist .app', 'SpeechTherapist .app', after=108)),
+    (10.0, clip('r305', 'Record or', 'your session')),
+    (22.4, clip('r305', 'Your soap', 'writing voice')),
+    (26.6, splice(clip('r305', 'Review each', 'each section'), clip('r305', 'and sign', 'sign off', after=70))),
+    (33.4, clip('r305', 'You always', 'final say')),
+    (36.4, clip('r305', 'Clinical insights', 'next session')),
+    (41.4, clip('r305', 'Evaluations', 'lesson plans')),
+    (47.4, clip('r305', 'And for schools', 'funding reports')),
+    (53.4, clip('r305', 'Invite caregivers', 'either setting')),
+    (60.4, clip('r305', 'Documentation included', 'per month', after=100)),
+    (64.6, clip('r305', 'SpeechTherapist .app', 'SpeechTherapist .app', after=108)),
 ])

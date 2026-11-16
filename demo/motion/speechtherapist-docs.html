@@ -80,6 +80,31 @@
   .bul span::before { content: "✓ "; color: var(--mint); }
   .wordmark { font-family: "Funnel"; font-size: 72px; letter-spacing: -1px; } .wordmark span { color: var(--mint); }
   .pulse-icon { width: 110px; height: 110px; border-radius: 26px; background: var(--teal); display: flex; align-items: center; justify-content: center; }
+  .rv { position: absolute; right: 0; top: 10px; padding: 5px 12px; border-radius: 10px; font-size: 16px; font-weight: 700; background: #f1f5f9; color: #8a96a6; }
+  .rv.on { background: #e3f8ee; color: #11704f; }
+  .sec { position: relative; padding-right: 150px; }
+  .sheet { width: 980px; padding: 34px 40px 30px; }
+  .sheet .hd { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--line); padding-bottom: 16px; margin-bottom: 8px; }
+  .trow { display: grid; grid-template-columns: 300px 1fr 150px; align-items: center; gap: 18px; padding: 14px 0; border-bottom: 1px solid #eef2f6; }
+  .trow .tn { font-size: 26px; font-weight: 700; }
+  .trow .tn small { display: block; font-size: 17px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+  .taps { display: flex; gap: 6px; flex-wrap: wrap; }
+  .taps i { width: 30px; height: 30px; border-radius: 8px; background: #f1f5f9; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 16px; font-weight: 800; }
+  .taps i.ok { background: #d9f6e9; color: #11704f; } .taps i.no { background: #ffe4e6; color: #b3434b; }
+  .score { font-family: "Funnel"; font-size: 34px; text-align: right; color: var(--teal); }
+  .cues { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+  .cue { padding: 8px 16px; border-radius: 12px; font-size: 19px; font-weight: 700; background: #f1f5f9; color: #6b7a8c; border: 2px solid transparent; }
+  .cue.on { background: #efeaff; color: #5b3fd0; border-color: #d9cff7; }
+  .obs { margin-top: 16px; border: 2px solid var(--line); border-radius: 14px; padding: 12px 16px; font-size: 21px; min-height: 52px; color: var(--ink); }
+  .obs b { color: #6b7a8c; font-size: 16px; letter-spacing: 2px; display: block; margin-bottom: 4px; }
+  .finger { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; background: rgba(255,255,255,.9); box-shadow: 0 6px 20px rgba(0,0,0,.35); border: 4px solid #1f9d72; }
+  .page { position: absolute; left: 0; top: 0; background: #fff; color: var(--ink); border-radius: 18px; box-shadow: 0 40px 90px rgba(0,10,20,.5); overflow: hidden; }
+  .page .ph { color: #fff; font-weight: 800; }
+  .page .sh { font-weight: 800; color: #0f2233; margin: 12px 0 6px; }
+  .page .ln { height: 9px; border-radius: 5px; background: #eef2f6; margin: 7px 0; }
+  .page .tb { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
+  .page .tb i { height: 22px; border-radius: 5px; background: #f3f6f9; }
+  .page.feat { outline: 6px solid #6ff0c5; }
 </style>
 </head>
 <body>
@@ -108,7 +133,7 @@
   <section class="scene" id="C">
     <div class="col" id="Ct">
       <div class="eyebrow">Step 1 · Record or upload</div>
-      <h2>Capture the session. No typing.</h2>
+      <h2>Capture the session.</h2>
       <div class="sub">Record live or upload audio. Secure speech-to-text turns it into a transcript.</div>
     </div>
     <div id="rings"></div>
@@ -118,19 +143,38 @@
     <div class="muted" id="Cdemo" style="position:absolute; left:900px; top:850px; color:rgba(255,255,255,.55); font-size:22px">Demo client: Maya, age 5 — /k/ sound and “I” in sentences</div>
   </section>
 
+  <!-- N. Session data + observations entered by the SLP -->
+  <section class="scene" id="N">
+    <div class="col" id="Nt" style="width:560px">
+      <div class="eyebrow">Step 2 · Your data</div>
+      <h2 style="font-size:70px">Add your data and observations.</h2>
+      <div class="sub">Tap or type each target, cue and trial. The note is built from your data, and nothing is invented.</div>
+    </div>
+    <div class="card sheet" id="Nsheet" style="left:790px; top:120px">
+      <div class="hd"><div style="font-size:30px; font-weight:800">Session data · Maya, age 5</div><div class="pill" style="background:#eaf1ff; color:#2a5bd7">Counts toward: goals</div></div>
+      <div class="trow"><div class="tn">/k/ initial<small>word level</small></div><div class="taps" id="T0"></div><div class="score" id="S0">0/10</div></div>
+      <div class="trow"><div class="tn">/k/ final<small>word level</small></div><div class="taps" id="T1"></div><div class="score" id="S1">0/10</div></div>
+      <div class="trow"><div class="tn">“I” vs. “me”<small>subject position</small></div><div class="taps" id="T2"></div><div class="score" id="S2">0/10</div></div>
+      <div class="cues"><span style="font-size:19px; font-weight:700; color:#6b7a8c; margin-right:6px">CUES</span><span class="cue" id="C0">Verbal model</span><span class="cue" id="C1">Phonetic placement</span><span class="cue">Tactile</span><span class="cue">Visual</span>
+        <span style="font-size:19px; font-weight:700; color:#6b7a8c; margin:0 6px 0 20px">CONTEXT</span><span class="cue" id="C4">Play-based</span><span class="cue">Structured</span></div>
+      <div class="obs"><b>OBSERVATIONS</b><span id="Nobs"></span></div>
+    </div>
+    <div class="finger" id="Nfinger"></div>
+  </section>
+
   <!-- D. SOAP -->
   <section class="scene" id="D">
     <div id="Dt" style="position:absolute; left:110px; top:120px; width:560px">
-      <div class="eyebrow">Step 2 · SOAP note</div>
-      <h2 style="font-size:72px">A SOAP note, drafted for you.</h2>
-      <div class="sub" id="Dsub">The software drafts.<br>You always have the final say.<br><span style="font-size:26px; color:rgba(255,255,255,.7)">Review each section, edit with a sentence, then sign off.</span></div>
+      <div class="eyebrow">Step 3 · SOAP note</div>
+      <h2 style="font-size:70px">A SOAP note, drafted from your session.</h2>
+      <div class="sub" id="Dsub">The software drafts.<br>You always have the final say.<br><span style="font-size:26px; color:rgba(255,255,255,.7)">Review each section, edit what you need, then sign off.</span></div>
     </div>
     <div class="card note" id="Dnote" style="left:760px; top:70px">
       <div class="top"><div class="ti"><svg width="30" height="30" viewBox="0 0 24 24"><path fill="#1f9d72" d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h10v1.6H8V12zm0 3.4h10V17H8v-1.6zm0 3.4h7v1.6H8v-1.6z"/></svg>SOAP note · Maya, age 5</div><div class="pill" id="Dstatus" style="background:#fff4e0; color:#a2620a">Draft</div></div>
-      <div class="sec" id="sS"><div class="L">S</div><div id="tS"></div></div>
-      <div class="sec" id="sO"><div class="L">O</div><div id="tO"></div></div>
-      <div class="sec" id="sA"><div class="L">A</div><div id="tA"></div></div>
-      <div class="sec" id="sP"><div class="L">P</div><div id="tP"></div></div>
+      <div class="sec" id="sS"><div class="L">S</div><div id="tS"></div><span class="rv" id="rvS">I’ve reviewed this</span></div>
+      <div class="sec" id="sO"><div class="L">O</div><div id="tO"></div><span class="rv" id="rvO">I’ve reviewed this</span></div>
+      <div class="sec" id="sA"><div class="L">A</div><div id="tA"></div><span class="rv" id="rvA">I’ve reviewed this</span></div>
+      <div class="sec" id="sP"><div class="L">P</div><div id="tP"></div><span class="rv" id="rvP">I’ve reviewed this</span></div>
     </div>
     <div class="cmd" id="Dvoice" style="left:760px; top:20px; background:#e7fbf3; border-color:#a6e8cf; color:#0d7a5b">✓ Written in your own writing voice</div>
     <div class="card" id="Dpdf" style="left:110px; top:640px; width:560px; padding:28px 32px">
@@ -269,38 +313,70 @@ function D(lt, dur) {
   const e = edge(lt, dur);
   put('#Dt', { x: -50 * (1 - prog(lt, 0, .9, Ease.out)), o: e });
   const k = prog(lt, 0, 1.0, Ease.out5);
-  put('#Dnote', { x: 200 * (1 - k), ry: -16 * (1 - k) - 3 * (1 - prog(lt, 9.5, 11, Ease.inOut)), rx: 2, s: 0.94, o: e });
-  // type sections in order
+  put('#Dnote', { x: 200 * (1 - k), ry: -16 * (1 - k) - 3 * (1 - prog(lt, 11, 12.5, Ease.inOut)), rx: 2, s: 0.94, o: e });
+  // draft writes in (Objective comes straight from the SLP's data)
   const ts = [[1.0, 2.2, 'S'], [2.2, 4.4, 'O'], [4.4, 5.6, 'A'], [5.6, 6.8, 'P']];
   for (const [a, b, key] of ts) {
     const kk = prog(lt, a, b, Ease.lin), el = $('#t' + key);
     if (key === 'O') el.innerHTML = renderO(kk) + (kk > 0 && kk < 1 ? caret : '');
-    else if (key === 'P' && lt > 8.3) {
-      // "edit with a sentence": the Plan is rewritten shorter, with the change shown
-      const sw = prog(lt, 8.3, 9.3, Ease.lin);
-      el.innerHTML = sw < 1 ? `<span class="del">${SOAP.P}</span> <span class="ins">${typed(P_SHORT, sw)}</span>` : `<span class="ins">${P_SHORT}</span>`;
-      if (lt > 10.2) el.innerHTML = P_SHORT;
+    else if (key === 'P' && lt > 9.1) {
+      const sw = prog(lt, 9.1, 9.9, Ease.lin);             // one small edit to the Plan
+      el.innerHTML = sw < 1 ? `<span class="del">${SOAP.P}</span> <span class="ins">${typed(P_SHORT, sw)}</span>` : (lt < 10.6 ? `<span class="ins">${P_SHORT}</span>` : P_SHORT);
     }
     else el.innerHTML = typed(SOAP[key], kk) + (kk > 0 && kk < 1 ? caret : '');
     $('#s' + key).style.background = kk > 0 && kk < 1 ? 'rgba(31,157,114,.07)' : 'transparent';
   }
-  $('#sP').style.background = lt > 8.3 && lt < 10.2 ? 'rgba(124,92,240,.08)' : $('#sP').style.background;
-  // command chip
-  const cmd = '“Shorten the Plan”';
-  $('#Dcmdt').textContent = 'Edit with a sentence: ' + typed(cmd, prog(lt, 7.2, 8.1, Ease.lin));
-  put('#Dcmd', { y: 30 * (1 - prog(lt, 7.0, 7.5, Ease.out)), o: e * prog(lt, 7.0, 7.3) * (1 - prog(lt, 9.6, 10.0)) });
+  if (lt > 8.2 && lt < 10.6) $('#sP').style.background = 'rgba(124,92,240,.08)';
+  const cmdOn = prog(lt, 8.0, 8.2) * (1 - prog(lt, 10.0, 10.3));
+  $('#Dcmdt').textContent = 'Edit with AI: ' + typed('“Shorten the Plan”', prog(lt, 8.2, 9.0, Ease.lin));
+  put('#Dcmd', { y: 20 * (1 - cmdOn), o: e * cmdOn });
+  // review every section
+  [['S', 7.0], ['O', 7.35], ['A', 7.7], ['P', 10.7]].forEach(([key, t]) => {
+    const on = lt > t; $('#rv' + key).classList.toggle('on', on);
+    $('#rv' + key).textContent = on ? '✓ Reviewed' : 'I’ve reviewed this';
+    put('#rv' + key, { s: on ? 1 + 0.15 * (1 - prog(lt, t, t + 0.4, Ease.out)) : 1, o: lt > 6.8 ? 1 : 0 });
+  });
   // sign off
-  put('#Dsign', { s: 1 - 0.08 * prog(lt, 10.2, 10.4) * (1 - prog(lt, 10.4, 10.7)), o: e * prog(lt, 9.8, 10.1) });
-  const sk = prog(lt, 10.6, 11.2, Ease.back);
-  put('#Dstamp', { s: lt > 10.6 ? 1.8 - 0.8 * sk : 0, r: -12, o: lt > 10.6 ? e * prog(lt, 10.6, 10.8) : 0 });
+  put('#Dsign', { s: 1 - 0.08 * prog(lt, 11.3, 11.5) * (1 - prog(lt, 11.5, 11.8)), o: e * prog(lt, 10.9, 11.2) });
+  const sk = prog(lt, 11.7, 12.3, Ease.back);
+  put('#Dstamp', { s: lt > 11.7 ? 1.8 - 0.8 * sk : 0, r: -12, o: lt > 11.7 ? e * prog(lt, 11.7, 11.9) : 0 });
   const st = $('#Dstatus');
-  if (lt > 10.6) { st.textContent = 'Signed'; st.style.background = '#e3f8ee'; st.style.color = '#11704f'; }
-  else if (lt > 7.0) { st.textContent = 'Reviewing'; st.style.background = '#efeaff'; st.style.color = '#5b3fd0'; }
+  if (lt > 11.7) { st.textContent = 'Signed'; st.style.background = '#e3f8ee'; st.style.color = '#11704f'; }
+  else if (lt > 6.8) { st.textContent = 'Reviewing'; st.style.background = '#efeaff'; st.style.color = '#5b3fd0'; }
   else { st.textContent = 'Draft'; st.style.background = '#fff4e0'; st.style.color = '#a2620a'; }
   put('#Dsub', { o: prog(lt, 1.0, 1.6) });
-  put('#Dvoice', { y: -20 * (1 - prog(lt, 1.2, 1.8, Ease.out)), o: e * prog(lt, 1.2, 1.6) * (1 - prog(lt, 6.6, 7.0)) });
-  const pk = prog(lt, 12.0, 12.8, Ease.spring);
-  put('#Dpdf', { y: 120 * (1 - pk), z: 50, s: 0.85 + 0.15 * pk, r: -2 * (1 - pk), o: lt > 12 ? e * prog(lt, 12.0, 12.3) : 0 });
+  put('#Dvoice', { y: -20 * (1 - prog(lt, 1.2, 1.8, Ease.out)), o: e * prog(lt, 1.2, 1.6) * (1 - prog(lt, 6.4, 6.8)) });
+  const pk = prog(lt, 12.7, 13.5, Ease.spring);
+  put('#Dpdf', { y: 120 * (1 - pk), z: 50, s: 0.85 + 0.15 * pk, r: -2 * (1 - pk), o: lt > 12.7 ? e * prog(lt, 12.7, 13.0) : 0 });
+}
+
+// N: the SLP taps in trial data and an observation
+const TRIALS = ['++-++++-++', '+-+-++--++', '++-+++-+-+'];   // 8/10, 6/10, 7/10
+const tapEls = TRIALS.map((seq, r) => [...seq].map(() => { const i = document.createElement('i'); $('#T' + r).appendChild(i); return i; }));
+const OBS = 'Final /k/ mostly omitted, not fronted. Stimulable with a release cue.';
+function N(lt, dur) {
+  const e = edge(lt, dur);
+  put('#Nt', { x: -60 * (1 - prog(lt, 0, .9, Ease.out)), o: e }); $('#Nt').style.transform += ' translateY(-50%)';
+  put('#Nsheet', { x: 160 * (1 - prog(lt, 0.1, 1.0, Ease.out5)), ry: -8, o: e * prog(lt, .1, .4) });
+  const t0 = 0.9, step = 0.1;
+  let last = null;
+  TRIALS.forEach((seq, r) => {
+    let ok = 0;
+    [...seq].forEach((c, j) => {
+      const t = t0 + (r * 10 + j) * step, on = lt > t, el = tapEls[r][j];
+      el.className = on ? (c === '+' ? 'ok' : 'no') : ''; el.textContent = on ? (c === '+' ? '✓' : '✗') : '';
+      put(el, { s: on ? 1 + 0.35 * (1 - prog(lt, t, t + 0.2, Ease.out)) : 1 });
+      if (on) { if (c === '+') ok++; last = el; }
+    });
+    $('#S' + r).textContent = `${ok}/10`;
+  });
+  [['#C0', 4.1], ['#C1', 4.4], ['#C4', 4.7]].forEach(([id, t]) => $(id).classList.toggle('on', lt > t));
+  $('#Nobs').innerHTML = typed(OBS, prog(lt, 5.0, 6.6, Ease.lin)) + (lt > 5.0 && lt < 6.6 ? caret : '');
+  const f = $('#Nfinger');
+  let tgt = null;
+  if (lt < 4.0) tgt = last; else if (lt < 4.9) tgt = $(lt < 4.3 ? '#C0' : lt < 4.6 ? '#C1' : '#C4');
+  if (tgt) { const r = tgt.getBoundingClientRect(); f.style.left = (r.left + r.width / 2) + 'px'; f.style.top = (r.top + r.height / 2 + 6) + 'px'; }
+  put(f, { o: lt > t0 && lt < 4.9 ? e : 0, s: 0.9 });
 }
 
 // E
@@ -313,18 +389,37 @@ function E_(lt, dur) {
 
 // F/G: documents for each setting
 const PP = [
-  ['📝', 'SOAP notes', 'Drafted from the session. You review, edit with a sentence, and sign off.', true],
+  ['📝', 'SOAP notes', 'Drafted from your session and data. Review each section, then sign off.', true],
   ['🧩', 'Evaluation reports', 'Full private-practice evaluation report, plus informal evaluation summaries.'],
   ['📈', 'Progress reports', 'Per-goal progress reports that read your actual notes and session data.'],
   ['💬', 'Parent updates', 'Short, plain-language updates for families.'],
   ['🗓️', 'Lesson plans', 'Next session’s plan, with targets, materials and activities.'],
 ];
 const SCHOOL = [
-  ['🏫', 'IEP Builder', 'Drafts each IEP section for your review.', true],
-  ['🧭', 'MTSS Intervention Planner', 'Plan and track tiered interventions.', true],
-  ['💬', 'AAC Device Funding Report', 'Build the case for a communication device.', true],
+  ['IEP Builder', '#2a6fd8', ['Present levels', 'Annual goals', 'Services & minutes'], true],
+  ['MTSS Intervention Planner', '#7c5cf0', ['Tier 2 plan', 'Intervention schedule', 'Progress monitoring'], true],
+  ['AAC Device Funding Report', '#e0742b', ['Communication needs', 'Device trials', 'Recommendation'], true],
+  ['IEP Evaluation Report', '#4a5fc1', ['Assessment results', 'Eligibility']],
+  ['Prior Written Notice', '#4a5fc1', ['Action proposed', 'Reasons']],
+  ['Permission to Evaluate', '#4a5fc1', ['Areas to assess', 'Consent']],
+  ['Re-evaluation Report', '#4a5fc1', ['Review of data', 'Continued eligibility']],
+  ['Student Session Log', '#4a5fc1', ['Date & minutes', 'Targets']],
+  ['Session Logger', '#4a5fc1', ['Encounter', 'Service details']],
 ];
-const SCHOOL_MORE = ['IEP Evaluation Report', 'Prior Written Notice', 'Permission to Evaluate', 'Re-evaluation Report', 'Student Session Log', 'Session Logger'];
+function mkPage([title, col, secs, feat]) {
+  const el = document.createElement('div'); el.className = 'page' + (feat ? ' feat' : '');
+  const big = !!feat;
+  el.style.width = (big ? 420 : 250) + 'px'; el.style.height = (big ? 500 : 118) + 'px';
+  if (!big) secs = secs.slice(0, 1);
+  let body = '';
+  secs.forEach((sh, i) => {
+    body += `<div class="sh" style="font-size:${big ? 19 : 12}px">${sh}</div><div class="ln" style="width:92%"></div><div class="ln" style="width:${70 + (i * 9) % 25}%"></div>`;
+    if (big && i === 1) body += '<div class="tb">' + '<i></i>'.repeat(6) + '</div>';
+  });
+  el.innerHTML = `<div class="ph" style="background:${col}; font-size:${big ? 25 : 14}px; padding:${big ? '20px 24px' : '12px 14px'}">${title}</div>` +
+    `<div style="padding:${big ? '12px 24px' : '6px 14px'}">${body}</div>`;
+  $('#docs').appendChild(el); return el;
+}
 function mkDoc([ic, t, d, hero], i, setName) {
   const el = document.createElement('div'); el.className = 'card doc' + (hero ? ' hero' : '');
   el.innerHTML = `<div class="ic" style="background:${setName === 'pp' ? '#e5f7f1' : '#eaf1ff'}">${ic}</div><div class="dt">${t}</div>` +
@@ -332,12 +427,7 @@ function mkDoc([ic, t, d, hero], i, setName) {
   $('#docs').appendChild(el); return el;
 }
 const ppEls = PP.map((d, i) => mkDoc(d, i, 'pp'));
-const scEls = SCHOOL.map((d, i) => mkDoc(d, i, 'sc'));
-scEls.forEach(el => { el.style.width = '440px'; el.style.height = '300px'; });
-const moreEl = document.createElement('div');
-moreEl.style.cssText = 'position:absolute; left:0; top:0; width:1920px; text-align:center; font-size:26px; font-weight:600; color:rgba(255,255,255,.85)';
-moreEl.innerHTML = '<span style="color:#7fe6c6; letter-spacing:3px; font-size:20px; font-weight:800">PLUS</span>&nbsp;&nbsp;' + SCHOOL_MORE.join('&nbsp; · &nbsp;');
-$('#docs').appendChild(moreEl);
+const scEls = SCHOOL.map(d => mkPage(d));
 function F(lt, dur) {
   const e = edge(lt, dur);
   const flip = prog(lt, 6.4, 7.1, Ease.inOut);        // switch to School at ~6.4s
@@ -351,13 +441,16 @@ function F(lt, dur) {
     const [x, y, s] = ppPos[i];
     put(el, { x, y: y + 160 * (1 - k) + 8 * Math.sin(lt * 1.3 + i), s: s * (0.85 + 0.15 * k), ry: (i % 2 ? -1 : 1) * 10 * (1 - k), o: e * prog(lt, a, a + .3) * (1 - flip) });
   });
-  // school: three featured builders, the rest listed below
+  // school: the three featured builders in front, the other six as smaller pages behind
   scEls.forEach((el, i) => {
-    const a = 6.6 + i * 0.18, k = prog(lt, a, a + 0.9, Ease.spring);
-    const x = 260 + i * 490, y = 330;
-    put(el, { x, y: y + 140 * (1 - k) + 8 * Math.sin(lt * 1.3 + i), s: 0.85 + 0.15 * k, ry: (1 - i) * 8 * (1 - k), o: e * prog(lt, a, a + .3) });
+    const feat = i < 3;
+    const a0 = feat ? 6.7 + i * 0.25 : 7.6 + (i - 3) * 0.1;
+    const k = prog(lt, a0, a0 + 0.9, Ease.spring);
+    let x, y, z, ry;
+    if (feat) { x = 300 + i * 470; y = 270; z = 0; ry = (1 - i) * 6; }
+    else { const j = i - 3; x = 155 + j * 275; y = 815; z = 0; ry = 0; }
+    put(el, { x, y: y + 150 * (1 - k) + (feat ? 6 * Math.sin(lt * 1.3 + i) : 0), z, ry, s: (0.85 + 0.15 * k) * (feat ? 1 + 0.015 * Math.sin(lt * 3 + i) : 1), o: e * prog(lt, a0, a0 + .3) * (feat ? 1 : 0.9) });
   });
-  put(moreEl, { y: 720 + 20 * (1 - prog(lt, 7.6, 8.3, Ease.out)), o: e * prog(lt, 7.6, 8.1) });
 }
 
 // H
@@ -388,11 +481,12 @@ window.SCENES = [
   { start: 0,      end: 2 * B,  el: '#A', fn: A },
   { start: 2 * B,  end: 4 * B,  el: '#B', fn: B_ },
   { start: 4 * B,  end: 6 * B,  el: '#C', fn: C },
-  { start: 6 * B,  end: 12 * B, el: '#D', fn: D },
-  { start: 12 * B, end: 14 * B, el: '#E', fn: E_ },
-  { start: 14 * B, end: 19 * B, el: '#F', fn: F },
-  { start: 19 * B, end: 22 * B, el: '#H', fn: H },
-  { start: 22 * B, end: 25 * B + 0.4, el: '#I', fn: I },
+  { start: 6 * B,  end: 9 * B,  el: '#N', fn: N },
+  { start: 9 * B,  end: 15 * B, el: '#D', fn: D },
+  { start: 15 * B, end: 17 * B, el: '#E', fn: E_ },
+  { start: 17 * B, end: 22 * B, el: '#F', fn: F },
+  { start: 22 * B, end: 25 * B, el: '#H', fn: H },
+  { start: 25 * B, end: 28 * B + 0.4, el: '#I', fn: I },
 ];
 Engine.boot();
 </script>
