@@ -5,7 +5,7 @@ const [page_, out, ...ts] = process.argv.slice(2);
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
-  await p.goto('file://' + path.resolve(page_));
+  const [pp, qq] = page_.split('?'); await p.goto('file://' + path.resolve(pp) + (qq ? '?' + qq : ''));
   await p.evaluate(() => window.__ready);
   const shots = [];
   for (const t of ts) { await p.evaluate(t => window.__seek(t), +t); shots.push(await p.screenshot({ type: 'png' })); }

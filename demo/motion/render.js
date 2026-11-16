@@ -12,7 +12,7 @@ const FPS = +opt('--fps', 30), W = +opt('--w', 1920), H = +opt('--h', 1080), SCA
 (async () => {
   const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--disable-lcd-text'] });
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: SCALE });
-  await page.goto('file://' + path.resolve(page_));
+  await page.goto('file://' + path.resolve(page_) + (opt('--query', '') ? '?' + opt('--query', '') : ''));
   await page.evaluate(() => window.__ready);
   const dur = await page.evaluate(() => window.__duration);
   const from = +opt('--from', 0), to = +opt('--to', dur);

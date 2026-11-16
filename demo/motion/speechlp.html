@@ -176,10 +176,10 @@
   <section class="scene" id="G">
     <div class="center" style="position:absolute; left:0; right:0; top:56px" id="Gtext">
       <div class="eyebrow">7 speaking games</div>
-      <h2 style="font-size:72px; margin-bottom:0">Games they'll actually want to play.</h2>
+      <h2 style="font-size:64px; margin-bottom:0">Games they'll actually want to play.</h2>
     </div>
     <div id="carousel" style="position:absolute; left:0; top:0; width:1920px; height:1080px; transform-style:preserve-3d"></div>
-    <div id="Ginfo" style="position:absolute; left:0; right:0; top:885px; text-align:center">
+    <div id="Ginfo" style="position:absolute; left:0; right:0; top:856px; text-align:center">
       <div id="Gname" style="font-family:Funnel; font-size:56px; text-shadow:0 6px 20px rgba(0,0,0,.3)"></div>
       <div id="Gtag" style="font-size:32px; font-weight:600; color:#ffe58a; margin-top:6px"></div>
     </div>
@@ -214,7 +214,7 @@
   </section>
 
   <!-- I. Outro -->
-  <section class="scene center" id="I">
+  <section class="scene center" id="I" style="padding-bottom:90px">
     <img class="hero" id="Ihero" src="img/hero.png">
     <div class="lockup" id="Ilock" style="margin-top:40px; gap:28px"><img src="img/lp_icon.png" style="width:110px"><img src="img/lp_word.png" style="height:84px; filter:brightness(0) invert(1)"></div>
     <div class="platforms" id="Iplat">iPhone · iPad · Web</div>
@@ -391,7 +391,7 @@ function G(lt, dur) {
   gcards.forEach((c, i) => {
     const d = i - focus, ad = Math.abs(d);
     const x = 960 - 190 + d * 300 + (1 - intro) * 900;
-    const y = 190 + ad * 30;
+    const y = 178 + ad * 30;
     put(c, { x, y, z: -ad * 260, ry: -Math.sign(d) * Math.min(ad, 1.4) * 38, s: 1, o: e * clamp(1.6 - ad * 0.45) * prog(lt, 0, 0.5) });
     c.style.zIndex = 100 - Math.round(ad * 10);
   });
@@ -493,7 +493,21 @@ window.SCENES = [
   { start: 26 * B + 1.2, end: 29 * B + 0.4, el: '#I', fn: I },
 ];
 document.getElementById('F').style.display = 'none';   // replaced by real gameplay (J)
+window.CAPTIONS = [
+  [0.6, 4.9, 'Speech practice your child will actually want to play.'],
+  [5.0, 10.0, 'This is SpeechLP, built by practicing speech-language pathologists.'],
+  [10.1, 14.8, 'A guided learning path always shows what’s next, level by level.'],
+  [17.0, 24.5, 'Age-based screeners. 1,500 target words. Every English consonant.'],
+  [24.6, 30.4, 'Certified SLPs model every sound, and kids hear every word before they play.'],
+  [30.5, 36.6, 'Seven speaking games, from Perry’s submarine to feeding a very hungry bear.'],
+  [40.4, 44.2, 'Kids say the word to earn stars and win the match.'],
+  [46.4, 48.8, 'Their friends evolve as they practice,'],
+  [51.0, 54.3, 'and every pack brings a new friend to collect.'],
+  [58.0, 63.6, 'Every word is measured, with reports for parents, teachers and SLPs.'],
+  [64.4, 68.4, 'SpeechLP. On iPhone, iPad and the web.'],
+];
 Engine.boot();
 </script>
+<script src="captions.js"></script>
 </body>
 </html>
