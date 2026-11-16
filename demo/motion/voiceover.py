@@ -130,7 +130,7 @@ def splice(*parts, gap=0.18):
             out.append(np.zeros(int(gap * SR), np.float32))
     return np.concatenate(out)
 
-build('docs', 67.6, [
+build('docs', 70.0, [
     (0.6,  clip('r305', 'Spend less', 'treating')),
     (5.2,  clip('r305', 'One app', 'schools')),
     (10.0, clip('r305', 'Record or', 'your session')),
@@ -138,10 +138,10 @@ build('docs', 67.6, [
     (22.4, clip('r305', 'Your soap', 'writing voice')),
     (26.6, splice(clip('r305', 'Review each', 'each section'), clip('r305', 'and sign', 'sign off', after=70))),
     (33.4, clip('r305', 'You always', 'final say')),
-    (36.4, clip('r305', 'Clinical insights', 'next session')),
-    (41.4, clip('r305', 'Evaluations', 'lesson plans')),
-    (47.4, clip('r305', 'And for schools', 'funding reports')),
-    (53.4, clip('r305', 'Invite caregivers', 'either setting')),
-    (60.4, clip('r305', 'Documentation included', 'per month', after=100)),
-    (64.6, clip('r305', 'SpeechTherapist .app', 'SpeechTherapist .app', after=108)),
+    (38.8, clip('r305', 'Clinical insights', 'next session')),
+    (43.8, clip('r305', 'Evaluations', 'lesson plans')),
+    (49.8, clip('r305', 'And for schools', 'funding reports')),
+    (55.8, clip('r305', 'Invite caregivers', 'either setting')),
+    (62.8, clip('r305', 'Documentation included', 'per month', after=100)),
+    (67.0, clip('r305', 'SpeechTherapist .app', 'SpeechTherapist .app', after=108)),
 ])

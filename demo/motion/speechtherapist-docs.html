@@ -105,6 +105,12 @@
   .page .tb { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
   .page .tb i { height: 22px; border-radius: 5px; background: #f3f6f9; }
   .page.feat { outline: 6px solid #6ff0c5; }
+  .wn { margin-top: 10px; border: 2px solid var(--line); border-radius: 14px; padding: 12px 16px; font-size: 21px; overflow: hidden; }
+  .wn .row { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+  .wn .row span { font-weight: 500; color: var(--muted); }
+  .wn .opts { display: flex; gap: 12px; margin-top: 12px; }
+  .wn .opt { padding: 12px 18px; border-radius: 12px; border: 2px solid #d9cff7; background: #f6f3ff; color: #4b2fbf; font-weight: 700; font-size: 20px; }
+  .wn .opt.on { background: #7c5cf0; color: #fff; border-color: #7c5cf0; }
 </style>
 </head>
 <body>
@@ -172,11 +178,18 @@
       <div class="sec" id="sO"><div class="L">O</div><div id="tO"></div><span class="rv" id="rvO">I’ve reviewed this</span></div>
       <div class="sec" id="sA"><div class="L">A</div><div id="tA"></div><span class="rv" id="rvA">I’ve reviewed this</span></div>
       <div class="sec" id="sP"><div class="L">P</div><div id="tP"></div><span class="rv" id="rvP">I’ve reviewed this</span></div>
+      <div class="wn" id="Dnext"><div class="row">✦ What’s next? <span>— draft a parent update or next session’s plan</span></div>
+        <div class="opts" id="Dopts"><span class="opt" id="Do1">Parent update</span><span class="opt" id="Do2">Next session’s plan</span></div></div>
     </div>
     <div class="cmd" id="Dvoice" style="left:760px; top:20px; background:#e7fbf3; border-color:#a6e8cf; color:#0d7a5b">✓ Written in your own writing voice</div>
     <div class="card" id="Dpdf" style="left:110px; top:640px; width:560px; padding:28px 32px">
       <div style="display:flex; align-items:center; gap:16px"><div style="width:64px; height:80px; border-radius:10px; background:#fdecec; color:#c0392b; font-weight:900; display:flex; align-items:center; justify-content:center; font-size:22px">PDF</div>
       <div><div style="font-size:26px; font-weight:800">Exported with your letterhead</div><div class="muted" style="font-size:20px; margin-top:4px">Or copy to clipboard · your EHR template</div></div></div>
+    </div>
+    <div class="card" id="Dpu" style="left:1130px; top:470px; width:720px; padding:28px 32px">
+      <div style="font-size:24px; font-weight:800">Parent update · Maya</div>
+      <div style="font-size:20px; line-height:1.5; margin-top:10px">Maya did great today. She and I played a garage-and-animals game while practicing her /k/ sound and using “I” in sentences.</div>
+      <div style="font-size:20px; line-height:1.5; margin-top:8px; color:#6b7a8c">Keep it playful — a few minutes counts.</div>
     </div>
     <div class="cmd" id="Dcmd" style="left:1040px; top:930px">✎ <span id="Dcmdt"></span></div>
     <div class="signbtn" id="Dsign" style="left:1500px; top:930px">Sign off</div>
@@ -343,6 +356,15 @@ function D(lt, dur) {
   else { st.textContent = 'Draft'; st.style.background = '#fff4e0'; st.style.color = '#a2620a'; }
   put('#Dsub', { o: prog(lt, 1.0, 1.6) });
   put('#Dvoice', { y: -20 * (1 - prog(lt, 1.2, 1.8, Ease.out)), o: e * prog(lt, 1.2, 1.6) * (1 - prog(lt, 6.4, 6.8)) });
+  const wn = prog(lt, 12.3, 12.8, Ease.out);                 // "What's next?" appears under the signed note
+  $('#Dnext').style.opacity = lt > 12.3 ? wn : 0;
+  $('#Dnext').style.maxHeight = (lt > 12.3 ? 60 + 70 * prog(lt, 13.0, 13.5, Ease.out) : 0) + 'px';
+  $('#Dnext').style.display = lt > 12.3 ? '' : 'none';
+  $('#Dnext').style.borderColor = lt > 12.3 && lt < 15.5 ? '#b9a8f5' : '';
+  $('#Do1').classList.toggle('on', lt > 14.0);
+  put('#Do1', { s: 1 - 0.06 * prog(lt, 13.9, 14.0) * (1 - prog(lt, 14.0, 14.2)) });
+  const pu = prog(lt, 14.3, 15.1, Ease.spring);
+  put('#Dpu', { y: 120 * (1 - pu), z: 80, s: 0.85 + 0.15 * pu, o: lt > 14.3 ? e * prog(lt, 14.3, 14.6) : 0 });
   const pk = prog(lt, 12.7, 13.5, Ease.spring);
   put('#Dpdf', { y: 120 * (1 - pk), z: 50, s: 0.85 + 0.15 * pk, r: -2 * (1 - pk), o: lt > 12.7 ? e * prog(lt, 12.7, 13.0) : 0 });
 }
@@ -464,11 +486,11 @@ window.SCENES = [
   { start: 2 * B,  end: 4 * B,  el: '#B', fn: B_ },
   { start: 4 * B,  end: 6 * B,  el: '#C', fn: C },
   { start: 6 * B,  end: 9 * B,  el: '#N', fn: N },
-  { start: 9 * B,  end: 15 * B, el: '#D', fn: D },
-  { start: 15 * B, end: 17 * B, el: '#E', fn: E_ },
-  { start: 17 * B, end: 22 * B, el: '#F', fn: F },
-  { start: 22 * B, end: 25 * B, el: '#H', fn: H },
-  { start: 25 * B, end: 28 * B + 0.4, el: '#I', fn: I },
+  { start: 9 * B,  end: 16 * B, el: '#D', fn: D },
+  { start: 16 * B, end: 18 * B, el: '#E', fn: E_ },
+  { start: 18 * B, end: 23 * B, el: '#F', fn: F },
+  { start: 23 * B, end: 26 * B, el: '#H', fn: H },
+  { start: 26 * B, end: 29 * B + 0.4, el: '#I', fn: I },
 ];
 Engine.boot();
 </script>
