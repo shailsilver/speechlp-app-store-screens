@@ -4,6 +4,9 @@ Without a form URL, the Stay Connected QR spots show a 'QR coming' placeholder.
 """
 import sys, re, pathlib, qrcode, qrcode.image.svg
 HERE = pathlib.Path(__file__).parent
+import base64
+def img(name):
+    return "data:image/png;base64," + base64.b64encode((HERE / "logos" / f"{name}.png").read_bytes()).decode()
 UTM = "utm_source=asha2026&utm_medium=qr&utm_campaign=booth2046"
 LINKS = {
     "speechlp": f"https://app.speechlp.com/?{UTM}",
@@ -66,17 +69,23 @@ def option_b():
     .opts{display:grid;gap:.14in;width:5.6in;margin:0 auto}
     .opt{display:flex;align-items:center;gap:.16in;border-radius:14px;padding:.14in .2in}
     .opt b{font-size:15pt;display:block}.opt span{font-size:11pt;color:#3d3a5c}
-    .dot{width:.42in;height:.42in;border-radius:50%;flex:none;color:#fff;font-weight:800;display:grid;place-items:center;font-size:14pt}
+    .dot{width:.48in;height:.48in;border-radius:12px;flex:none;color:#fff;font-weight:800;display:grid;place-items:center;font-size:16pt}
+    .ico{width:.48in;height:.48in;flex:none;object-fit:contain}
+    .logos{display:flex;align-items:center;justify-content:center;gap:.45in;margin-bottom:.22in}
+    .logos img{height:.5in;width:auto}
+    .logos img.lp{height:.66in}
+    .logos .sep{width:1px;height:.4in;background:#ddd}
     """
-    opts = [("1","Try SpeechLP","Speech sound practice kids do out loud","#6b3fd4","#f3effd"),
-            ("2","Try SpeechTherapist.app","Documentation and planning for pediatric SLPs","#0f6b4f","#e6f4ee"),
-            ("3","Stay Connected","Get updates, request a demo, or explore research","#d9534f","#fdecea")]
-    oh = "".join(f'<div class="opt" style="background:{bg}"><div class="dot" style="background:{c}">{n}</div><div><b style="color:{c}">{t}</b><span>{s}</span></div></div>' for n,t,s,c,bg in opts)
+    opts = [(f'<img class="ico" src="{img("speechlp-icon")}" alt="">',"Try SpeechLP","Speech sound practice kids do out loud","#6b3fd4","#f3effd"),
+            (f'<img class="ico" src="{img("speechtherapist-icon")}" alt="">',"Try SpeechTherapist.app","Documentation and planning for pediatric SLPs","#0f6b4f","#e6f4ee"),
+            ('<div class="dot" style="background:#d9534f">&#9993;</div>',"Stay Connected","Get updates, request a demo, or explore research","#d9534f","#fdecea")]
+    oh = "".join(f'<div class="opt" style="background:{bg}">{ic}<div><b style="color:{c}">{t}</b><span>{s}</span></div></div>' for ic,t,s,c,bg in opts)
     return f'''<!doctype html><html><head><meta charset="utf-8"><title>ASHA QR Sign - 1 code</title><style>{css}</style></head><body><div class="page">
+      <div class="logos"><img class="lp" src="{img("speechlp-logo")}" alt="SpeechLP"><div class="sep"></div><img src="{img("speechtherapist-logo")}" alt="SpeechTherapist.app"></div>
       <div class="top"><div class="kick">ASHA 2026 · Booth 2046</div><h1>Great meeting you!</h1><p>Scan once to try our apps or stay in touch</p></div>
       <div class="qrbox big">{qr(FORM)}</div>
       <div class="opts">{oh}</div>
-      <div class="foot">SpeechLP &amp; SpeechTherapist.app · Built by practicing SLPs</div>
+      <div class="foot">Built by practicing SLPs · HIPAA &amp; COPPA compliant</div>
     </div></body></html>'''
 
 (HERE / "asha-sign-3-qr-codes.html").write_text(option_a())
