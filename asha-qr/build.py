@@ -85,7 +85,7 @@ def option_b():
       <div class="top"><div class="kick">ASHA 2026 · Booth 2046</div><h1>Great meeting you!</h1><p>Scan once to try our apps or stay in touch</p></div>
       <div class="qrbox big">{qr(FORM)}</div>
       <div class="opts">{oh}</div>
-      <div class="foot">Built by practicing SLPs · HIPAA &amp; COPPA compliant</div>
+      <div class="foot">Built by practicing SLPs · HIPAA, COPPA, FERPA &amp; PIPEDA compliant</div>
     </div></body></html>'''
 
 (HERE / "asha-sign-3-qr-codes.html").write_text(option_a())
