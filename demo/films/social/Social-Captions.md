@@ -46,7 +46,7 @@ Say the word. Win the match. Collect friends. 🐧⭐
 Every SpeechLP game is played out loud, and kids earn stars, evolve their friends, and open packs as they practice their speech sounds. Built by speech-language pathologists. 💜
 
 Try it free in your browser 👉 link in bio
-Going to ASHA? Come play at booth #2046, starting Thursday!
+Going to ASHA? Come see SpeechLP at booth #2046, starting Thursday!
 
 #SpeechTherapy #SpeechTherapyForKids #SLP #ASHA2026 #SpeechPractice #SpeechLP
 
