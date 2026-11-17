@@ -1,6 +1,6 @@
 # Social captions: ASHA week
 
-Replace **[booth #]** before posting. Upload video files directly to each platform; don't post YouTube links.
+Upload video files directly to each platform; don't post YouTube links.
 
 ---
 
@@ -17,7 +17,7 @@ SpeechTherapist.app is the SLP companion to SpeechLP. Add your session data and 
 
 One app for private practice and schools. $20/seat/month, with a free plan.
 
-We're at the ASHA Convention this week. Come say hi at booth [booth #]!
+We're at the ASHA Convention this week. Come say hi at booth #2046!
 
 👉 speechtherapist.app
 
@@ -32,7 +32,7 @@ As an SLP, I know how much of our day goes to paperwork instead of kids.
 
 That's why we built SpeechTherapist.app: you add your session data and observations, and your SOAP note is drafted in your own writing voice. You review it, edit what you need, and sign off. It also handles evaluations, progress reports, parent updates, and school documents like IEPs, MTSS plans and AAC funding reports.
 
-My colleague Alissa Fox, M.S., CCC-SLP, and I are at the ASHA Convention this week. Stop by booth [booth #] and we'll show you!
+My colleague Alissa Fox, M.S., CCC-SLP, and I are at the ASHA Convention this week. Stop by booth #2046 and we'll show you!
 
 #ASHA2026 #SLP #SpeechTherapy
 
@@ -46,7 +46,7 @@ Say the word. Win the match. Collect friends. 🐧⭐
 Every SpeechLP game is played out loud, and kids earn stars, evolve their friends, and open packs as they practice their speech sounds. Built by speech-language pathologists. 💜
 
 Try it free in your browser 👉 link in bio
-Visiting ASHA this week? Come play at booth [booth #]!
+Visiting ASHA this week? Come play at booth #2046!
 
 #SpeechTherapy #SpeechTherapyForKids #SLP #ASHA2026 #SpeechPractice #SpeechLP
 
@@ -61,7 +61,7 @@ Add your session data and observations, and your SOAP note is drafted in your ow
 
 You always have the final say. 🩺
 
-At ASHA this week? Find us at booth [booth #]!
+At ASHA this week? Find us at booth #2046!
 👉 speechtherapist.app
 
 #SLP #SLPeeps #SpeechTherapy #SOAPnotes #SchoolSLP #ASHA2026
@@ -69,7 +69,7 @@ At ASHA this week? Find us at booth [booth #]!
 ---
 
 ## 5. Instagram / Facebook Story (either account)
-Share the Reel to your Story and add text: **"We're at ASHA! Booth [booth #] 👋"**
+Share the Reel to your Story and add text: **"We're at ASHA! Booth #2046 👋"**
 
 ---
 
